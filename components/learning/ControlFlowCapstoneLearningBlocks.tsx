@@ -30,7 +30,7 @@ export function CapstoneProgramCard({ code }: { code: string }) {
 }
 
 export function ModuleNavigator({ modules, selectedId, onSelect }: { modules: CapstoneConsoleModule[]; selectedId: string; onSelect: (id: string) => void }) {
-  return <nav className="capstone-module-navigator" aria-label="Application modules">{modules.map((module) => <Button key={module.id} size="sm" kind={module.id === selectedId ? "primary" : "ghost"} onClick={() => onSelect(module.id)}><span>{module.option}</span>{module.title}</Button>)}</nav>;
+  return <nav className="capstone-module-navigator" aria-label="Application modules">{modules.map((module) => <Button key={module.id} size="sm" kind={module.id === selectedId ? "primary" : "ghost"} onClick={() => onSelect(module.id)}><span className="module-nav-number">{module.option}</span><span className="module-nav-label">{module.title}</span></Button>)}</nav>;
 }
 
 export function ApplicationModules({ modules, futureFeature }: { modules: CapstoneConsoleModule[]; futureFeature: ControlFlowCapstoneDevelopmentPack["futureFeature"] }) {

@@ -895,6 +895,18 @@ test("Module 2 capstone executes every farm module and exits cleanly", async () 
   assert.ok(result.trace.length < 250);
 });
 
+test("Module 2 capstone navigation stays within responsive grid tracks", async () => {
+  const [blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("components/learning/ControlFlowCapstoneLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(blocksSource, /className="module-nav-number"/);
+  assert.match(blocksSource, /className="module-nav-label"/);
+  assert.match(stylesSource, /\.capstone-module-navigator \.cds--btn \{[^}]*width: 100%;[^}]*min-width: 0;[^}]*overflow: hidden;/s);
+  assert.match(stylesSource, /\.console-field-grid \{[^}]*repeat\(auto-fit,minmax\(min\(14rem,100%\),1fr\)\)/s);
+});
+
 test("Python trace runtime captures post-line variables, output, and errors", async () => {
   const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
   const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];

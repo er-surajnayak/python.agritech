@@ -86,6 +86,8 @@ test("course framework defines all modules and reusable progress rules", async (
   assert.match(navigationSource, /aria-current=\{lesson\.id === currentLessonId \? "page"/);
   assert.match(shellSource, /\(!isCourseFrameworkRoute \|\| navigationOpen\)/);
   assert.match(shellSource, /app-content app-content--course/);
+  assert.match(shellSource, /A product by/);
+  assert.match(shellSource, /https:\/\/www\.nayaklabs\.xyz/);
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

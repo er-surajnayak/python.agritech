@@ -2029,6 +2029,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .progress-track { height: .25rem; background: var(--cds-border-subtle-02); margin: .65rem 0; }
 .progress-track span { display: block; width: 0; height: 100%; background: var(--brand-green); }
 .sidebar-progress p { margin: 0; color: var(--cds-text-helper); font-size: .6875rem; }
+.sidebar-product-attribution { display: flex; justify-content: space-between; gap: .75rem; align-items: baseline; margin: 1rem 1rem 0; padding: .85rem 0 0; color: var(--cds-text-helper); border-top: 1px solid var(--cds-border-subtle-01); text-decoration: none; }
+.sidebar-product-attribution span { font-size: .625rem; letter-spacing: .04em; }
+.sidebar-product-attribution strong { color: var(--cds-text-secondary); font-size: .72rem; font-weight: 600; }
+.sidebar-product-attribution:hover strong, .sidebar-product-attribution:focus-visible strong { color: var(--brand-green); }
+.sidebar-product-attribution:focus-visible { outline: 2px solid var(--cds-focus); outline-offset: 3px; }
 .nav-backdrop { display: none; }
 .app-content { min-height: 100vh; padding: var(--header-height) 0 0 var(--shell-width); }
 .app-content--course { padding-left: 0; }

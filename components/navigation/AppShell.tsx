@@ -168,6 +168,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
               <p>{courseProgress.completedLessons} of {courseProgress.totalLessons} lessons complete.</p>
             </div>
+            <a className="sidebar-product-attribution" href="https://www.nayaklabs.xyz" target="_blank" rel="noreferrer" aria-label="Visit NayakLabs website">
+              <span>A product by</span>
+              <strong>NayakLabs</strong>
+            </a>
           </SideNavItems>
         </SideNav>
       )}

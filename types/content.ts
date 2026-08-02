@@ -1035,6 +1035,31 @@ export interface PlaceholderPageContent {
   cards: Array<{ title: string; description: string; icon: string }>;
 }
 
+export interface AssignmentQuestion {
+  id: string;
+  number: number;
+  prompt: string;
+  requirements?: string[];
+  example?: string;
+}
+
+export interface AssignmentSection {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: "Warm-up" | "Beginner" | "Intermediate" | "Applied" | "Challenge";
+  questions: AssignmentQuestion[];
+}
+
+export interface AssignmentTopic {
+  id: string;
+  title: string;
+  shortTitle: string;
+  description: string;
+  concepts: string[];
+  sections: AssignmentSection[];
+}
+
 export interface NavigationItem {
   label: string;
   href: string;

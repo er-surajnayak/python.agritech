@@ -4,6 +4,7 @@ import { Link } from "@/components/navigation/client-router";
 import { usePathname } from "@/components/navigation/usePathname";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { CourseOverviewPage } from "@/components/pages/CourseOverviewPage";
+import { AssignmentsPage } from "@/components/pages/AssignmentsPage";
 import { CourseWorkspacePage } from "@/components/pages/CourseWorkspacePage";
 import { HomePage } from "@/components/pages/HomePage";
 import { ModulesPage } from "@/components/pages/ModulesPage";
@@ -40,6 +41,7 @@ function CurrentPage({ pathname }: { pathname: string }) {
   if (pathname === "/") return <HomePage />;
   if (pathname === "/course") return <CourseOverviewPage />;
   if (pathname === "/modules") return <ModulesPage />;
+  if (pathname === "/assignments") return <AssignmentsPage />;
   if (pathname === "/lessons") {
     return <CourseWorkspacePage lessonId={getDefaultLessonId(agritechCourse)} />;
   }

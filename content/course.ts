@@ -29,20 +29,6 @@ export const routeContent: Record<string, PlaceholderPageContent> = {
       { icon: "03", title: "Actionable feedback", description: "Explanations support every answer." },
     ],
   },
-  assignments: {
-    slug: "assignments",
-    eyebrow: "Assignments",
-    title: "Structured work that mirrors real faculty needs",
-    description: "Assignments will connect technical skills with teaching, research and agricultural analysis.",
-    accent: "Applied learning",
-    metric: "3",
-    metricLabel: "levels of support",
-    cards: [
-      { icon: "01", title: "Clear brief", description: "Purpose, inputs and outcomes are explicit." },
-      { icon: "02", title: "Evaluation guide", description: "Transparent criteria support self-review." },
-      { icon: "03", title: "Extension path", description: "Optional depth for confident learners." },
-    ],
-  },
   "mini-projects": {
     slug: "mini-projects",
     eyebrow: "Mini projects",

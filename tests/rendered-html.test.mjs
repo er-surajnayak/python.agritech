@@ -38,6 +38,28 @@ test("route registry covers every primary learning area", async () => {
   assert.match(source, /return content \? <PlaceholderPage content=\{content\} \/> : <NotFoundPage \/>/);
 });
 
+test("assignment hub publishes two topic-wise 30-question practice banks", async () => {
+  const [appSource, shellSource, pageSource, contentSource, stylesSource] = await Promise.all([
+    readFile(new URL("src/App.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/navigation/AppShell.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/pages/AssignmentsPage.tsx", projectRoot), "utf8"),
+    readFile(new URL("content/assignments.ts", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(appSource, /pathname === "\/assignments"/);
+  assert.match(shellSource, /label: "Assignments", href: "\/assignments"/);
+  assert.match(pageSource, /<Accordion/);
+  assert.match(pageSource, /<Search/);
+  assert.match(pageSource, /<ProgressBar/);
+  assert.match(pageSource, /<Checkbox/);
+  assert.match(contentSource, /Python If–Else Practice Assignment/);
+  assert.match(contentSource, /If–Else, Loops & Loop Control Practice/);
+  assert.equal((contentSource.match(/\{ prompt:/g) ?? []).length, 60);
+  assert.match(stylesSource, /Topic-wise assignment hub/);
+  assert.match(stylesSource, /@media \(max-width: 30rem\).*\.assignments-page/s);
+});
+
 test("course framework defines all modules and reusable progress rules", async () => {
   const [courseSource, navigationSource, shellSource] = await Promise.all([
     readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),

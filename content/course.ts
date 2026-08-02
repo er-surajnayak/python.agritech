@@ -1,0 +1,88 @@
+import type { PlaceholderPageContent } from "@/types/content";
+
+export const routeContent: Record<string, PlaceholderPageContent> = {
+  practice: {
+    slug: "practice",
+    eyebrow: "Practice studio",
+    title: "Turn understanding into working knowledge",
+    description: "A dedicated space for guided exercises, instant feedback and deliberate repetition.",
+    accent: "Learn by doing",
+    metric: "∞",
+    metricLabel: "attempts encouraged",
+    cards: [
+      { icon: "A", title: "Guided practice", description: "Scaffolded tasks with helpful context." },
+      { icon: "B", title: "Independent challenges", description: "Apply concepts without step-by-step prompts." },
+      { icon: "C", title: "Review mistakes", description: "Use feedback as part of the learning loop." },
+    ],
+  },
+  quizzes: {
+    slug: "quizzes",
+    eyebrow: "Knowledge checks",
+    title: "Frequent, friendly checks for understanding",
+    description: "Low-stakes quizzes will make progress visible and reveal concepts worth revisiting.",
+    accent: "Feedback first",
+    metric: "0%",
+    metricLabel: "penalty for retrying",
+    cards: [
+      { icon: "01", title: "Concept checks", description: "Short questions inside every lesson." },
+      { icon: "02", title: "Module quizzes", description: "A broader check at each milestone." },
+      { icon: "03", title: "Actionable feedback", description: "Explanations support every answer." },
+    ],
+  },
+  assignments: {
+    slug: "assignments",
+    eyebrow: "Assignments",
+    title: "Structured work that mirrors real faculty needs",
+    description: "Assignments will connect technical skills with teaching, research and agricultural analysis.",
+    accent: "Applied learning",
+    metric: "3",
+    metricLabel: "levels of support",
+    cards: [
+      { icon: "01", title: "Clear brief", description: "Purpose, inputs and outcomes are explicit." },
+      { icon: "02", title: "Evaluation guide", description: "Transparent criteria support self-review." },
+      { icon: "03", title: "Extension path", description: "Optional depth for confident learners." },
+    ],
+  },
+  "mini-projects": {
+    slug: "mini-projects",
+    eyebrow: "Mini projects",
+    title: "Small projects with meaningful agricultural outcomes",
+    description: "Capstone-style experiences will integrate coding, analysis and communication.",
+    accent: "Portfolio ready",
+    metric: "5",
+    metricLabel: "course milestones",
+    cards: [
+      { icon: "01", title: "Authentic datasets", description: "Work from credible agricultural scenarios." },
+      { icon: "02", title: "End-to-end thinking", description: "Move from question to evidence and insight." },
+      { icon: "03", title: "Shareable outcomes", description: "Create work that can support teaching and research." },
+    ],
+  },
+  resources: {
+    slug: "resources",
+    eyebrow: "Resource library",
+    title: "Helpful references, ready when learners need them",
+    description: "A curated support layer for terminology, setup, datasets and further exploration.",
+    accent: "Just-in-time support",
+    metric: "1",
+    metricLabel: "searchable library",
+    cards: [
+      { icon: "A", title: "Quick references", description: "Compact reminders for common patterns." },
+      { icon: "B", title: "Dataset catalogue", description: "Curated sources for agricultural analysis." },
+      { icon: "C", title: "Faculty toolkit", description: "Materials designed for teaching transfer." },
+    ],
+  },
+  about: {
+    slug: "about",
+    eyebrow: "About DI Notes",
+    title: "Technical learning designed for Agritech educators",
+    description: "DI Notes connects rigorous computing foundations with the realities of agricultural education.",
+    accent: "Purpose built",
+    metric: "1",
+    metricLabel: "clear learning mission",
+    cards: [
+      { icon: "01", title: "Accessible", description: "Designed for learners starting from zero." },
+      { icon: "02", title: "Relevant", description: "Agriculture is the context, not an afterthought." },
+      { icon: "03", title: "Transferable", description: "Skills connect to teaching, research and industry." },
+    ],
+  },
+};

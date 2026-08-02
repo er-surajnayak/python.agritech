@@ -1,0 +1,19 @@
+import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
+import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
+import { CommonMistakesCard } from "@/components/learning/FirstProgramLessonBlocks";
+import { LessonHero } from "@/components/learning/LessonHero";
+import { AssignmentCard, IndustryInsightCard, KeyTakeawaysCard, LearningObjectivesCard, PracticeCard, QuizCard, SummaryCard, WhatsNextCard } from "@/components/learning/LearningBlocks";
+import { ControlCompareChoose, ControlStatementComparator, LoopControlPlayground, LoopControlStoryCard, LoopControlVisualizer, SensorFaultSimulator, WhyLoopControlCard } from "@/components/learning/LoopControlLearningBlocks";
+import { DebugChallengeCollection } from "@/components/learning/ProblemSolvingLearningBlocks";
+import { MiniProjectCard } from "@/components/learning/UserInputLearningBlocks";
+import { EngineerScenario } from "@/components/learning/WhyPythonLessonBlocks";
+import type { CourseLesson, CourseModule } from "@/types/course";
+import type { LessonDocument } from "@/types/content";
+
+const outline = [["objectives", "Objectives"], ["loop-control-story", "Story continuation"], ["why-loop-control", "Why loop control?"], ["loop-control-visualizer", "Control statements"], ["control-comparator", "Comparison"], ["sensor-fault-simulator", "Fault simulator"], ["playground", "Execution lab"], ["common-mistakes", "Common mistakes"], ["debug-challenge", "Debug challenge"], ["engineer-scenario", "Engineer thinking"], ["practice", "Practice"], ["mini-project", "Mini project"], ["quiz", "Quiz"], ["assignment", "Assignment"], ["compare-choose", "Compare & choose"], ["summary", "Summary"], ["whats-next", "What's next"]] as const;
+
+export function LoopControlLessonRenderer({ lesson, courseLesson, module, previous, next }: { lesson: LessonDocument; courseLesson: CourseLesson; module: CourseModule; previous: CourseLesson | null; next: CourseLesson | null }) {
+  const pack = lesson.developmentPack;
+  if (!pack || pack.kind !== "loop-control") return null;
+  return <article className="published-lesson loop-control-development-pack"><CourseBreadcrumb module={module} lesson={courseLesson} /><LessonHero eyebrow={`Module ${module.index} · Lesson ${lesson.number}`} title={lesson.title} summary={lesson.summary} icon={module.icon} level={lesson.level} durationMinutes={lesson.durationMinutes} prerequisite={pack.prerequisite} /><div className="published-lesson-layout loop-control-lesson-layout"><div className="published-lesson-flow"><LearningObjectivesCard id="objectives" objectives={lesson.objectives} /><LoopControlStoryCard content={pack.story} /><WhyLoopControlCard content={pack.whyControl} /><LoopControlVisualizer controls={pack.controls} /><IndustryInsightCard id="industry-insight" section={lesson.industryMotivation} /><ControlStatementComparator content={pack.comparator} controls={pack.controls} /><SensorFaultSimulator content={pack.simulator} /><LoopControlPlayground content={lesson.playground} /><CommonMistakesCard title={pack.mistakesTitle} mistakes={pack.mistakes} /><DebugChallengeCollection challenges={pack.debugChallenges} /><EngineerScenario content={pack.engineerScenario} /><PracticeCard id="practice" tasks={lesson.practice} /><MiniProjectCard project={pack.miniProject} /><QuizCard id="quiz" quiz={lesson.quiz} /><AssignmentCard id="assignment" assignment={lesson.assignment} /><ControlCompareChoose content={pack.comparison} /><SummaryCard id="summary" section={lesson.summarySection} /><KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways} /><WhatsNextCard id="whats-next" section={lesson.whatsNext} /></div><aside className="lesson-outline published-lesson-outline" aria-label="On this page"><p>On this page</p>{outline.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}</aside></div><PreviousNextNavigation previous={previous} next={next} /></article>;
+}

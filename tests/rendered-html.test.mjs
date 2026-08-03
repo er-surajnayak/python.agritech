@@ -186,7 +186,7 @@ test("Lesson 3.2 Python trace records function frames and returns to the main pr
   assert.equal(result.trace.at(-1).frameName, "Main Program");
 });
 
-test("Lesson 3.3 publishes parameter mapping tools and the Function Evolution sequence", async () => {
+test("Lesson 3.3 begins at learning objectives and publishes parameter mapping tools", async () => {
   const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
     readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
     readFile(new URL("content/development-packs/lesson-3-3.ts", projectRoot), "utf8"),
@@ -200,7 +200,7 @@ test("Lesson 3.3 publishes parameter mapping tools and the Function Evolution se
   assert.match(packSource, /kind: "function-parameters"/);
   assert.match(packSource, /check_soil\(moisture\)/);
   assert.match(packSource, /Flexible Function Calls/);
-  assert.match(rendererSource, /<FunctionEvolutionPanel/);
+  assert.doesNotMatch(rendererSource, /<FunctionEvolutionPanel/);
   assert.match(rendererSource, /<ParameterFlowVisualizer/);
   assert.match(rendererSource, /<ArgumentParameterMapper/);
   assert.match(rendererSource, /<FunctionInputSimulator/);
@@ -259,7 +259,7 @@ test("Lesson 3.4 publishes return-flow tools and the persistent Function Lifecyc
   assert.match(packSource, /kind: "return-values"/);
   assert.match(packSource, /Print Screen/);
   assert.match(packSource, /Return Value/);
-  assert.match(rendererSource, /<FunctionLifecyclePanel/);
+  assert.doesNotMatch(rendererSource, /<FunctionLifecyclePanel/);
   assert.match(rendererSource, /<ReturnFlowVisualizer/);
   assert.match(rendererSource, /<PrintReturnComparator/);
   assert.match(rendererSource, /<ValuePropagationExplorer/);
@@ -612,6 +612,28 @@ test("Lesson 3.10 publishes the cumulative Smart Farm function capstone", async 
   assert.match(registrySource, /developmentPack\?\.kind === "function-capstone"/);
   assert.match(stylesSource, /Module 3 · Lesson 3\.10 development pack/);
   assert.match(stylesSource, /@media\(max-width:30rem\).*\.integration-dashboard/s);
+});
+
+test("Module 3 lessons start at learning objectives without evolution or mental-model panels", async () => {
+  const rendererFiles = [
+    "WhyFunctionsLessonRenderer.tsx",
+    "FunctionDefinitionLessonRenderer.tsx",
+    "FunctionParametersLessonRenderer.tsx",
+    "ReturnValuesLessonRenderer.tsx",
+    "FunctionArgumentsLessonRenderer.tsx",
+    "VariableScopeLessonRenderer.tsx",
+    "LambdaFunctionsLessonRenderer.tsx",
+    "RecursionLessonRenderer.tsx",
+    "FunctionDesignLessonRenderer.tsx",
+    "FunctionCapstoneLessonRenderer.tsx",
+  ];
+  const renderers = await Promise.all(rendererFiles.map((file) => readFile(new URL(`components/learning/${file}`, projectRoot), "utf8")));
+  for (const source of renderers) {
+    assert.doesNotMatch(source, /<FunctionEvolutionPanel/);
+    assert.doesNotMatch(source, /<FunctionLifecyclePanel/);
+    assert.doesNotMatch(source, /\["function-evolution"|\["function-lifecycle"/);
+    assert.match(source, /<LearningObjectivesCard[\s\S]*?id="objectives"/);
+  }
 });
 
 test("Lesson 3.10 integrated project returns results and completes recursive inspection", async () => {

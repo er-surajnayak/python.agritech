@@ -1,16 +1,172 @@
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
 import { CodePlayground } from "@/components/learning/CodePlayground";
-import { CodeExampleCard, CommonMistakesCard } from "@/components/learning/FirstProgramLessonBlocks";
+import {
+  CodeExampleCard,
+  CommonMistakesCard,
+} from "@/components/learning/FirstProgramLessonBlocks";
 import { LessonHero } from "@/components/learning/LessonHero";
-import { AssignmentCard, IndustryInsightCard, KeyTakeawaysCard, LearningObjectivesCard, PracticeCard, QuizCard, SummaryCard, WhatsNextCard } from "@/components/learning/LearningBlocks";
-import { ArgumentComparison, ArgumentMappingVisualizer, ArgumentMiniProject, ArgumentOrderComparator, ArgumentPlaygroundSupplement, ArgumentStory, CombinedArgumentsCard, DefaultValueSimulator, FunctionCallBuilder, FunctionDebugChallenges, FunctionEvolutionPanel, FunctionLifecyclePanel, KeywordArgumentExplorer, ParameterReview } from "@/components/learning/FunctionArgumentLearningBlocks";
+import {
+  AssignmentCard,
+  IndustryInsightCard,
+  KeyTakeawaysCard,
+  LearningObjectivesCard,
+  PracticeCard,
+  QuizCard,
+  SummaryCard,
+  WhatsNextCard,
+} from "@/components/learning/LearningBlocks";
+import {
+  ArgumentComparison,
+  ArgumentMappingVisualizer,
+  ArgumentMiniProject,
+  ArgumentOrderComparator,
+  ArgumentPlaygroundSupplement,
+  ArgumentStory,
+  CombinedArgumentsCard,
+  DefaultValueSimulator,
+  FunctionCallBuilder,
+  FunctionDebugChallenges,
+  KeywordArgumentExplorer,
+  ParameterReview,
+} from "@/components/learning/FunctionArgumentLearningBlocks";
 import { EngineerScenario } from "@/components/learning/WhyPythonLessonBlocks";
 import type { LessonDocument } from "@/types/content";
 import type { CourseLesson, CourseModule } from "@/types/course";
 
-const outline=[["function-evolution","Function evolution"],["function-lifecycle","Function lifecycle"],["objectives","Objectives"],["story","Story"],["parameter-review","Parameter review"],["positional","Positional arguments"],["keyword","Keyword arguments"],["defaults","Default arguments"],["combined","Combining styles"],["mapping-visualizer","Mapping visualizer"],["call-builder","Call builder"],["agritech-examples","Agritech examples"],["playground","Playground"],["common-mistakes","Common mistakes"],["debug-challenges","Debug challenges"],["engineer-scenario","Engineer thinking"],["practice","Practice"],["mini-project","Mini project"],["compare-choose","Compare & choose"],["quiz","Quiz"],["assignment","Assignment"],["summary","Summary"],["whats-next","What's next"]] as const;
+const outline = [
+  ["objectives", "Objectives"],
+  ["story", "Story"],
+  ["parameter-review", "Parameter review"],
+  ["positional", "Positional arguments"],
+  ["keyword", "Keyword arguments"],
+  ["defaults", "Default arguments"],
+  ["combined", "Combining styles"],
+  ["mapping-visualizer", "Mapping visualizer"],
+  ["call-builder", "Call builder"],
+  ["agritech-examples", "Agritech examples"],
+  ["playground", "Playground"],
+  ["common-mistakes", "Common mistakes"],
+  ["debug-challenges", "Debug challenges"],
+  ["engineer-scenario", "Engineer thinking"],
+  ["practice", "Practice"],
+  ["mini-project", "Mini project"],
+  ["compare-choose", "Compare & choose"],
+  ["quiz", "Quiz"],
+  ["assignment", "Assignment"],
+  ["summary", "Summary"],
+  ["whats-next", "What's next"],
+] as const;
 
-function validateArgumentScope(code:string){if(/\*\s*args|\*\*\s*kwargs/.test(code))return "*args and **kwargs are advanced features outside this lesson.";if(/\blambda\b/.test(code))return "Lambda functions begin later in Module 3.";if(/\bglobal\b|\bnonlocal\b/.test(code))return "Variable scope begins in Lesson 3.6.";if(/\b(?:yield|recursion)\b/.test(code))return "Generators and recursion are outside this lesson.";return null;}
+function validateArgumentScope(code: string) {
+  if (/\*\s*args|\*\*\s*kwargs/.test(code))
+    return "*args and **kwargs are advanced features outside this lesson.";
+  if (/\blambda\b/.test(code))
+    return "Lambda functions begin later in Module 3.";
+  if (/\bglobal\b|\bnonlocal\b/.test(code))
+    return "Variable scope begins in Lesson 3.6.";
+  if (/\b(?:yield|recursion)\b/.test(code))
+    return "Generators and recursion are outside this lesson.";
+  return null;
+}
 
-export function FunctionArgumentsLessonRenderer({lesson,courseLesson,module,previous,next}:{lesson:LessonDocument;courseLesson:CourseLesson;module:CourseModule;previous:CourseLesson|null;next:CourseLesson|null}){const pack=lesson.developmentPack;if(!pack||pack.kind!=="function-arguments")return null;return <article className="published-lesson function-arguments-development-pack"><CourseBreadcrumb module={module} lesson={courseLesson}/><LessonHero eyebrow={`Module ${module.index} · Lesson ${lesson.number}`} title={lesson.title} summary={lesson.summary} icon={module.icon} level={lesson.level} durationMinutes={lesson.durationMinutes} prerequisite={pack.prerequisite}/><div className="published-lesson-layout function-arguments-lesson-layout"><div className="published-lesson-flow"><FunctionEvolutionPanel content={pack.evolution}/><FunctionLifecyclePanel content={pack.lifecycle}/><LearningObjectivesCard id="objectives" objectives={lesson.objectives}/><ArgumentStory content={pack.story}/><ParameterReview content={pack.review}/><ArgumentOrderComparator content={pack.positional}/><KeywordArgumentExplorer content={pack.keyword}/><DefaultValueSimulator content={pack.defaults}/><CombinedArgumentsCard content={pack.combined}/><ArgumentMappingVisualizer content={pack.mapping}/><FunctionCallBuilder content={pack.builder}/><section id="agritech-examples" className="argument-agritech-examples" aria-label="Agritech argument examples">{pack.agritechExamples.map((example,index)=><CodeExampleCard key={example.title} id={`argument-agritech-${index+1}`} label="Agritech argument example" example={example}/>)}</section><IndustryInsightCard id="industry-insight" section={lesson.industryMotivation}/><CodePlayground id="playground" content={lesson.playground} className="function-arguments-playground" traceExecution validateCode={validateArgumentScope} renderSupplement={(_,execution)=><ArgumentPlaygroundSupplement execution={execution}/>}/><CommonMistakesCard title={pack.mistakesTitle} mistakes={pack.mistakes}/><FunctionDebugChallenges challenges={pack.debugChallenges}/><EngineerScenario content={pack.engineerScenario}/><PracticeCard id="practice" tasks={lesson.practice}/><ArgumentMiniProject content={pack.miniProject}/><ArgumentComparison content={pack.comparison}/><QuizCard id="quiz" quiz={lesson.quiz}/><AssignmentCard id="assignment" assignment={lesson.assignment}/><SummaryCard id="summary" section={lesson.summarySection}/><KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways}/><WhatsNextCard id="whats-next" section={lesson.whatsNext}/></div><aside className="lesson-outline published-lesson-outline" aria-label="On this page"><p>On this page</p>{outline.map(([id,label])=><a key={id} href={`#${id}`}>{label}</a>)}</aside></div><PreviousNextNavigation previous={previous} next={next}/></article>;}
+export function FunctionArgumentsLessonRenderer({
+  lesson,
+  courseLesson,
+  module,
+  previous,
+  next,
+}: {
+  lesson: LessonDocument;
+  courseLesson: CourseLesson;
+  module: CourseModule;
+  previous: CourseLesson | null;
+  next: CourseLesson | null;
+}) {
+  const pack = lesson.developmentPack;
+  if (!pack || pack.kind !== "function-arguments") return null;
+  return (
+    <article className="published-lesson function-arguments-development-pack">
+      <CourseBreadcrumb module={module} lesson={courseLesson} />
+      <LessonHero
+        eyebrow={`Module ${module.index} · Lesson ${lesson.number}`}
+        title={lesson.title}
+        summary={lesson.summary}
+        icon={module.icon}
+        level={lesson.level}
+        durationMinutes={lesson.durationMinutes}
+        prerequisite={pack.prerequisite}
+      />
+      <div className="published-lesson-layout function-arguments-lesson-layout">
+        <div className="published-lesson-flow">
+          <LearningObjectivesCard
+            id="objectives"
+            objectives={lesson.objectives}
+          />
+          <ArgumentStory content={pack.story} />
+          <ParameterReview content={pack.review} />
+          <ArgumentOrderComparator content={pack.positional} />
+          <KeywordArgumentExplorer content={pack.keyword} />
+          <DefaultValueSimulator content={pack.defaults} />
+          <CombinedArgumentsCard content={pack.combined} />
+          <ArgumentMappingVisualizer content={pack.mapping} />
+          <FunctionCallBuilder content={pack.builder} />
+          <section
+            id="agritech-examples"
+            className="argument-agritech-examples"
+            aria-label="Agritech argument examples"
+          >
+            {pack.agritechExamples.map((example, index) => (
+              <CodeExampleCard
+                key={example.title}
+                id={`argument-agritech-${index + 1}`}
+                label="Agritech argument example"
+                example={example}
+              />
+            ))}
+          </section>
+          <IndustryInsightCard
+            id="industry-insight"
+            section={lesson.industryMotivation}
+          />
+          <CodePlayground
+            id="playground"
+            content={lesson.playground}
+            className="function-arguments-playground"
+            traceExecution
+            validateCode={validateArgumentScope}
+            renderSupplement={(_, execution) => (
+              <ArgumentPlaygroundSupplement execution={execution} />
+            )}
+          />
+          <CommonMistakesCard
+            title={pack.mistakesTitle}
+            mistakes={pack.mistakes}
+          />
+          <FunctionDebugChallenges challenges={pack.debugChallenges} />
+          <EngineerScenario content={pack.engineerScenario} />
+          <PracticeCard id="practice" tasks={lesson.practice} />
+          <ArgumentMiniProject content={pack.miniProject} />
+          <ArgumentComparison content={pack.comparison} />
+          <QuizCard id="quiz" quiz={lesson.quiz} />
+          <AssignmentCard id="assignment" assignment={lesson.assignment} />
+          <SummaryCard id="summary" section={lesson.summarySection} />
+          <KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways} />
+          <WhatsNextCard id="whats-next" section={lesson.whatsNext} />
+        </div>
+        <aside
+          className="lesson-outline published-lesson-outline"
+          aria-label="On this page"
+        >
+          <p>On this page</p>
+          {outline.map(([id, label]) => (
+            <a key={id} href={`#${id}`}>
+              {label}
+            </a>
+          ))}
+        </aside>
+      </div>
+      <PreviousNextNavigation previous={previous} next={next} />
+    </article>
+  );
+}

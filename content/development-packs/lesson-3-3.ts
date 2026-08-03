@@ -6,13 +6,7 @@ export const functionParametersDevelopmentPack: FunctionParametersLessonDevelopm
   evolution: {
     title: "Function Evolution",
     body: "Follow the same soil-checking function as each lesson adds one capability. Lesson 3.3 makes the function flexible by accepting data.",
-    stages: [
-      { lesson: "3.2", code: "check_soil()", capability: "Reusable action" },
-      { lesson: "3.3", code: "check_soil(moisture)", capability: "Accept different inputs", active: true },
-      { lesson: "3.4", code: "status = check_soil(moisture)", capability: "Produce a result" },
-      { lesson: "3.5", code: "check_soil(moisture=25)", capability: "Name arguments at the call" },
-      { lesson: "3.6", code: "check_soil(moisture=25, unit=\"percent\")", capability: "Provide default values" },
-    ],
+    stages: [{lesson:"3.2",code:"Create Function",capability:"Define reusable work"},{lesson:"3.3",code:"Accept Inputs",capability:"Receive changing values",active:true},{lesson:"3.4",code:"Return Outputs",capability:"Produce reusable results"},{lesson:"3.5",code:"Flexible Function Calls",capability:"Choose how values bind"},{lesson:"3.6",code:"Variable Scope",capability:"Understand where names live"},{lesson:"3.7",code:"Anonymous Functions",capability:"Create compact functions"},{lesson:"3.8",code:"Recursion",capability:"Functions call themselves"},{lesson:"3.9",code:"Best Practices",capability:"Design maintainable functions"},{lesson:"3.10",code:"Capstone",capability:"Integrate the module"}],
   },
   story: {
     title: "One irrigation function must work for every farm",

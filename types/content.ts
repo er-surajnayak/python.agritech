@@ -1125,6 +1125,37 @@ export interface ReturnValuesLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; challenge: string };
 }
 
+export type ArgumentBindingSource = "positional" | "keyword" | "default";
+
+export interface ArgumentBindingExample {
+  label: string;
+  call: string;
+  bindings: Array<{ parameter: string; value: string; source: ArgumentBindingSource }>;
+  output: string;
+}
+
+export interface FunctionArgumentsLessonDevelopmentPack {
+  kind: "function-arguments";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  lifecycle: { title: string; body: string; activeStep: string; steps: WorkflowStep[] };
+  story: LessonTextSection & { code: string; needs: string[] };
+  review: LessonTextSection & { definition: string; call: string; parameters: string[]; arguments: string[] };
+  positional: CodeExampleContent & { correct: ArgumentBindingExample; wrong: ArgumentBindingExample };
+  keyword: CodeExampleContent & { examples: ArgumentBindingExample[] };
+  defaults: CodeExampleContent & { omitted: ArgumentBindingExample; overridden: ArgumentBindingExample; decisionSteps: WorkflowStep[] };
+  combined: CodeExampleContent & { binding: ArgumentBindingExample; rules: string[] };
+  mapping: { title: string; body: string; examples: ArgumentBindingExample[] };
+  builder: { title: string; body: string; functionName: string; parameters: Array<{ name: string; defaultValue?: string; initialValue: string; type: "text" | "number" }> };
+  comparison: { title: string; body: string; rows: Array<{ feature: string; positional: string; keyword: string; defaults: string }> };
+  agritechExamples: CodeExampleContent[];
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; calls: string[]; challenge: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1153,7 +1184,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

@@ -105,7 +105,7 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 14, "four published lessons plus ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 15, "five published lessons plus ten navigation summaries should exist");
   assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
@@ -199,7 +199,7 @@ test("Lesson 3.3 publishes parameter mapping tools and the Function Evolution se
   assert.match(moduleSource, /title: "Function Parameters"/);
   assert.match(packSource, /kind: "function-parameters"/);
   assert.match(packSource, /check_soil\(moisture\)/);
-  assert.match(packSource, /status = check_soil\(moisture\)/);
+  assert.match(packSource, /Flexible Function Calls/);
   assert.match(rendererSource, /<FunctionEvolutionPanel/);
   assert.match(rendererSource, /<ParameterFlowVisualizer/);
   assert.match(rendererSource, /<ArgumentParameterMapper/);
@@ -300,6 +300,69 @@ test("Lesson 3.4 Python trace exposes the returned value in the receiving main-p
   assert.ok(result.trace.some((step) => step.frameName === "calculate_water()"));
   assert.ok(receivingStep, "main frame should capture the returned value");
   assert.deepEqual(receivingStep.variables.find((variable) => variable.name === "water"), { name: "water", value: "100", type: "int" });
+});
+
+test("Lesson 3.5 combines positional, keyword, and default arguments in one data-driven lesson", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-5.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionArgumentsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionArgumentLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title:"Ways to Pass Arguments"/);
+  assert.match(moduleSource, /3\.6 Variable Scope \(Local vs Global\)/);
+  assert.match(moduleSource, /3\.9 Function Best Practices/);
+  assert.match(packSource, /kind: "function-arguments"/);
+  assert.match(packSource, /source:"positional"/);
+  assert.match(packSource, /source:"keyword"/);
+  assert.match(packSource, /source:"default"/);
+  assert.match(packSource, /Flexible Function Calls/);
+  assert.match(packSource, /Best Practices/);
+  assert.match(rendererSource, /<ArgumentMappingVisualizer/);
+  assert.match(rendererSource, /<FunctionCallBuilder/);
+  assert.match(rendererSource, /<DefaultValueSimulator/);
+  assert.match(rendererSource, /<ArgumentPlaygroundSupplement/);
+  assert.match(rendererSource, /\*args and \*\*kwargs/);
+  assert.match(blocksSource, /export function ParameterReview/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "function-arguments"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.5 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.argument-project-checklist/s);
+});
+
+test("Lesson 3.5 Python trace binds positional, keyword, and default values inside function frames", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = 'def farm_report(crop, moisture, unit="Percent"):\n    print(crop, moisture, unit)\n\nfarm_report("Rice", 25)\nfarm_report(moisture=18, crop="Cotton")\nfarm_report("Wheat", 30, "kPa")';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  const frames = result.trace.filter((step) => step.frameName === "farm_report()");
+  assert.equal(result.error, null);
+  assert.match(result.output, /Rice 25 Percent/);
+  assert.match(result.output, /Cotton 18 Percent/);
+  assert.match(result.output, /Wheat 30 kPa/);
+  const bindings = frames.map((step) => Object.fromEntries(step.variables.map((variable) => [variable.name, variable.value])));
+  assert.ok(bindings.some((item) => item.crop === "'Rice'" && item.unit === "'Percent'"));
+  assert.ok(bindings.some((item) => item.crop === "'Cotton'" && item.moisture === "18"));
+  assert.ok(bindings.some((item) => item.crop === "'Wheat'" && item.unit === "'kPa'"));
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

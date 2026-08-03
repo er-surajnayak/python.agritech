@@ -120,6 +120,66 @@
   }
 }
 
+/* Module 4 · Working with Lists */
+.working-with-lists-development-pack {
+  .advanced-list-visualizer { display: grid; gap: 1rem; margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); }
+  .advanced-list-name { display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; }
+  .advanced-list-row { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.25rem 0 0.75rem; }
+  .advanced-list-row > div { display: grid; flex: 0 0 7rem; gap: 0.35rem; padding: 0.5rem; border: 1px solid var(--cds-border-strong-01); background: var(--cds-layer-02); text-align: center; transition: border-color 160ms ease, background 160ms ease, transform 160ms ease; }
+  .advanced-list-row > div.is-highlighted { border: 2px solid var(--cds-link-primary); background: var(--cds-layer-selected-01); transform: translateY(-0.2rem); }
+  .advanced-list-row > div > button { min-height: 3rem; border: 0; background: transparent; color: var(--cds-text-primary); font-size: 1.25rem; font-weight: 600; cursor: pointer; }
+  .advanced-list-row small { color: var(--cds-text-secondary); }
+  .advanced-list-legend { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--cds-text-secondary); font-size: 0.8rem; }
+  .list-reorder-controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.25rem; }
+  .list-reorder-controls button { min-height: 2rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); color: var(--cds-text-primary); cursor: pointer; }
+  .working-list-events { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin: 1.25rem 0 2rem; }
+  .working-list-events article { display: grid; gap: 0.6rem; padding: 1rem; background: var(--cds-layer-02); }
+  .working-list-events span { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--cds-link-primary); color: var(--cds-text-on-color); }
+  .working-list-control-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+  .slice-syntax { display: inline-block; margin-top: 1rem; padding: 0.75rem; background: var(--cds-layer-02); }
+  .slice-control-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 1.25rem 0; }
+  .slice-control-grid label,
+  .method-playground-grid label { display: grid; gap: 0.4rem; color: var(--cds-text-secondary); font-size: 0.875rem; }
+  .slice-control-grid input,
+  .method-playground-grid select { min-height: 2.5rem; padding: 0 0.75rem; border: 0; border-bottom: 1px solid var(--cds-border-strong-01); background: var(--cds-field-01); color: var(--cds-text-primary); }
+  .slice-result { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; padding: 1rem; background: var(--cds-layer-02); }
+  .working-list-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .working-list-two-column .lesson-card { margin: 0; }
+  .method-playground-grid { display: grid; grid-template-columns: minmax(11rem, 1.3fr) repeat(2, minmax(9rem, 1fr)) auto auto; align-items: end; gap: 0.75rem; }
+  .method-explanation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 1rem; padding: 1rem; background: var(--cds-layer-02); }
+  .operation-timeline { display: grid; gap: 0.4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .operation-timeline li { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem; border-left: 2px solid var(--cds-link-primary); background: var(--cds-layer-01); }
+  .operation-timeline span { display: grid; place-items: center; min-width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--cds-layer-02); }
+  .built-in-dashboard { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+  .built-in-dashboard article { display: grid; gap: 0.6rem; min-width: 0; padding: 1rem; background: var(--cds-layer-02); }
+  .built-in-dashboard strong { font-size: 1.4rem; overflow-wrap: anywhere; }
+  .built-in-dashboard span { color: var(--cds-text-secondary); }
+  .built-method-table { display: grid; gap: 0.5rem; margin-top: 1.25rem; }
+  .built-method-table > div { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(0, 1.4fr); gap: 0.75rem; padding: 1rem; background: var(--cds-layer-02); }
+  .working-list-playground-preview { padding: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }
+}
+
+@media (max-width: 66rem) {
+  .working-with-lists-development-pack {
+    .working-list-events,
+    .built-in-dashboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .method-playground-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 42rem) {
+  .working-with-lists-development-pack {
+    .working-list-events,
+    .slice-control-grid,
+    .working-list-two-column,
+    .method-playground-grid,
+    .built-in-dashboard { grid-template-columns: 1fr; }
+    .method-playground-grid .cds--btn { width: 100%; max-width: none; }
+    .built-method-table > div { grid-template-columns: 1fr; }
+    .advanced-list-row > div { flex-basis: 6rem; }
+  }
+}
+
 /* Module 4 · Python Lists */
 .python-lists-development-pack {
   .list-story-grid {

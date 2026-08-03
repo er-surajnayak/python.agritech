@@ -46,6 +46,7 @@ import { FunctionDesignLessonRenderer } from "@/components/learning/FunctionDesi
 import { FunctionCapstoneLessonRenderer } from "@/components/learning/FunctionCapstoneLessonRenderer";
 import { WhyCollectionsLessonRenderer } from "@/components/learning/WhyCollectionsLessonRenderer";
 import { PythonListsLessonRenderer } from "@/components/learning/PythonListsLessonRenderer";
+import { WorkingWithListsLessonRenderer } from "@/components/learning/WorkingWithListsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -177,6 +178,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "python-lists") {
     return <PythonListsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "working-with-lists") {
+    return <WorkingWithListsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

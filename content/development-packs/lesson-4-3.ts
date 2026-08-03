@@ -1,0 +1,105 @@
+import type { WorkingWithListsDevelopmentPack } from "@/types/content";
+
+export const workingWithListsDevelopmentPack: WorkingWithListsDevelopmentPack = {
+  kind: "working-with-lists",
+  prerequisite: "Lesson 4.2 · Python Lists",
+  story: {
+    title: "Sensor data never stays still",
+    body: "The farm has installed new sensors, discovered failed readings, received corrections, and requested a report containing only part of the history. A useful List must support ongoing management.",
+    events: ["New sensor installed", "Reading corrected", "Fault removed", "Weekly slice requested"],
+    code: "moisture = [25, 30, 28, 29, 31]",
+  },
+  revision: {
+    title: "Quick revision: positions begin at zero",
+    body: "The List keeps five ordered elements. Positive indexes move from the beginning; this lesson adds indexes counted from the end.",
+    values: [25, 30, 28, 29, 31],
+  },
+  negativeIndexing: {
+    title: "Negative indexes count backward from the end",
+    body: "Index -1 selects the latest element, -2 selects the second-to-last, and -5 selects the first element in this five-value List.",
+    examples: [
+      { code: "moisture[-1]", index: -1, result: 31 },
+      { code: "moisture[-2]", index: -2, result: 29 },
+      { code: "moisture[-5]", index: -5, result: 25 },
+    ],
+  },
+  slicing: {
+    title: "Slicing extracts a new portion",
+    body: "The start is included, the stop is excluded, and the optional step controls movement. Leaving a boundary blank extends the slice to that end.",
+    syntax: "readings[start:stop:step]",
+    examples: [
+      { code: "moisture[1:4]", start: 1, stop: 4, step: null, result: [30, 28, 29] },
+      { code: "moisture[:3]", start: null, stop: 3, step: null, result: [25, 30, 28] },
+      { code: "moisture[2:]", start: 2, stop: null, step: null, result: [28, 29, 31] },
+      { code: "moisture[:]", start: null, stop: null, step: null, result: [25, 30, 28, 29, 31] },
+    ],
+  },
+  updating: {
+    title: "Correct a reading at its existing position",
+    body: "Assignment to an index replaces one value while preserving the remaining order.",
+    code: "moisture[2] = 35",
+    index: 2,
+    value: 35,
+  },
+  methods: [
+    { name: "append", category: "Add", purpose: "Add one element at the end", example: "moisture.append(40)" },
+    { name: "insert", category: "Add", purpose: "Add one element at a position", example: "moisture.insert(2, 27)" },
+    { name: "extend", category: "Add", purpose: "Add several elements", example: "moisture.extend([45, 46])" },
+    { name: "remove", category: "Remove", purpose: "Remove the first matching value", example: "moisture.remove(27)" },
+    { name: "pop", category: "Remove", purpose: "Remove and return an index or the final element", example: "moisture.pop(2)" },
+    { name: "clear", category: "Remove", purpose: "Remove every element", example: "moisture.clear()" },
+    { name: "index", category: "Query", purpose: "Find the first position of a value", example: "moisture.index(29)" },
+    { name: "count", category: "Query", purpose: "Count matching values", example: "moisture.count(25)" },
+    { name: "sort", category: "Reorder", purpose: "Sort this List in place", example: "moisture.sort()" },
+    { name: "reverse", category: "Reorder", purpose: "Reverse this List in place", example: "moisture.reverse()" },
+    { name: "copy", category: "Copy", purpose: "Create a shallow copy", example: "backup = moisture.copy()" },
+  ],
+  traversal: {
+    title: "Traverse every reading in order",
+    body: "A for loop visits one element at a time. Loop syntax is revision from Module 2; the new idea is processing a collection.",
+    code: "for reading in moisture:\n    print(reading)",
+    values: [25, 30, 28, 29],
+  },
+  builtIns: [
+    { name: "len", purpose: "Count elements", example: "len(readings)" },
+    { name: "max", purpose: "Find the largest value", example: "max(readings)" },
+    { name: "min", purpose: "Find the smallest value", example: "min(readings)" },
+    { name: "sum", purpose: "Add numeric values", example: "sum(readings)" },
+    { name: "sorted", purpose: "Return a sorted List", example: "sorted(readings)" },
+    { name: "reversed", purpose: "Return a reverse iterator", example: "list(reversed(readings))" },
+    { name: "any", purpose: "Check whether any element is truthy", example: "any(readings)" },
+    { name: "all", purpose: "Check whether every element is truthy", example: "all(readings)" },
+  ],
+  comparison: {
+    title: "Built-in functions and List methods are different tools",
+    body: "Built-ins accept an object and often work across collection types. Methods are requested from a particular List with dot syntax.",
+    rows: [
+      { builtIn: "len(readings)", method: "readings.append(28)", distinction: "Function receives a List; method belongs to the List." },
+      { builtIn: "sorted(readings)", method: "readings.sort()", distinction: "sorted() returns a new result; sort() changes the List." },
+      { builtIn: "max(readings)", method: "readings.remove(28)", distinction: "Built-in inspects; method modifies." },
+    ],
+  },
+  agritech: {
+    title: "Manage a live moisture snapshot",
+    body: "Add a new reading, then calculate the highest value, total, and count without losing the original sensor order.",
+    code: "moisture = [22, 25, 27, 24]\nmoisture.append(28)\nprint(max(moisture))\nprint(sum(moisture))\nprint(len(moisture))",
+    values: [22, 25, 27, 24],
+  },
+  debugChallenges: [
+    { title: "Remove a missing value", prompt: "Explain the ValueError and make removal safe for this known dataset.", code: "readings = [1, 2, 3]\nreadings.remove(10)", mistakesToFind: 1, solution: "readings = [1, 2, 3]\nreadings.remove(3)", hiddenGuidance: "remove() needs a value that exists." },
+    { title: "Inspect an empty List", prompt: "Explain why max() cannot produce a result.", code: "readings = []\nprint(max(readings))", mistakesToFind: 1, solution: "readings = [25]\nprint(max(readings))", hiddenGuidance: "There must be at least one comparable element." },
+    { title: "Capture a sorted copy", prompt: "Why is the original List unchanged?", code: "readings = [3, 2, 1]\nsorted(readings)\nprint(readings)", mistakesToFind: 1, solution: "readings = [3, 2, 1]\nsorted_readings = sorted(readings)\nprint(sorted_readings)", hiddenGuidance: "sorted() returns a new List; sort() modifies the existing one." },
+  ],
+  miniChallenge: {
+    title: "Clean and summarize a moisture batch",
+    brief: "Correct one value, append a new reading, remove a faulty value, and calculate the average using sum(readings) / len(readings).",
+    deliverables: ["Corrected element", "Appended reading", "Removed fault", "Traversed output", "Average moisture", "Explanation of each chosen operation"],
+    starterCode: "readings = [22, 25, -1, 24]\n# Manage and summarize this batch",
+  },
+  engineerScenario: {
+    title: "Operate on two thousand readings per minute",
+    body: "Data management begins by naming the operations the application performs most often and choosing behavior that preserves meaning.",
+    operations: ["Append new readings", "Remove faults", "Slice reporting windows", "Find extremes", "Sort a copy", "Search values"],
+    question: "Which operations should modify the live List, and which should return a separate result for reporting?",
+  },
+};

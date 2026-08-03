@@ -1320,6 +1320,24 @@ export interface PythonListsDevelopmentPack {
   engineerScenario: { title: string; body: string; question: string };
 }
 
+export interface WorkingWithListsDevelopmentPack {
+  kind: "working-with-lists";
+  prerequisite: string;
+  story: LessonTextSection & { events: string[]; code: string };
+  revision: LessonTextSection & { values: number[] };
+  negativeIndexing: LessonTextSection & { examples: Array<{ code: string; index: number; result: number }> };
+  slicing: LessonTextSection & { syntax: string; examples: Array<{ code: string; start: number | null; stop: number | null; step: number | null; result: number[] }> };
+  updating: LessonTextSection & { code: string; index: number; value: number };
+  methods: Array<{ name: "append" | "insert" | "extend" | "remove" | "pop" | "clear" | "sort" | "reverse" | "copy" | "count" | "index"; category: "Add" | "Remove" | "Query" | "Reorder" | "Copy"; purpose: string; example: string }>;
+  traversal: LessonTextSection & { code: string; values: number[] };
+  builtIns: Array<{ name: "len" | "max" | "min" | "sum" | "sorted" | "reversed" | "any" | "all"; purpose: string; example: string }>;
+  comparison: { title: string; body: string; rows: Array<{ builtIn: string; method: string; distinction: string }> };
+  agritech: LessonTextSection & { code: string; values: number[] };
+  debugChallenges: DebugChallengeContent[];
+  miniChallenge: AssignmentContent & { starterCode: string };
+  engineerScenario: { title: string; body: string; operations: string[]; question: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1348,7 +1366,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

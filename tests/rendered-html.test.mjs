@@ -1523,7 +1523,7 @@ test("Module 4 publishes Why Collections and exposes the complete collection roa
     readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
   ]);
   assert.match(moduleSource, /id: "module-4-lesson-1"[\s\S]*isPlaceholder: false/);
-  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 12);
+  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 13);
   assert.match(moduleSource, /4\.10 Smart Farm Data Management Capstone/);
   assert.match(courseSource, /title: "Python Collections"/);
   assert.match(courseSource, /moduleIndex === 4[\s\S]*moduleFourLessonSummaries/);
@@ -1583,6 +1583,47 @@ test("Lesson 4.2 default List program produces the expected fundamentals", async
   `;
   const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
   assert.equal(JSON.parse(stdout), "[25, 30, 28, 29, 31]\n25\n5\n31\n25\n");
+});
+
+test("Lesson 4.3 completes essential List operations and restructures the Module 4 roadmap", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-4.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-4-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WorkingWithListsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WorkingWithListsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-4-lesson-3"[\s\S]*developmentPack: workingWithListsDevelopmentPack/);
+  assert.match(moduleSource, /4\.4 Tuples/);
+  assert.match(moduleSource, /4\.5 Sets/);
+  assert.match(moduleSource, /4\.6 Dictionaries/);
+  assert.match(moduleSource, /4\.9 Collections in Real-World Applications/);
+  assert.match(packSource, /kind: "working-with-lists"/);
+  for (const method of ["append", "insert", "extend", "remove", "pop", "clear", "index", "count", "sort", "reverse", "copy"]) assert.match(packSource, new RegExp(`name: "${method}"`));
+  for (const builtIn of ["len", "max", "min", "sum", "sorted", "reversed", "any", "all"]) assert.match(packSource, new RegExp(`name: "${builtIn}"`));
+  assert.match(blocksSource, /function AdvancedListVisualizer/);
+  assert.match(blocksSource, /function SliceExplorer/);
+  assert.match(blocksSource, /function MethodPlayground/);
+  assert.match(blocksSource, /function BuiltInFunctionDashboard/);
+  assert.match(blocksSource, /draggable=\{Boolean\(onReorder\)\}/);
+  assert.match(blocksSource, /Operation Timeline/);
+  assert.match(rendererSource, /List comprehensions are outside Lesson 4\.3/);
+  assert.match(rendererSource, /Nested Lists and 2D matrices are outside Lesson 4\.3/);
+  assert.match(rendererSource, /Advanced sorting with key begins later/);
+  assert.match(stylesSource, /@media \(max-width: 42rem\)[\s\S]*working-with-lists-development-pack/);
+});
+
+test("Lesson 4.3 default program manages and summarizes the moisture List", async () => {
+  const program = 'moisture = [25, 30, 28, 29, 31]\nprint(moisture[-1])\nprint(moisture[1:4])\nmoisture.append(40)\nmoisture.remove(28)\nprint(sorted(moisture))\nprint(sum(moisture))';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    await runtime.runPythonAsync('import io, sys\\n__out = io.StringIO()\\nsys.stdout = __out');
+    await runtime.runPythonAsync(${JSON.stringify(program)});
+    console.log(JSON.stringify(String(runtime.runPython('__out.getvalue()'))));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  assert.equal(JSON.parse(stdout), "31\n[30, 28, 29]\n[25, 29, 30, 31, 40]\n155\n");
 });
 
 test("Vercel serves client routes through the Vite application shell", async () => {

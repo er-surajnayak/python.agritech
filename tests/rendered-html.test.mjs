@@ -1607,10 +1607,17 @@ test("Lesson 4.3 completes essential List operations and restructures the Module
   assert.match(blocksSource, /function BuiltInFunctionDashboard/);
   assert.match(blocksSource, /draggable=\{Boolean\(onReorder\)\}/);
   assert.match(blocksSource, /Operation Timeline/);
+  assert.match(blocksSource, /className="method-playground-actions"/);
   assert.match(rendererSource, /List comprehensions are outside Lesson 4\.3/);
   assert.match(rendererSource, /Nested Lists and 2D matrices are outside Lesson 4\.3/);
   assert.match(rendererSource, /Advanced sorting with key begins later/);
   assert.match(stylesSource, /@media \(max-width: 42rem\)[\s\S]*working-with-lists-development-pack/);
+  assert.match(stylesSource, /working-with-lists-development-pack \.built-in-dashboard \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(stylesSource, /working-with-lists-development-pack \.method-playground-actions \{ grid-column: 1 \/ -1/);
+  assert.match(stylesSource, /working-with-lists-development-pack #traversal \.index-mapping-result \{ display: grid; grid-template-columns: minmax\(0, 1fr\) auto auto/);
+  assert.match(stylesSource, /working-with-lists-development-pack \.problem-debug-challenges > div \{ display: grid; grid-template-columns: 1fr/);
+  assert.match(stylesSource, /@media \(max-width: 78rem\)[\s\S]*working-with-lists-development-pack \.published-lesson-outline \{ display: none/);
+  assert.match(stylesSource, /@media \(max-width: 48rem\)[\s\S]*working-with-lists-development-pack \.method-playground-grid/);
 });
 
 test("Lesson 4.3 default program manages and summarizes the moisture List", async () => {

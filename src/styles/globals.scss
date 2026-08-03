@@ -3016,6 +3016,52 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .conversion-story-problem, .conversion-function-tabs, .conversion-definition-card > ul, .conversion-result-card, .conversion-playground-activities ol, .code-trace-detail { grid-template-columns: 1fr; }.conversion-story-answer, .conversion-definition-card > ul li:last-child, .conversion-result-card > .cds--snippet, .conversion-result-card > p, .conversion-playground-activities li:last-child, .code-trace-variables { grid-column: auto; }.implicit-type-equation { grid-template-columns: 1fr; }.implicit-type-equation > svg { justify-self: center; transform: rotate(90deg); }.conversion-result-function { flex-direction: row; justify-content: center; }.conversion-result-function svg:last-child { transform: none; }.type-flow-diagram li > svg { display: none; }.conversion-learning-panels { padding: .5rem; }.code-trace-controls > span { width: 100%; margin: .5rem 0 0; }.conversion-example-tabs, .error-case-selector { flex-direction: column; }.conversion-example-tabs .cds--btn, .error-case-selector .cds--btn { width: 100%; }
 }
 
+/* Lesson 4.3 readability and overflow corrections */
+.working-with-lists-development-pack .published-lesson-layout { grid-template-columns: minmax(0, 58rem) 12rem; gap: clamp(2rem, 3vw, 3rem); }
+.working-with-lists-development-pack .lesson-card { overflow: hidden; }
+.working-with-lists-development-pack .lesson-card h2 { max-width: 48rem; font-size: clamp(1.45rem, 2vw, 1.9rem); line-height: 1.2; overflow-wrap: anywhere; }
+.working-with-lists-development-pack .method-playground-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 1rem; }
+.working-with-lists-development-pack .method-playground-grid > *,
+.working-with-lists-development-pack .method-playground-grid .cds--form-item,
+.working-with-lists-development-pack .method-playground-grid .cds--text-input-wrapper { min-width: 0; width: 100%; }
+.working-with-lists-development-pack .method-playground-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; padding-top: .25rem; }
+.working-with-lists-development-pack .method-playground-actions .cds--btn { flex: 0 1 14rem; width: auto; max-width: 100%; min-width: 0; }
+.working-with-lists-development-pack .method-explanation { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(7rem, auto); align-items: center; gap: 1rem; }
+.working-with-lists-development-pack .method-explanation > * { min-width: 0; overflow-wrap: anywhere; }
+.working-with-lists-development-pack .built-in-dashboard { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.working-with-lists-development-pack .built-in-dashboard article { min-height: 10rem; padding: 1.25rem; align-content: start; }
+.working-with-lists-development-pack .built-in-dashboard code,
+.working-with-lists-development-pack .built-in-dashboard strong,
+.working-with-lists-development-pack .built-in-dashboard span { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
+.working-with-lists-development-pack .built-in-dashboard code { font-size: clamp(.8rem, 1.4vw, 1rem); line-height: 1.4; }
+.working-with-lists-development-pack .built-in-dashboard strong { font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.25; }
+.working-with-lists-development-pack #traversal .index-mapping-result { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; justify-content: stretch; gap: 1rem; margin-top: 1rem; padding: 1rem; }
+.working-with-lists-development-pack #traversal .index-mapping-result strong { min-width: 3rem; padding-inline: .75rem; font-size: 1.25rem; text-align: center; }
+.working-with-lists-development-pack .problem-debug-challenges > div { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.25rem; }
+.working-with-lists-development-pack .problem-debug-challenges .cds--tile { min-width: 0; overflow: hidden; padding: clamp(1rem, 3vw, 1.5rem); }
+.working-with-lists-development-pack .problem-debug-challenges .cds--tile > div:first-child { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+.working-with-lists-development-pack .problem-debug-challenges h3 { min-width: 0; margin: 0; font-size: clamp(1.15rem, 3vw, 1.55rem); line-height: 1.25; overflow-wrap: anywhere; }
+.working-with-lists-development-pack .problem-debug-challenges p,
+.working-with-lists-development-pack .problem-debug-solution,
+.working-with-lists-development-pack .problem-debug-solution p { max-width: 100%; overflow-wrap: anywhere; line-height: 1.55; }
+.working-with-lists-development-pack .problem-debug-challenges pre { min-height: 0; max-width: 100%; padding: 1rem; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.working-with-lists-development-pack .problem-debug-challenges .cds--btn { width: auto; max-width: 100%; min-width: min(12rem, 100%); }
+@media (max-width: 78rem) {
+  .working-with-lists-development-pack .published-lesson-layout { grid-template-columns: minmax(0, 1fr); }
+  .working-with-lists-development-pack .published-lesson-outline { display: none; }
+}
+@media (max-width: 48rem) {
+  .working-with-lists-development-pack .method-playground-grid,
+  .working-with-lists-development-pack .method-explanation,
+  .working-with-lists-development-pack .built-in-dashboard,
+  .working-with-lists-development-pack #traversal .index-mapping-result { grid-template-columns: 1fr; }
+  .working-with-lists-development-pack .method-playground-actions { justify-content: stretch; }
+  .working-with-lists-development-pack .method-playground-actions .cds--btn,
+  .working-with-lists-development-pack #traversal .cds--btn,
+  .working-with-lists-development-pack .problem-debug-challenges .cds--btn { flex: 1 1 100%; width: 100%; max-width: none; }
+  .working-with-lists-development-pack #traversal .index-mapping-result strong { padding-inline: 0; text-align: left; }
+}
+
 /* Module 1 · Lesson 1.6 development pack */
 .operators-development-pack { --operator-accent: #0f62fe; }.operators-lesson-layout { margin-top: 1rem; }
 .operator-story-card { --lesson-accent: #198038; }.operator-story-readings, .operator-story-questions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 2rem; background: var(--cds-border-subtle-01); }.operator-story-readings .cds--tile { min-height: 8rem; display: flex; flex-direction: column; justify-content: space-between; }.operator-story-readings span { color: var(--cds-text-helper); font-size: .65rem; text-transform: uppercase; letter-spacing: .05em; }.operator-story-readings strong { color: var(--brand-green); font-size: 1.15rem; font-weight: 400; }.operator-story-questions { grid-template-columns: 1fr 1fr; margin-top: 1px; }.operator-story-questions .cds--tile { min-height: 5rem; display: flex; gap: .75rem; align-items: center; }.operator-story-questions svg { flex: 0 0 auto; color: var(--brand-green); }.operator-story-questions span { color: var(--cds-text-secondary); font-size: .75rem; line-height: 1.4; }

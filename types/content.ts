@@ -1186,6 +1186,34 @@ export interface VariableScopeLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; challenge: string };
 }
 
+export interface LambdaExampleContent extends CodeExampleContent {
+  parameters: string[];
+  expression: string;
+  arguments: string[];
+  result: string;
+}
+
+export interface LambdaFunctionsLessonDevelopmentPack {
+  kind: "lambda-functions";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  lifecycle: { title: string; body: string; activeStep: string; steps: WorkflowStep[] };
+  story: LessonTextSection & { namedFunctions: string[]; oneTimeTask: string; workflow: { title: string; description: string; steps: WorkflowStep[] } };
+  motivation: LessonTextSection & { regularCode: string; lambdaCode: string; traits: string[] };
+  syntax: { title: string; body: string; template: string; parts: Array<{ token: string; label: string; description: string }> };
+  comparisonExample: { title: string; body: string; regularCode: string; lambdaCode: string; call: string; result: string };
+  execution: { title: string; body: string; examples: LambdaExampleContent[]; steps: WorkflowStep[] };
+  agritechExamples: LambdaExampleContent[];
+  builder: { title: string; body: string; presets: Array<{ label: string; parameters: string[]; expression: string; arguments: string[] }> };
+  converter: { title: string; body: string; examples: Array<{ label: string; regularCode: string; lambdaCode: string; result: string }> };
+  comparison: { title: string; body: string; rows: Array<{ feature: string; regular: string; lambda: string }> };
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; challenge: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1214,7 +1242,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

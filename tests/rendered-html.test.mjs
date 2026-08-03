@@ -105,7 +105,7 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 16, "six published lessons plus ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 17, "seven published lessons plus ten navigation summaries should exist");
   assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
@@ -421,6 +421,60 @@ test("Lesson 3.6 Python trace keeps local water inside irrigation while global f
   assert.equal(functionStep.variables.find((variable) => variable.name === "water")?.value, "100");
   assert.equal(finalMain.variables.find((variable) => variable.name === "farm_name")?.value, "'Green Valley'");
   assert.equal(finalMain.variables.some((variable) => variable.name === "water"), false);
+});
+
+test("Lesson 3.7 publishes a focused, data-driven lambda learning lab", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-7.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LambdaFunctionsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LambdaFunctionLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id:"module-3-lesson-7"[\s\S]*title:"Lambda Functions"/);
+  assert.match(moduleSource, /module-3-lesson-7[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "lambda-functions"/);
+  assert.match(packSource, /lambda parameters: expression/);
+  assert.match(rendererSource, /<LambdaBuilder/);
+  assert.match(rendererSource, /<DefToLambdaConverter/);
+  assert.match(rendererSource, /<FunctionStyleComparator/);
+  assert.match(rendererSource, /map\(\), filter\(\), and reduce\(\) are intentionally deferred/);
+  assert.match(blocksSource, /export function LambdaExecutionVisualizer/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "lambda-functions"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.7 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.lambda-project-checklist/s);
+  assert.doesNotMatch(packSource, /\bmap\s*\(|\bfilter\s*\(|\breduce\s*\(|sorted\s*\([^)]*key\s*=/);
+});
+
+test("Lesson 3.7 Python trace executes one- and two-parameter lambdas with returned values", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = "square = lambda x: x * x\nprint(square(5))\nmultiply = lambda a, b: a * b\nprint(multiply(4, 5))";
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  const lambdaFrames = result.trace.filter((step) => step.frameName === "<lambda>()");
+  assert.equal(result.error, null);
+  assert.match(result.output, /25\n20/);
+  assert.ok(lambdaFrames.some((step) => step.variables.some((variable) => variable.name === "x" && variable.value === "5")));
+  assert.ok(lambdaFrames.some((step) => step.variables.some((variable) => variable.name === "a" && variable.value === "4")));
+  assert.ok(lambdaFrames.some((step) => step.variables.some((variable) => variable.name === "b" && variable.value === "5")));
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

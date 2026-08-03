@@ -105,8 +105,8 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 19, "nine published lessons plus ten navigation summaries should exist");
-  assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
+  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 20, "ten published lessons plus ten navigation summaries should exist");
+  assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation System/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
   assert.match(rendererSource, /<CodeDuplicationDetector/);
@@ -585,6 +585,60 @@ test("Lesson 3.9 refactored functions return reusable data through explicit para
   assert.match(result.output, /Moisture 20; Water 100/);
   assert.equal(finalMain.variables.find((variable) => variable.name === "water")?.value, "100");
   assert.equal(finalMain.variables.find((variable) => variable.name === "report")?.value, "'Moisture 20; Water 100'");
+});
+
+test("Lesson 3.10 publishes the cumulative Smart Farm function capstone", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-10.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionCapstoneLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionCapstoneLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id:"module-3-lesson-10"[\s\S]*title:"Capstone Project: Smart Farm Automation System"/);
+  assert.match(moduleSource, /module-3-lesson-10[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind:"function-capstone"/);
+  assert.match(packSource, /Smart Farm Automation Architecture/);
+  assert.match(packSource, /Function Dependency Graph/);
+  assert.match(rendererSource, /<ProjectArchitectureViewer/);
+  assert.match(rendererSource, /<FunctionDependencyGraph/);
+  assert.match(rendererSource, /<IntegrationConsole/);
+  assert.match(rendererSource, /<CapstoneProgressTracker/);
+  assert.match(rendererSource, /<EngineeringReflectionPanel/);
+  assert.match(rendererSource, /<RecursionTreeExplorer/);
+  assert.match(blocksSource, /localStorage\.setItem/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "function-capstone"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.10 development pack/);
+  assert.match(stylesSource, /@media\(max-width:30rem\).*\.integration-dashboard/s);
+});
+
+test("Lesson 3.10 integrated project returns results and completes recursive inspection", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = 'def calculate_water_requirement(moisture):\n    if moisture < 30:\n        return 100\n    return 40\n\ndef calculate_fertilizer(area, rate=2):\n    return area * rate\n\ndef inspect_zone(level):\n    if level == 0:\n        print("Inspection Complete")\n        return\n    print("Inspecting Level", level)\n    inspect_zone(level - 1)\n\nwater = calculate_water_requirement(25)\nfertilizer = calculate_fertilizer(area=40)\nprint("Water:", water, "Fertilizer:", fertilizer)\ninspect_zone(3)';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  assert.equal(result.error, null);
+  assert.match(result.output, /Water: 100 Fertilizer: 80/);
+  assert.match(result.output, /Inspecting Level 3[\s\S]*Inspection Complete/);
+  assert.ok(result.trace.some((step) => step.frameName === "inspect_zone()" && step.variables.some((variable) => variable.name === "level" && variable.value === "0")));
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

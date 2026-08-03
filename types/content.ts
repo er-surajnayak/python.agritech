@@ -1268,6 +1268,24 @@ export interface FunctionDesignLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; challenge: string };
 }
 
+export interface FunctionCapstoneDevelopmentPack {
+  kind: "function-capstone";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  story: LessonTextSection & { responsibilities: string[] };
+  architecture: { title: string; body: string; nodes: Array<{ id: string; label: string; purpose: string; phase: number }>; edges: Array<{ from: string; to: string }> };
+  planning: { title: string; body: string; functions: Array<{ name: string; responsibility: string; inputs: string; output: string }> };
+  phases: Array<{ id: string; title: string; concept: string; lesson: string; body: string; code: string; milestone: string }>;
+  dependencies: { title: string; body: string; root: string; functions: Array<{ name: string; role: string; calls: string[] }> };
+  projectFiles: Array<{ name: string; purpose: string; code: string }>;
+  refactoring: { title: string; body: string; beforeCode: string; afterCode: string; suggestions: string[] };
+  progress: { title: string; body: string; milestones: Array<{ id: string; label: string; requirement: string }> };
+  debugChallenges: DebugChallengeContent[];
+  reflection: { title: string; body: string; prompts: string[] };
+  rubric: { title: string; body: string; rows: Array<{ criterion: string; marks: number; evidence: string }> };
+  finalChallenge: AssignmentContent & { examples: string[]; constraint: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1296,7 +1314,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

@@ -9,6 +9,7 @@ import type {
 import { moduleZeroLessonSummaries } from "@/content/module-0";
 import { moduleOneLessonSummaries } from "@/content/module-1";
 import { moduleTwoLessonSummaries } from "@/content/module-2";
+import { moduleThreeLessonSummaries } from "@/content/module-3";
 
 interface ModuleSeed {
   title: string;
@@ -49,11 +50,11 @@ const moduleSeeds: ModuleSeed[] = [
     icon: "logic",
   },
   {
-    title: "Collections & Functions",
-    description: "Reusable ways to organise values and program behaviour.",
-    estimatedDuration: "6 hours",
+    title: "Functions",
+    description: "A problem-first journey from repeated code to reusable, testable and maintainable program behaviour.",
+    estimatedDuration: "18 hours",
     difficulty: "Intermediate",
-    learningObjectives: ["Organise related data using appropriate structures", "Recognise opportunities for reusable behaviour"],
+    learningObjectives: ["Recognise repeated responsibilities", "Create reusable functions", "Work with parameters, arguments and return values", "Understand scope, lambda functions and introductory recursion", "Refactor the Smart Farm Automation Console"],
     prerequisites: ["Module 2 · Decision Making & Control Flow"],
     icon: "collections",
   },
@@ -63,7 +64,7 @@ const moduleSeeds: ModuleSeed[] = [
     estimatedDuration: "5 hours",
     difficulty: "Intermediate",
     learningObjectives: ["Navigate a practical Python workflow", "Recognise the boundaries of a maintainable project"],
-    prerequisites: ["Module 3 · Collections & Functions"],
+    prerequisites: ["Module 3 · Functions"],
     icon: "terminal",
   },
   {
@@ -131,6 +132,8 @@ export const agritechCourse: CourseDefinition = {
           ? moduleOneLessonSummaries
           : moduleIndex === 2
             ? moduleTwoLessonSummaries
+            : moduleIndex === 3
+              ? moduleThreeLessonSummaries
           : Array.from({ length: 3 }, (_, lessonIndex) => ({
             id: `${moduleId}-lesson-${lessonIndex + 1}`,
             moduleId,

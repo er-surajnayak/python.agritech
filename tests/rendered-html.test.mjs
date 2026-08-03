@@ -70,7 +70,7 @@ test("course framework defines all modules and reusable progress rules", async (
     "Python, Agritech & The Data Science Journey",
     "Python Fundamentals",
     "Decision Making & Control Flow",
-    "Collections & Functions",
+    "Functions",
     "Working with Python",
     "Object-Oriented Programming",
     "Scientific Computing with NumPy",
@@ -88,6 +88,38 @@ test("course framework defines all modules and reusable progress rules", async (
   assert.match(shellSource, /app-content app-content--course/);
   assert.match(shellSource, /A product by/);
   assert.match(shellSource, /https:\/\/www\.nayaklabs\.xyz/);
+});
+
+test("Module 3 begins with a conceptual, data-driven functions lesson", async () => {
+  const [moduleSource, packSource, registrySource, rendererRegistrySource, rendererSource, blocksSource, frameworkSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-1.ts", projectRoot), "utf8"),
+    readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WhyFunctionsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WhyFunctionsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(packSource, /kind: "why-functions"/);
+  assert.match(packSource, /checkIrrigation\(\)/);
+  assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
+  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 11, "one published lesson plus ten navigation summaries should exist");
+  assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
+  assert.match(registrySource, /\.\.\.moduleThreeLessons/);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
+  assert.match(rendererSource, /<CodeDuplicationDetector/);
+  assert.match(rendererSource, /<FunctionFlowVisualizer/);
+  assert.match(rendererSource, /<ModularDesignExplorer/);
+  assert.match(rendererSource, /<ConceptualFunctionPlayground/);
+  assert.match(blocksSource, /export function FunctionCallAnimation/);
+  assert.match(blocksSource, /aria-current=\{index === activePhase \? "step"/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.doesNotMatch(rendererSource, /<CodePlayground/);
+  assert.match(frameworkSource, /moduleIndex === 3\s*\? moduleThreeLessonSummaries/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.1 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.function-story-locations/s);
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

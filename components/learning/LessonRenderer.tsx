@@ -34,6 +34,7 @@ import { ForLoopLessonRenderer } from "@/components/learning/ForLoopLessonRender
 import { WhileLoopLessonRenderer } from "@/components/learning/WhileLoopLessonRenderer";
 import { LoopControlLessonRenderer } from "@/components/learning/LoopControlLessonRenderer";
 import { ControlFlowCapstoneLessonRenderer } from "@/components/learning/ControlFlowCapstoneLessonRenderer";
+import { WhyFunctionsLessonRenderer } from "@/components/learning/WhyFunctionsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -129,6 +130,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "control-flow-capstone") {
     return <ControlFlowCapstoneLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "why-functions") {
+    return <WhyFunctionsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

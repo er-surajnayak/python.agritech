@@ -186,7 +186,7 @@ export const moduleZeroLessons: LessonDocument[] = [
           { index: 0, title: "Introduction", description: "Python, agritech, and the learning journey", locked: false },
           { index: 1, title: "Python Fundamentals", description: "The foundational language concepts", locked: true },
           { index: 2, title: "Decision Making & Control Flow", description: "Conditions, branches, and repetition", locked: true },
-          { index: 3, title: "Collections & Functions", description: "Organise information and reusable behaviour", locked: true },
+          { index: 3, title: "Functions", description: "Build reusable and maintainable program behaviour", locked: true },
           { index: 4, title: "Working with Python", description: "Files, packages, and practical workflows", locked: true },
           { index: 5, title: "Object-Oriented Programming", description: "Model related data and behaviour", locked: true },
           { index: 6, title: "NumPy", description: "Scientific and numerical computing", locked: true },

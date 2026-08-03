@@ -993,6 +993,51 @@ export interface ControlFlowCapstoneDevelopmentPack {
   checklist: { title: string; body: string; items: string[] };
 }
 
+export interface FunctionConceptModule {
+  id: string;
+  title: string;
+  conceptualCall: string;
+  description: string;
+  process: string[];
+  outcome: string;
+}
+
+export interface WhyFunctionsDevelopmentPack {
+  kind: "why-functions";
+  prerequisite: string;
+  story: LessonTextSection & {
+    locations: string[];
+    repeatedCode: string[];
+    quote: string;
+    workflow: { title: string; description: string; steps: WorkflowStep[] };
+  };
+  duplication: LessonTextSection & {
+    projectLines: number;
+    occurrences: number;
+    repeatedLocations: Array<{ title: string; lines: string[] }>;
+    conceptualReplacement: string;
+    risks: string[];
+  };
+  analogy: LessonTextSection & { trigger: string; hiddenWork: string[]; result: string };
+  definition: LessonTextSection & { flow: WorkflowStep[] };
+  benefits: Array<{ title: string; description: string }>;
+  comparison: {
+    title: string;
+    body: string;
+    without: string[];
+    with: string[];
+  };
+  agritechConcept: LessonTextSection & { repeatedTask: string[]; conceptualCall: string };
+  functionFlow: { title: string; body: string; steps: WorkflowStep[] };
+  modules: FunctionConceptModule[];
+  simulation: { title: string; body: string; modules: FunctionConceptModule[] };
+  challenge: {
+    title: string;
+    body: string;
+    tasks: Array<{ id: string; title: string; location: string; shouldBecomeFunction: boolean; explanation: string }>;
+  };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1006,7 +1051,7 @@ export interface LessonDocument {
   title: string;
   summary: string;
   durationMinutes: number;
-  level: "Beginner" | "Beginner to Intermediate" | "Orientation" | "Foundation" | "Intermediate" | "Applied";
+  level: "Beginner" | "Beginner+" | "Beginner to Intermediate" | "Orientation" | "Foundation" | "Intermediate" | "Applied";
   introduction: LessonTextSection;
   objectives: string[];
   whyThisMatters: LessonTextSection;
@@ -1021,7 +1066,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

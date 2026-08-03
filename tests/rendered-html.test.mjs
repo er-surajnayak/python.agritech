@@ -71,7 +71,7 @@ test("course framework defines all modules and reusable progress rules", async (
     "Python Fundamentals",
     "Decision Making & Control Flow",
     "Functions",
-    "Working with Python",
+    "Python Collections",
     "Object-Oriented Programming",
     "Scientific Computing with NumPy",
     "Data Analysis with Pandas",
@@ -1523,7 +1523,7 @@ test("Module 4 publishes Why Collections and exposes the complete collection roa
     readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
   ]);
   assert.match(moduleSource, /id: "module-4-lesson-1"[\s\S]*isPlaceholder: false/);
-  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 11);
+  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 12);
   assert.match(moduleSource, /4\.10 Smart Farm Data Management Capstone/);
   assert.match(courseSource, /title: "Python Collections"/);
   assert.match(courseSource, /moduleIndex === 4[\s\S]*moduleFourLessonSummaries/);
@@ -1547,6 +1547,42 @@ test("Lesson 4.1 remains concept-only while providing all required interactive t
   assert.match(rendererSource, /collection syntax and iteration begin in later lessons/);
   assert.doesNotMatch(moduleSource.match(/starterCode: "([\s\S]*?)",\n\s*expectedOutcome/)?.[1] ?? "", /\[|\]|\{|\}|for |while /);
   assert.match(stylesSource, /@media \(max-width: 42rem\)[\s\S]*why-collections-development-pack/);
+});
+
+test("Lesson 4.2 publishes focused List fundamentals and separates built-ins from methods", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-4.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-4-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PythonListsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PythonListsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-4-lesson-2"[\s\S]*developmentPack: pythonListsDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-4-lesson-2"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "python-lists"/);
+  assert.match(blocksSource, /function ListVisualizer/);
+  assert.match(blocksSource, /function ListAnatomyExplorer/);
+  assert.match(blocksSource, /function MutabilitySimulator/);
+  assert.match(blocksSource, /function BuiltInFunctionExplorer/);
+  assert.match(blocksSource, /Python built-in functions/);
+  assert.match(blocksSource, /List methods/);
+  assert.match(rendererSource, /Negative indexing begins in Lesson 4\.3/);
+  assert.match(rendererSource, /List methods are preview-only/);
+  assert.match(rendererSource, /This built-in is preview-only/);
+  assert.match(stylesSource, /@media \(max-width: 42rem\)[\s\S]*python-lists-development-pack/);
+});
+
+test("Lesson 4.2 default List program produces the expected fundamentals", async () => {
+  const program = 'moisture = [25, 30, 28, 29, 31]\nprint(moisture)\nprint(moisture[0])\nprint(len(moisture))\nprint(max(moisture))\nprint(min(moisture))';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    await runtime.runPythonAsync('import io, sys\\n__out = io.StringIO()\\nsys.stdout = __out');
+    await runtime.runPythonAsync(${JSON.stringify(program)});
+    console.log(JSON.stringify(String(runtime.runPython('__out.getvalue()'))));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  assert.equal(JSON.parse(stdout), "[25, 30, 28, 29, 31]\n25\n5\n31\n25\n");
 });
 
 test("Vercel serves client routes through the Vite application shell", async () => {

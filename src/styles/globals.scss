@@ -120,6 +120,124 @@
   }
 }
 
+/* Module 4 · Python Lists */
+.python-lists-development-pack {
+  .list-story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .list-story-grid article,
+  .list-example-grid article,
+  .list-character-grid article {
+    min-width: 0;
+    padding: 1rem;
+    background: var(--cds-layer-02);
+  }
+
+  .list-story-grid pre,
+  .list-example-grid pre {
+    overflow: auto;
+    margin-top: 0.75rem;
+  }
+
+  .list-transform-arrow { font-size: 2rem; color: var(--cds-support-success); }
+  .list-character-grid,
+  .list-example-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .list-example-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .list-visualizer {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-01);
+  }
+  .list-name-chip { display: flex; align-items: center; gap: 0.75rem; }
+  .list-name-chip span { color: var(--cds-text-secondary); }
+  .list-name-chip strong { padding: 0.4rem 0.65rem; background: var(--cds-layer-02); font-family: var(--cds-code-01-font-family); }
+  .list-element-row { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.25rem 0 0.75rem; }
+  .list-element-row button {
+    display: grid;
+    flex: 0 0 min(8rem, 28vw);
+    gap: 0.45rem;
+    min-height: 7rem;
+    padding: 0.75rem;
+    border: 1px solid var(--cds-border-strong-01);
+    background: var(--cds-layer-02);
+    color: var(--cds-text-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .list-element-row button:hover,
+  .list-element-row button:focus-visible { border-color: var(--cds-focus); }
+  .list-element-row button.is-selected { border: 2px solid var(--cds-link-primary); background: var(--cds-layer-selected-01); }
+  .list-element-row button strong { font-size: 1.2rem; overflow-wrap: anywhere; }
+  .list-element-row button small,
+  .list-element-row button span { color: var(--cds-text-secondary); }
+  .list-empty-state { padding: 1rem; border: 1px dashed var(--cds-border-strong-01); }
+  .index-mapping-result { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; padding: 1rem; background: var(--cds-layer-02); }
+  .index-mapping-result code,
+  .index-mapping-result strong { font-size: 1.15rem; }
+  .list-index-examples { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+  .list-mutation-controls { display: grid; grid-template-columns: minmax(8rem, 0.75fr) minmax(10rem, 1fr) auto auto; align-items: end; gap: 0.75rem; }
+  .list-change-flash .list-element-row button.is-selected { animation: list-value-change 650ms ease; }
+  @keyframes list-value-change { 0% { transform: scale(0.92); background: var(--cds-support-success); } 100% { transform: scale(1); } }
+
+  .built-in-explorer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(11rem, 0.5fr);
+    gap: 1rem;
+  }
+  .built-in-controls { display: grid; gap: 0.5rem; }
+  .built-in-controls button { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-02); color: var(--cds-text-primary); text-align: left; cursor: pointer; }
+  .built-in-controls button.is-selected { border-left: 4px solid var(--cds-link-primary); background: var(--cds-layer-selected-01); }
+  .built-in-result { display: grid; place-items: center; align-content: center; gap: 0.5rem; min-height: 10rem; padding: 1rem; background: var(--cds-layer-02); }
+  .built-in-result strong { font-size: clamp(2.5rem, 8vw, 5rem); }
+  .operation-preview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .operation-preview-grid article { padding: 1rem; border: 1px solid var(--cds-border-subtle-01); }
+  .operation-preview-grid article > div { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .operation-preview-grid code { padding: 0.35rem 0.5rem; background: var(--cds-layer-02); }
+  .preview-only-note { margin-top: 1rem; padding: 0.75rem 1rem; border-left: 3px solid var(--cds-support-info); background: var(--cds-notification-info-background-color); }
+  .collection-comparison-table { display: grid; margin-top: 1.25rem; border-top: 1px solid var(--cds-border-subtle-01); }
+  .collection-comparison-table > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .collection-comparison-table span,
+  .collection-comparison-table strong { padding: 0.9rem; border-bottom: 1px solid var(--cds-border-subtle-01); }
+  .comparison-heading { background: var(--cds-layer-02); }
+  .list-playground-supplement { padding: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }
+  .list-playground-empty { display: grid; gap: 0.35rem; padding: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }
+}
+
+@media (max-width: 66rem) {
+  .python-lists-development-pack {
+    .list-example-grid { grid-template-columns: 1fr; }
+    .list-mutation-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 42rem) {
+  .python-lists-development-pack {
+    .list-story-grid,
+    .list-character-grid,
+    .built-in-explorer-grid,
+    .operation-preview-grid { grid-template-columns: 1fr; }
+    .list-transform-arrow { transform: rotate(90deg); justify-self: center; }
+    .list-mutation-controls { grid-template-columns: 1fr; }
+    .list-mutation-controls .cds--btn { width: 100%; max-width: none; }
+    .collection-comparison-table span,
+    .collection-comparison-table strong { overflow-wrap: anywhere; }
+  }
+}
+
 /* Module 3 · Lesson 3.1 development pack */
 .why-functions-development-pack { --functions-accent: #8a3ffc; }
 .why-functions-lesson-layout { margin-top: 1rem; }

@@ -1304,6 +1304,22 @@ export interface WhyCollectionsDevelopmentPack {
   engineerScenario: { title: string; body: string; examples: string[]; question: string };
 }
 
+export interface PythonListsDevelopmentPack {
+  kind: "python-lists";
+  prerequisite: string;
+  story: LessonTextSection & { before: string; after: string };
+  definition: LessonTextSection & { characteristics: Array<{ label: string; explanation: string }> };
+  creation: LessonTextSection & { examples: Array<{ label: string; code: string; note: string }> };
+  anatomy: LessonTextSection & { listName: string; values: Array<string | number | boolean> };
+  indexing: LessonTextSection & { examples: Array<{ code: string; result: string; index: number }> };
+  mutability: LessonTextSection & { before: number[]; index: number; replacement: number };
+  comparison: { title: string; body: string; rows: Array<{ variables: string; list: string }> };
+  builtIns: LessonTextSection & { functions: Array<{ name: "len" | "max" | "min"; purpose: string }>; previewBuiltIns: string[]; previewMethods: string[] };
+  agritech: LessonTextSection & { variableName: string; values: number[] };
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; body: string; question: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1332,7 +1348,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

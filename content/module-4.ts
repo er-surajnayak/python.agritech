@@ -1,4 +1,5 @@
 import { whyCollectionsDevelopmentPack } from "@/content/development-packs/lesson-4-1";
+import { pythonListsDevelopmentPack } from "@/content/development-packs/lesson-4-2";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -52,11 +53,64 @@ export const moduleFourLessons: LessonDocument[] = [
     whatsNext: { title: "Lesson 4.2 · Python Lists", body: "Now that the scaling problem is clear, learn how Python Lists create and organize the first practical group of related Smart Farm readings." },
     developmentPack: whyCollectionsDevelopmentPack,
   },
+  {
+    id: "module-4-lesson-2",
+    moduleId: "module-4",
+    number: "4.2",
+    title: "Python Lists: Storing Related Data Together",
+    summary: "Create ordered, mutable Lists, access elements with positive indexes, replace values, and inspect sensor data with len(), max(), and min().",
+    durationMinutes: 150,
+    level: "Beginner",
+    introduction: { title: "Store related readings together", body: "Lesson 4.1 exposed the cost of separately named variables. This lesson introduces Python Lists as the first practical structure for one ordered body of related Smart Farm data." },
+    objectives: [
+      "Understand what a List is",
+      "Create Lists",
+      "Store multiple values in a single variable",
+      "Access List elements using positive indexing",
+      "Explain why Lists are ordered and mutable",
+      "Use len(), max(), and min() with Lists",
+      "Recognize when a List is the appropriate collection",
+    ],
+    whyThisMatters: { title: "Lists turn repeated values into manageable data", body: "One collection name makes related readings easier to access, update, summarize, and pass between the focused functions learners built in Module 3." },
+    industryMotivation: { title: "Ordered datasets power monitoring dashboards", body: "A farm dashboard needs a predictable series of readings that can change as sensors report new values. Lists provide that beginner-friendly model.", signal: "This lesson teaches creation, positive indexing, element replacement, len(), max(), and min(). Negative indexing, slicing, list methods, sorting, and loops are intentionally deferred." },
+    concept: { title: "A List is ordered, mutable, and permits duplicates", body: "Square brackets hold multiple elements under one variable name. Each element has a zero-based position, and an existing position can receive a new value.", items: ["Single variable", "Multiple elements", "Order", "Positive index", "Mutability", "Duplicates"] },
+    workflow: { title: "Create, inspect, access, and replace", description: "Use the smallest complete workflow for learning List fundamentals.", steps: [
+      { title: "Create", description: "Place related elements inside square brackets." },
+      { title: "Visualize", description: "Map every element to a zero-based position." },
+      { title: "Access", description: "Select one existing positive index." },
+      { title: "Replace", description: "Assign a new value to an existing position." },
+      { title: "Inspect", description: "Use len(), max(), and min()." },
+    ] },
+    agritechExample: { title: "One temperature List supports three immediate insights", body: "A dashboard can count four readings, identify 31 as the maximum, and identify 28 as the minimum while retaining the original sensor order." },
+    playground: {
+      title: "Explore a real moisture List",
+      description: "Edit the List, access a positive index, replace an element, and run len(), max(), or min(). The synchronized panels visualize the current elements and selected index.",
+      starterCode: "moisture = [25, 30, 28, 29, 31]\n\nprint(moisture)\nprint(moisture[0])\nprint(len(moisture))\nprint(max(moisture))\nprint(min(moisture))",
+      expectedOutcome: "Python prints the complete List, its first element, the count 5, the maximum 31, and the minimum 25.",
+    },
+    practice: [
+      { level: "Easy", title: "Create a crop List", prompt: "Create a List containing five crop names and print the complete List.", guidance: "Use one descriptive variable name and five quoted elements." },
+      { level: "Medium", title: "Inspect temperature readings", prompt: "Create a temperature List and display its first element, last element using its positive index, and number of readings.", guidance: "Count the positions from zero; negative indexing begins in Lesson 4.3." },
+      { level: "Challenge", title: "Summarize rainfall", prompt: "Create a List of rainfall values and display the highest and lowest readings.", guidance: "Use only max() and min(); sorting begins later." },
+    ],
+    quiz: [
+      { title: "Question 1", question: "What does a Python List store?", options: ["Multiple values under one variable name", "Only one character", "Only functions", "No data"], correctOptionIndex: 0, note: "Lists group related elements.", explanation: "One List variable can refer to many ordered values." },
+      { title: "Question 2", question: "What is the index of the first List element?", options: ["0", "1", "-1 only", "10"], correctOptionIndex: 0, note: "Python uses zero-based indexing.", explanation: "The first position is index 0." },
+      { title: "Question 3", question: "What does mutable mean?", options: ["Elements can be replaced after creation", "The List has no order", "Duplicates are forbidden", "The List cannot change"], correctOptionIndex: 0, note: "Mutability permits in-place change.", explanation: "Assigning to an existing index replaces that element." },
+      { title: "Question 4", question: "Which function counts List elements?", options: ["len()", "max()", "min()", "print()"], correctOptionIndex: 0, note: "len() reports collection size.", explanation: "It returns the number of elements." },
+      { title: "Question 5", question: "Can a List contain duplicate values?", options: ["Yes", "No", "Only empty Lists", "Only strings"], correctOptionIndex: 0, note: "Duplicates preserve real repeated readings.", explanation: "Lists do not require unique elements." },
+    ],
+    assignment: { title: "Build a Farm Reading Snapshot", brief: "Create separate Lists for crops, temperatures, and rainfall, then demonstrate creation, positive indexing, mutability, and the three essential built-ins.", deliverables: ["A five-crop List", "A temperature List", "A rainfall List", "First and final elements using positive indexes", "One element replacement", "len() result", "max() result", "min() result", "A short explanation of order and mutability", "No negative indexing or slicing", "No list methods or loops"] },
+    summarySection: { title: "You can now store and inspect related data with Lists", body: "You created Lists, mapped values to zero-based positions, accessed positive indexes, replaced elements, and used three essential Python built-ins without moving into later List techniques.", items: ["List creation", "Elements", "Order", "Positive indexing", "Mutability", "Duplicates", "len()", "max()", "min()"] },
+    keyTakeaways: ["A List stores multiple related values in one variable", "Lists preserve element order", "Positive indexing begins at zero", "Lists are mutable and allow duplicates", "len(), max(), and min() inspect List contents", "Built-in functions and List methods are different categories"],
+    whatsNext: { title: "Lesson 4.3 · Indexing & Slicing Lists", body: "Next, extend element access with positive and negative indexes, slice ranges, create sublists, and diagnose common boundary mistakes." },
+    developmentPack: pythonListsDevelopmentPack,
+  },
 ];
 
 export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-1", moduleId: "module-4", order: 1, title: "4.1 Why Collections?", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-2", moduleId: "module-4", order: 2, title: "4.2 Python Lists", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-2", moduleId: "module-4", order: 2, title: "4.2 Python Lists", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-3", moduleId: "module-4", order: 3, title: "4.3 Indexing & Accessing List Elements", estimatedMinutes: 100, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-4", moduleId: "module-4", order: 4, title: "4.4 Updating, Adding & Removing Elements", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 List Operations, Built-ins & Methods", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },

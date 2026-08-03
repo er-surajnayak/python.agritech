@@ -1214,6 +1214,36 @@ export interface LambdaFunctionsLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; challenge: string };
 }
 
+export interface RecursiveExampleContent extends CodeExampleContent {
+  functionName: string;
+  initialValue: number;
+  baseValue: number;
+  direction: "decrease" | "increase";
+}
+
+export interface RecursionLessonDevelopmentPack {
+  kind: "recursion";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  lifecycle: { title: string; body: string; activeStep: string; steps: WorkflowStep[] };
+  story: LessonTextSection & { hierarchy: Array<{ id: string; label: string; parentId?: string }>; insight: string };
+  definition: LessonTextSection & { analogy: string[]; rule: string };
+  decomposition: { title: string; body: string; problem: string; levels: Array<{ call: string; remaining: string }> };
+  baseCase: { title: string; body: string; safeCode: string; unsafeCode: string; warning: string };
+  recursiveCase: { title: string; body: string; currentProblem: string; smallerProblem: string; movementRule: string };
+  countdown: RecursiveExampleContent;
+  stack: { title: string; body: string; functionName: string; initialValue: number; baseValue: number };
+  agritechExamples: RecursiveExampleContent[];
+  factorial: CodeExampleContent & { input: number; expansion: string[]; result: number };
+  comparison: { title: string; body: string; rows: Array<{ feature: string; loop: string; recursion: string }> };
+  detector: { title: string; body: string; examples: Array<{ label: string; code: string; hasBaseCase: boolean; movesTowardBase: boolean; explanation: string }> };
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; challenge: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1242,7 +1272,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

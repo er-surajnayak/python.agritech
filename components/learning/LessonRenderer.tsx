@@ -41,6 +41,7 @@ import { ReturnValuesLessonRenderer } from "@/components/learning/ReturnValuesLe
 import { FunctionArgumentsLessonRenderer } from "@/components/learning/FunctionArgumentsLessonRenderer";
 import { VariableScopeLessonRenderer } from "@/components/learning/VariableScopeLessonRenderer";
 import { LambdaFunctionsLessonRenderer } from "@/components/learning/LambdaFunctionsLessonRenderer";
+import { RecursionLessonRenderer } from "@/components/learning/RecursionLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -157,6 +158,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "lambda-functions") {
     return <LambdaFunctionsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "recursion") {
+    return <RecursionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

@@ -10,6 +10,7 @@ import { moduleZeroLessonSummaries } from "@/content/module-0";
 import { moduleOneLessonSummaries } from "@/content/module-1";
 import { moduleTwoLessonSummaries } from "@/content/module-2";
 import { moduleThreeLessonSummaries } from "@/content/module-3";
+import { moduleFourLessonSummaries } from "@/content/module-4";
 
 interface ModuleSeed {
   title: string;
@@ -59,13 +60,13 @@ const moduleSeeds: ModuleSeed[] = [
     icon: "collections",
   },
   {
-    title: "Working with Python",
-    description: "Practical workflows for files, packages and maintainable Python projects.",
-    estimatedDuration: "5 hours",
-    difficulty: "Intermediate",
-    learningObjectives: ["Navigate a practical Python workflow", "Recognise the boundaries of a maintainable project"],
+    title: "Python Collections",
+    description: "A Smart Farm Data Management journey from repeated variables to organized, scalable groups of related information.",
+    estimatedDuration: "20 hours",
+    difficulty: "Beginner",
+    learningObjectives: ["Explain why collections exist", "Store and manage related values efficiently", "Choose the right collection type", "Build a Smart Farm data management system"],
     prerequisites: ["Module 3 · Functions"],
-    icon: "terminal",
+    icon: "collections",
   },
   {
     title: "Object-Oriented Programming",
@@ -73,7 +74,7 @@ const moduleSeeds: ModuleSeed[] = [
     estimatedDuration: "6 hours",
     difficulty: "Intermediate",
     learningObjectives: ["Recognise object-oriented design vocabulary", "Model a small domain with related responsibilities"],
-    prerequisites: ["Module 4 · Working with Python"],
+    prerequisites: ["Module 4 · Python Collections"],
     icon: "objects",
   },
   {
@@ -134,6 +135,8 @@ export const agritechCourse: CourseDefinition = {
             ? moduleTwoLessonSummaries
             : moduleIndex === 3
               ? moduleThreeLessonSummaries
+              : moduleIndex === 4
+                ? moduleFourLessonSummaries
           : Array.from({ length: 3 }, (_, lessonIndex) => ({
             id: `${moduleId}-lesson-${lessonIndex + 1}`,
             moduleId,

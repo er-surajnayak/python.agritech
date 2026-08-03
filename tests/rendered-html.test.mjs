@@ -1516,6 +1516,39 @@ test("production build includes the self-hosted Python runtime", async () => {
   }
 });
 
+test("Module 4 publishes Why Collections and exposes the complete collection roadmap", async () => {
+  const [moduleSource, courseSource, lessonsSource] = await Promise.all([
+    readFile(new URL("content/module-4.ts", projectRoot), "utf8"),
+    readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),
+    readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-4-lesson-1"[\s\S]*isPlaceholder: false/);
+  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 11);
+  assert.match(moduleSource, /4\.10 Smart Farm Data Management Capstone/);
+  assert.match(courseSource, /title: "Python Collections"/);
+  assert.match(courseSource, /moduleIndex === 4[\s\S]*moduleFourLessonSummaries/);
+  assert.match(lessonsSource, /\.\.\.moduleFourLessons/);
+});
+
+test("Lesson 4.1 remains concept-only while providing all required interactive tools", async () => {
+  const [packSource, moduleSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/development-packs/lesson-4-1.ts", projectRoot), "utf8"),
+    readFile(new URL("content/module-4.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WhyCollectionsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/WhyCollectionsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(packSource, /kind: "why-collections"/);
+  assert.match(blocksSource, /VariableExplosionSimulator/);
+  assert.match(blocksSource, /DataOrganizationComparator/);
+  assert.match(blocksSource, /ScaleSimulator/);
+  assert.match(blocksSource, /CollectionPreviewTimeline/);
+  assert.match(rendererSource, /validateConceptOnlyCode/);
+  assert.match(rendererSource, /collection syntax and iteration begin in later lessons/);
+  assert.doesNotMatch(moduleSource.match(/starterCode: "([\s\S]*?)",\n\s*expectedOutcome/)?.[1] ?? "", /\[|\]|\{|\}|for |while /);
+  assert.match(stylesSource, /@media \(max-width: 42rem\)[\s\S]*why-collections-development-pack/);
+});
+
 test("Vercel serves client routes through the Vite application shell", async () => {
   const config = JSON.parse(await readFile(new URL("vercel.json", projectRoot), "utf8"));
   assert.equal(config.framework, "vite");

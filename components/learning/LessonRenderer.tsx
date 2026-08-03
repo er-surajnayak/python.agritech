@@ -44,6 +44,7 @@ import { LambdaFunctionsLessonRenderer } from "@/components/learning/LambdaFunct
 import { RecursionLessonRenderer } from "@/components/learning/RecursionLessonRenderer";
 import { FunctionDesignLessonRenderer } from "@/components/learning/FunctionDesignLessonRenderer";
 import { FunctionCapstoneLessonRenderer } from "@/components/learning/FunctionCapstoneLessonRenderer";
+import { WhyCollectionsLessonRenderer } from "@/components/learning/WhyCollectionsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -169,6 +170,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "function-capstone") {
     return <FunctionCapstoneLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "why-collections") {
+    return <WhyCollectionsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

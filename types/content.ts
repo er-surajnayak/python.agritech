@@ -1286,6 +1286,24 @@ export interface FunctionCapstoneDevelopmentPack {
   finalChallenge: AssignmentContent & { examples: string[]; constraint: string };
 }
 
+export interface WhyCollectionsDevelopmentPack {
+  kind: "why-collections";
+  prerequisite: string;
+  story: LessonTextSection & { scales: string[]; sensorTypes: string[] };
+  individualVariables: LessonTextSection & { code: string; question: string };
+  updateProblem: LessonTextSection & { code: string; impact: string[] };
+  maximumProblem: LessonTextSection & { code: string; question: string };
+  repeatedPatterns: LessonTextSection & { variables: string[]; insight: string };
+  analogy: LessonTextSection & { before: string[]; after: string[] };
+  collectionPreview: LessonTextSection & { lessons: Array<{ number: string; title: string }> };
+  agritechMotivation: LessonTextSection & { readings: Array<{ label: string; value: number }> };
+  simulator: { title: string; body: string; presets: number[]; baseValues: number[] };
+  growth: { title: string; body: string; effort: Array<{ maximum: number; label: string }> };
+  comparator: { title: string; body: string; scatteredLabel: string; groupedLabel: string };
+  scale: { title: string; body: string; minimum: number; maximum: number };
+  engineerScenario: { title: string; body: string; examples: string[]; question: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1314,7 +1332,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

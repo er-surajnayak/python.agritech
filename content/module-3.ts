@@ -1,4 +1,5 @@
 import { whyFunctionsDevelopmentPack } from "@/content/development-packs/lesson-3-1";
+import { functionDefinitionDevelopmentPack } from "@/content/development-packs/lesson-3-2";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleThreeLessons: LessonDocument[] = [
@@ -113,11 +114,45 @@ export const moduleThreeLessons: LessonDocument[] = [
     },
     developmentPack: whyFunctionsDevelopmentPack,
   },
+  {
+    id: "module-3-lesson-2",
+    moduleId: "module-3",
+    number: "3.2",
+    title: "Creating Functions with def",
+    summary: "Turn repeated Smart Farm logic into the first real reusable Python function, then trace the difference between defining, calling, and reusing it.",
+    durationMinutes: 120,
+    level: "Beginner+",
+    introduction: { title: "Solve duplication with a real reusable Python tool", body: "Lesson 3.1 established why functions matter. Now you will create a parameter-free function, call it, reuse it, and watch control move between the main program and function body." },
+    objectives: ["Create functions using the def keyword", "Identify every part of a function definition", "Explain why defining a function does not execute its body", "Call functions correctly", "Call one function multiple times", "Differentiate function definitions from function calls", "Build reusable Smart Farm modules", "Trace execution through function calls and back to the main program"],
+    whyThisMatters: { title: "A reusable design becomes valuable when it can actually execute", body: "Clear function boundaries let one trusted implementation support dashboards, reports, and mobile experiences. Calling that function activates the behaviour only when the application needs it." },
+    industryMotivation: { title: "Named modules give teams practical units for development and testing", body: "Production software separates irrigation, weather, sensor, reporting, and notification responsibilities so they can be owned, tested, reused, and changed independently.", signal: "This lesson uses parameter-free functions that print their results. Parameters, arguments, return values, defaults, lambda functions, and recursion remain outside the scope." },
+    concept: { title: "Definition creates the reusable block; a call executes it", body: "The def statement records a name and an indented body. Parentheses after the name create a function call that enters the body and returns control when the task is complete.", items: ["def keyword", "Function name", "Empty parentheses", "Colon", "Indented body", "Function definition", "Function call", "Return of control", "Repeated calls"] },
+    workflow: functionDefinitionDevelopmentPack.story.workflow,
+    agritechExample: { title: "One farm-status function can serve every product surface", body: "check_farm_status() contains the soil, temperature, and rainfall messages once. The dashboard, report, and mobile experience can each call that same definition." },
+    playground: { title: "Create and trace a reusable farm-status function", description: "Edit the Python, run it in the browser, and step through the real execution trace, current frame, call stack, variables, and output.", starterCode: "def check_farm_status():\n    print(\"Checking Soil Moisture...\")\n    print(\"Checking Temperature...\")\n    print(\"Checking Rainfall...\")\n\ncheck_farm_status()", expectedOutcome: "Python creates the function without output, then the call executes all three indented statements in order." },
+    practice: [
+      { level: "Easy", title: "Create show_name()", prompt: "Define show_name() so it displays your name, then call it once.", guidance: "Use def, a meaningful name, empty parentheses, a colon, an indented print statement, and a separate call." },
+      { level: "Medium", title: "Create a three-message welcome()", prompt: "Define welcome() with three agricultural welcome messages, then call it twice.", guidance: "Write the three print statements once inside the body and reuse the function through calls." },
+      { level: "Challenge", title: "Create daily_report()", prompt: "Define daily_report() that displays soil moisture, temperature, and rainfall labels, then call it from two simulated report sections.", guidance: "Keep the function parameter-free and use only print statements in this lesson." },
+    ],
+    quiz: [
+      { title: "Question 1", question: "Which keyword creates a Python function?", options: ["def", "function", "make", "call"], correctOptionIndex: 0, note: "def begins the definition.", explanation: "Python uses def followed by the function name and parentheses." },
+      { title: "Question 2", question: "Does defining a function execute its body?", options: ["No", "Yes", "Only when it prints", "Only on the first line"], correctOptionIndex: 0, note: "Definition and execution are separate.", explanation: "The body waits until Python reaches a function call." },
+      { title: "Question 3", question: "Which code calls greet?", options: ["greet()", "def greet():", "greet", "call greet"], correctOptionIndex: 0, note: "A call uses the name followed by parentheses.", explanation: "greet without parentheses refers to the function but does not execute it." },
+      { title: "Question 4", question: "Why do functions reduce repeated code?", options: ["The body is defined once and can be called many times", "They remove all indentation", "They never execute", "They require copied bodies"], correctOptionIndex: 0, note: "Reuse the call, not the body.", explanation: "Every caller relies on the same function definition." },
+      { title: "Question 5", question: "Can one function be called multiple times?", options: ["Yes", "No", "Only with parameters", "Only from a loop"], correctOptionIndex: 0, note: "Repeated calls are valid.", explanation: "Each call executes the same body again in that call's position." },
+    ],
+    assignment: { title: "Refactor the Module 2 Capstone into placeholder functions", brief: "Create separate parameter-free functions for the major Smart Farm responsibilities. Each function should print a placeholder message and be called once from the main program.", deliverables: ["irrigation()", "temperature_analysis()", "crop_recommendation()", "sensor_inspection()", "report_generation()", "One correctly indented placeholder print in each function", "One call to each function", "A short note explaining how the structure reduces duplication", "No parameters or return values"] },
+    summarySection: { title: "You created and reused your first functions", body: "You used def, inspected function anatomy, separated definition from invocation, called one function repeatedly, traced the call stack, built a Smart Farm function library, and repaired common syntax and ordering mistakes.", items: ["def keyword", "Function anatomy", "Definition", "Call", "Indented body", "Repeated calls", "Execution flow", "Call stack preview", "Smart Farm modules"] },
+    keyTakeaways: ["def defines a reusable block of code", "Defining a function does not execute its body", "A function executes when it is called with parentheses", "One definition can support many calls", "Python must execute a definition before it reaches the call", "Focused functions improve readability, testing, and maintenance"],
+    whatsNext: { title: "Lesson 3.3 · Function Parameters", body: "Next, make functions flexible by supplying different inputs for different crops, fields, and sensor readings while preserving one reusable function body." },
+    developmentPack: functionDefinitionDevelopmentPack,
+  },
 ];
 
 export const moduleThreeLessonSummaries = [
   { id: "module-3-lesson-1", moduleId: "module-3", order: 1, title: "3.1 Why Functions?", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-3-lesson-2", moduleId: "module-3", order: 2, title: "3.2 Creating Functions", estimatedMinutes: 90, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-3-lesson-2", moduleId: "module-3", order: 2, title: "3.2 Creating Functions", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-3-lesson-3", moduleId: "module-3", order: 3, title: "3.3 Function Parameters", estimatedMinutes: 100, status: "not-started" as const, isPlaceholder: true },
   { id: "module-3-lesson-4", moduleId: "module-3", order: 4, title: "3.4 Return Values", estimatedMinutes: 100, status: "not-started" as const, isPlaceholder: true },
   { id: "module-3-lesson-5", moduleId: "module-3", order: 5, title: "3.5 Positional vs Keyword Arguments", estimatedMinutes: 90, status: "not-started" as const, isPlaceholder: true },

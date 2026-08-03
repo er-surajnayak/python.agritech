@@ -105,7 +105,7 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 11, "one published lesson plus ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 12, "two published lessons plus ten navigation summaries should exist");
   assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
@@ -120,6 +120,70 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(frameworkSource, /moduleIndex === 3\s*\? moduleThreeLessonSummaries/);
   assert.match(stylesSource, /Module 3 · Lesson 3\.1 development pack/);
   assert.match(stylesSource, /@media \(max-width:30rem\).*\.function-story-locations/s);
+});
+
+test("Lesson 3.2 publishes function creation tools and a persistent call-stack preview", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, runnerSource, workerSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionDefinitionLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionDefinitionLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/usePythonRunner.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Creating Functions with def"/);
+  assert.match(moduleSource, /isPlaceholder: false/);
+  assert.match(packSource, /kind: "function-definition"/);
+  assert.match(packSource, /Repeated code/);
+  assert.match(packSource, /check_farm_status\(\)/);
+  assert.match(rendererSource, /<FunctionAnatomyExplorer/);
+  assert.match(rendererSource, /<FunctionExecutionVisualizer/);
+  assert.match(rendererSource, /<FunctionLibraryPanel/);
+  assert.match(rendererSource, /<DefinitionCallComparator/);
+  assert.match(rendererSource, /traceExecution/);
+  assert.match(rendererSource, /Function parameters begin in Lesson 3\.3/);
+  assert.match(blocksSource, /export function CallStackPreview/);
+  assert.match(blocksSource, /export function FunctionPlaygroundSupplement/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "function-definition"/);
+  assert.match(runnerSource, /callStack\?: string\[\]/);
+  assert.match(workerSource, /"frameName"/);
+  assert.match(workerSource, /"callStack"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.2 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.function-library-list/s);
+  assert.doesNotMatch(packSource, /^\s*return\s+/m);
+  assert.doesNotMatch(packSource, /\blambda\b/);
+});
+
+test("Lesson 3.2 Python trace records function frames and returns to the main program", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = 'def check_farm_status():\n    print("Checking Soil Moisture...")\n    print("Checking Temperature...")\n    print("Checking Rainfall...")\n\ncheck_farm_status()';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  assert.equal(result.error, null);
+  assert.match(result.output, /Checking Rainfall/);
+  assert.ok(result.trace.some((step) => step.frameName === "check_farm_status()"));
+  assert.ok(result.trace.some((step) => step.callStack.join(" > ") === "Main Program > check_farm_status()"));
+  assert.equal(result.trace.at(-1).frameName, "Main Program");
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

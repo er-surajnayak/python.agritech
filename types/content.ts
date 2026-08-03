@@ -1038,6 +1038,36 @@ export interface WhyFunctionsDevelopmentPack {
   };
 }
 
+export interface FunctionDefinitionLessonDevelopmentPack {
+  kind: "function-definition";
+  prerequisite: string;
+  story: LessonTextSection & {
+    repeatedCode: string;
+    conceptualCall: string;
+    consumers: string[];
+    workflow: { title: string; description: string; steps: WorkflowStep[] };
+  };
+  definitionKeyword: LessonTextSection & { keyword: string; meaning: string; workflow: WorkflowStep[] };
+  anatomy: {
+    title: string;
+    body: string;
+    code: string;
+    parts: Array<{ id: string; token: string; label: string; description: string }>;
+  };
+  defining: CodeExampleContent & { status: string };
+  calling: CodeExampleContent & { call: string; flow: WorkflowStep[] };
+  multipleCalls: CodeExampleContent & { callCount: number };
+  agritechExample: CodeExampleContent & { consumers: string[] };
+  functionLibrary: { title: string; body: string; functions: Array<{ id: string; name: string; output: string; description: string }> };
+  execution: { title: string; body: string; code: string; steps: Array<{ lineNumber: number; frame: string; title: string; description: string; output?: string }> };
+  comparison: { title: string; body: string; rows: Array<{ action: string; code: string; effect: string }> };
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; functions: string[] };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1066,7 +1096,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

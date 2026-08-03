@@ -35,6 +35,7 @@ import { WhileLoopLessonRenderer } from "@/components/learning/WhileLoopLessonRe
 import { LoopControlLessonRenderer } from "@/components/learning/LoopControlLessonRenderer";
 import { ControlFlowCapstoneLessonRenderer } from "@/components/learning/ControlFlowCapstoneLessonRenderer";
 import { WhyFunctionsLessonRenderer } from "@/components/learning/WhyFunctionsLessonRenderer";
+import { FunctionDefinitionLessonRenderer } from "@/components/learning/FunctionDefinitionLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -133,6 +134,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "why-functions") {
     return <WhyFunctionsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "function-definition") {
+    return <FunctionDefinitionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

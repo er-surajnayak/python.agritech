@@ -11,6 +11,8 @@ export interface PythonTraceVariable {
 export interface PythonTraceStep {
   lineNumber: number;
   code: string;
+  frameName?: string;
+  callStack?: string[];
   variables: PythonTraceVariable[];
   output: string;
   error?: string;

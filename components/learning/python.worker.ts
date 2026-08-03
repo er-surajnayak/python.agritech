@@ -19,6 +19,8 @@ interface TraceVariable {
 interface TraceStep {
   lineNumber: number;
   code: string;
+  frameName?: string;
+  callStack?: string[];
   variables: TraceVariable[];
   output: string;
   error?: string;
@@ -119,9 +121,18 @@ def __di_append(frame, line_number, error=None):
         __di_truncated = True
         return
     source = __di_lines[line_number - 1] if 0 < line_number <= len(__di_lines) else ""
+    stack = []
+    current_frame = frame
+    while current_frame and current_frame.f_code.co_filename == "<lesson-playground>":
+        frame_name = current_frame.f_code.co_name
+        stack.append("Main Program" if frame_name == "<module>" else f"{frame_name}()")
+        current_frame = current_frame.f_back
+    stack.reverse()
     step = {
         "lineNumber": line_number,
         "code": source,
+        "frameName": "Main Program" if frame.f_code.co_name == "<module>" else f"{frame.f_code.co_name}()",
+        "callStack": stack,
         "variables": __di_snapshot(frame),
         "output": __di_console.getvalue().rstrip("\\n"),
     }

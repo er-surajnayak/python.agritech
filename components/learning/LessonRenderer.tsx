@@ -37,6 +37,7 @@ import { ControlFlowCapstoneLessonRenderer } from "@/components/learning/Control
 import { WhyFunctionsLessonRenderer } from "@/components/learning/WhyFunctionsLessonRenderer";
 import { FunctionDefinitionLessonRenderer } from "@/components/learning/FunctionDefinitionLessonRenderer";
 import { FunctionParametersLessonRenderer } from "@/components/learning/FunctionParametersLessonRenderer";
+import { ReturnValuesLessonRenderer } from "@/components/learning/ReturnValuesLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -141,6 +142,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "function-parameters") {
     return <FunctionParametersLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "return-values") {
+    return <ReturnValuesLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

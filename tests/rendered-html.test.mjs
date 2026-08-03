@@ -105,7 +105,7 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 18, "eight published lessons plus ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id:\s*"module-3-lesson-/g) ?? []).length, 19, "nine published lessons plus ten navigation summaries should exist");
   assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
@@ -314,7 +314,7 @@ test("Lesson 3.5 combines positional, keyword, and default arguments in one data
 
   assert.match(moduleSource, /title:"Ways to Pass Arguments"/);
   assert.match(moduleSource, /3\.6 Variable Scope \(Local vs Global\)/);
-  assert.match(moduleSource, /3\.9 Function Best Practices/);
+  assert.match(moduleSource, /3\.9 Function Design Best Practices/);
   assert.match(packSource, /kind: "function-arguments"/);
   assert.match(packSource, /source:"positional"/);
   assert.match(packSource, /source:"keyword"/);
@@ -531,6 +531,60 @@ test("Lesson 3.8 Python trace grows recursive countdown frames and reaches the b
   assert.match(result.output, /3\n2\n1\nDone/);
   assert.ok(countdownSteps.some((step) => step.variables.some((variable) => variable.name === "n" && variable.value === "0")), "base-case frame should be traced");
   assert.ok(deepest.callStack.filter((frame) => frame === "countdown()").length >= 4, "recursive stack should contain four countdown frames");
+});
+
+test("Lesson 3.9 publishes professional function-design and refactoring tools", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-9.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionDesignLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionDesignLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id:"module-3-lesson-9"[\s\S]*title:"Function Design Best Practices"/);
+  assert.match(moduleSource, /module-3-lesson-9[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind:"function-design"/);
+  assert.match(packSource, /Single Responsibility Principle/);
+  assert.match(rendererSource, /<NamingQualityMeter/);
+  assert.match(rendererSource, /<SRPVisualizer/);
+  assert.match(rendererSource, /<FunctionHealthReport/);
+  assert.match(rendererSource, /<RefactoringWorkspace/);
+  assert.match(rendererSource, /<DesignPlaygroundSupplement/);
+  assert.match(rendererSource, /Type hints are intentionally deferred/);
+  assert.match(blocksSource, /export function FunctionQualityAnalyzer/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "function-design"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.9 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.design-project-checklist/s);
+});
+
+test("Lesson 3.9 refactored functions return reusable data through explicit parameters", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = 'def calculate_water(moisture):\n    """Return water required for a moisture reading."""\n    return moisture * 5\n\ndef generate_report(moisture, water):\n    return f"Moisture {moisture}; Water {water}"\n\nwater = calculate_water(20)\nreport = generate_report(20, water)\nprint(report)';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  const finalMain = [...result.trace].reverse().find((step) => step.frameName === "Main Program");
+  assert.equal(result.error, null);
+  assert.match(result.output, /Moisture 20; Water 100/);
+  assert.equal(finalMain.variables.find((variable) => variable.name === "water")?.value, "100");
+  assert.equal(finalMain.variables.find((variable) => variable.name === "report")?.value, "'Moisture 20; Water 100'");
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

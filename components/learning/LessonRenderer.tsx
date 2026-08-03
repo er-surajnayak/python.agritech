@@ -42,6 +42,7 @@ import { FunctionArgumentsLessonRenderer } from "@/components/learning/FunctionA
 import { VariableScopeLessonRenderer } from "@/components/learning/VariableScopeLessonRenderer";
 import { LambdaFunctionsLessonRenderer } from "@/components/learning/LambdaFunctionsLessonRenderer";
 import { RecursionLessonRenderer } from "@/components/learning/RecursionLessonRenderer";
+import { FunctionDesignLessonRenderer } from "@/components/learning/FunctionDesignLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -161,6 +162,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "recursion") {
     return <RecursionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "function-design") {
+    return <FunctionDesignLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

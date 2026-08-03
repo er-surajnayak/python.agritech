@@ -1068,6 +1068,40 @@ export interface FunctionDefinitionLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; functions: string[] };
 }
 
+export interface FunctionEvolutionStage {
+  lesson: string;
+  code: string;
+  capability: string;
+  active?: boolean;
+}
+
+export interface ParameterExampleContent extends CodeExampleContent {
+  functionName: string;
+  parameters: string[];
+  calls: Array<{ arguments: string[]; output: string }>;
+}
+
+export interface FunctionParametersLessonDevelopmentPack {
+  kind: "function-parameters";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  story: LessonTextSection & { fixedFunction: string; farms: Array<{ name: string; moisture: number }>; rejectedNames: string[]; workflow: { title: string; description: string; steps: WorkflowStep[] } };
+  hardcoded: CodeExampleContent & { problem: string; fixedValue: string; risks: string[] };
+  definition: LessonTextSection & { analogy: { title: string; inputs: string[]; outcome: string }; containerLabel: string };
+  firstParameter: ParameterExampleContent & { anatomy: Array<{ token: string; label: string; description: string }> };
+  parameterFlow: { title: string; body: string; functionName: string; parameters: string[]; arguments: string[]; steps: WorkflowStep[] };
+  agritechExamples: ParameterExampleContent[];
+  mapper: { title: string; body: string; functionName: string; parameters: string[]; argumentSets: Array<{ label: string; arguments: string[] }> };
+  simulator: { title: string; body: string; functionName: string; fields: Array<{ id: string; label: string; type: "number" | "text"; defaultValue: string }>; parameters: string[]; outputTemplate: string };
+  explorer: { title: string; body: string; examples: Array<{ label: string; functionName: string; parameters: string[]; arguments: string[] }> };
+  comparison: { title: string; body: string; rows: Array<{ feature: string; fixed: string; parameterized: string }> };
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; challenge: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1096,7 +1130,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

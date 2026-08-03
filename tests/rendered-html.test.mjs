@@ -105,7 +105,7 @@ test("Module 3 begins with a conceptual, data-driven functions lesson", async ()
   assert.match(packSource, /kind: "why-functions"/);
   assert.match(packSource, /checkIrrigation\(\)/);
   assert.doesNotMatch(packSource, /\bdef\s+\w+\s*\(/);
-  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 12, "two published lessons plus ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-3-lesson-/g) ?? []).length, 13, "three published lessons plus ten navigation summaries should exist");
   assert.match(moduleSource, /3\.10 Capstone · Smart Farm Automation v2/);
   assert.match(registrySource, /\.\.\.moduleThreeLessons/);
   assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "why-functions"/);
@@ -184,6 +184,64 @@ test("Lesson 3.2 Python trace records function frames and returns to the main pr
   assert.ok(result.trace.some((step) => step.frameName === "check_farm_status()"));
   assert.ok(result.trace.some((step) => step.callStack.join(" > ") === "Main Program > check_farm_status()"));
   assert.equal(result.trace.at(-1).frameName, "Main Program");
+});
+
+test("Lesson 3.3 publishes parameter mapping tools and the Function Evolution sequence", async () => {
+  const [moduleSource, packSource, rendererSource, blocksSource, registrySource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-3.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-3-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionParametersLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/FunctionParameterLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Function Parameters"/);
+  assert.match(packSource, /kind: "function-parameters"/);
+  assert.match(packSource, /check_soil\(moisture\)/);
+  assert.match(packSource, /status = check_soil\(moisture\)/);
+  assert.match(rendererSource, /<FunctionEvolutionPanel/);
+  assert.match(rendererSource, /<ParameterFlowVisualizer/);
+  assert.match(rendererSource, /<ArgumentParameterMapper/);
+  assert.match(rendererSource, /<FunctionInputSimulator/);
+  assert.match(rendererSource, /<MultiParameterExplorer/);
+  assert.match(rendererSource, /<ParameterPlaygroundSupplement/);
+  assert.match(rendererSource, /Return values begin in Lesson 3\.4/);
+  assert.match(rendererSource, /Keyword arguments begin in Lesson 3\.5/);
+  assert.match(blocksSource, /export function ParameterInspector/);
+  assert.match(blocksSource, /aria-live="polite"/);
+  assert.match(registrySource, /developmentPack\?\.kind === "function-parameters"/);
+  assert.match(stylesSource, /Module 3 · Lesson 3\.3 development pack/);
+  assert.match(stylesSource, /@media \(max-width:30rem\).*\.parameter-project-checklist/s);
+});
+
+test("Lesson 3.3 Python trace exposes each positional parameter value inside the function frame", async () => {
+  const workerSource = await readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8");
+  const rawWrapper = workerSource.match(/if \(data\.trace\)[\s\S]*?code = `([\s\S]*?)`;\n\s*} else if/)?.[1];
+  assert.ok(rawWrapper, "trace wrapper should be present");
+  const wrapper = Function(`return \`${rawWrapper}\`;`)();
+  const program = 'def inspect_sensor(sensor_id, location):\n    print("Checking Sensor", sensor_id, "at", location)\n\ninspect_sensor(205, "East Field")';
+  const script = `
+    import { loadPyodide } from 'pyodide';
+    const runtime = await loadPyodide();
+    const globals = runtime.toPy({});
+    globals.set('__di_user_code', ${JSON.stringify(program)});
+    globals.set('__di_has_inputs', false);
+    const answers = runtime.toPy([]);
+    globals.set('__di_input_values', answers);
+    answers.destroy();
+    const result = JSON.parse(String(await runtime.runPythonAsync(${JSON.stringify(wrapper)}, { globals })));
+    globals.destroy();
+    console.log(JSON.stringify(result));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script], { cwd: projectRoot });
+  const result = JSON.parse(stdout);
+  const functionStep = result.trace.find((step) => step.frameName === "inspect_sensor()");
+  assert.equal(result.error, null);
+  assert.match(result.output, /Checking Sensor 205 at East Field/);
+  assert.ok(functionStep, "function frame should be traced");
+  assert.deepEqual(Object.fromEntries(functionStep.variables.map((variable) => [variable.name, variable.value])), { sensor_id: "205", location: "'East Field'" });
+  assert.deepEqual(functionStep.callStack, ["Main Program", "inspect_sensor()"]);
 });
 
 test("Module 0 publishes six structured interactive lessons", async () => {

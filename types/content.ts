@@ -1156,6 +1156,36 @@ export interface FunctionArgumentsLessonDevelopmentPack {
   miniProject: AssignmentContent & { starterCode: string; calls: string[]; challenge: string };
 }
 
+export interface ScopeVariableContent {
+  name: string;
+  value: string;
+  scope: "global" | "local";
+  owner: string;
+  lifetime: string;
+}
+
+export interface VariableScopeLessonDevelopmentPack {
+  kind: "variable-scope";
+  prerequisite: string;
+  evolution: { title: string; body: string; stages: FunctionEvolutionStage[] };
+  lifecycle: { title: string; body: string; activeStep: string; steps: WorkflowStep[] };
+  story: LessonTextSection & { globalVariable: ScopeVariableContent; localVariable: ScopeVariableContent };
+  definition: LessonTextSection & { analogy: Array<{ title: string; access: string; scope: string }> };
+  local: CodeExampleContent & { variable: ScopeVariableContent; outsideCode: string; outsideResult: string };
+  global: CodeExampleContent & { variable: ScopeVariableContent; reader: string };
+  shadowing: CodeExampleContent & { globalValue: string; localValue: string };
+  lifetime: { title: string; body: string; globalSteps: WorkflowStep[]; localSteps: WorkflowStep[] };
+  boundaries: { title: string; body: string; globalVariables: ScopeVariableContent[]; functions: Array<{ name: string; variables: ScopeVariableContent[] }> };
+  explorer: { title: string; body: string; phases: Array<{ label: string; activeFrame: string; visible: string[]; destroyed: string[] }> };
+  comparison: { title: string; body: string; rows: Array<{ feature: string; local: string; global: string }> };
+  agritechExamples: CodeExampleContent[];
+  mistakesTitle: string;
+  mistakes: SyntaxMistakeContent[];
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; scenario: string; question: string; options: EngineerScenarioOption[] };
+  miniProject: AssignmentContent & { starterCode: string; challenge: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1184,7 +1214,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

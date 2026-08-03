@@ -39,6 +39,7 @@ import { FunctionDefinitionLessonRenderer } from "@/components/learning/Function
 import { FunctionParametersLessonRenderer } from "@/components/learning/FunctionParametersLessonRenderer";
 import { ReturnValuesLessonRenderer } from "@/components/learning/ReturnValuesLessonRenderer";
 import { FunctionArgumentsLessonRenderer } from "@/components/learning/FunctionArgumentsLessonRenderer";
+import { VariableScopeLessonRenderer } from "@/components/learning/VariableScopeLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -149,6 +150,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "function-arguments") {
     return <FunctionArgumentsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "variable-scope") {
+    return <VariableScopeLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

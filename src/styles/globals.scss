@@ -268,10 +268,13 @@
   .operation-preview-grid article > div { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .operation-preview-grid code { padding: 0.35rem 0.5rem; background: var(--cds-layer-02); }
   .preview-only-note { margin-top: 1rem; padding: 0.75rem 1rem; border-left: 3px solid var(--cds-support-info); background: var(--cds-notification-info-background-color); }
-  .collection-comparison-table { display: grid; margin-top: 1.25rem; border-top: 1px solid var(--cds-border-subtle-01); }
-  .collection-comparison-table > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .collection-comparison-table { display: grid; margin-top: 1.25rem; border-top: 1px solid var(--cds-border-subtle-01); width: 100%; overflow-x: auto; }
+  .collection-comparison-table > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); align-items: start; }
+  .collection-comparison-table--2col > div, .collection-comparison-table > div:has(> :nth-child(2)):not(:has(> :nth-child(3))) { grid-template-columns: 1fr 2fr; }
+  .collection-comparison-table--3col > div, .collection-comparison-table > div:has(> :nth-child(3)):not(:has(> :nth-child(4))) { grid-template-columns: 1.2fr 1.5fr 2fr; }
+  .collection-comparison-table--4col > div, .collection-comparison-table > div:has(> :nth-child(4)) { grid-template-columns: 1.2fr 1.8fr 1fr 2.5fr; }
   .collection-comparison-table span,
-  .collection-comparison-table strong { padding: 0.9rem; border-bottom: 1px solid var(--cds-border-subtle-01); }
+  .collection-comparison-table strong { padding: 0.9rem; border-bottom: 1px solid var(--cds-border-subtle-01); word-break: break-word; }
   .comparison-heading { background: var(--cds-layer-02); }
   .list-playground-supplement { padding: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }
   .list-playground-empty { display: grid; gap: 0.35rem; padding: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }
@@ -443,17 +446,6 @@
 
   .list-mapping-table strong {
     overflow-wrap: anywhere;
-  }
-
-  .collection-comparison-table {
-    display: grid;
-    margin-top: 1.25rem;
-    border-top: 1px solid var(--cds-border-subtle-01);
-  }
-
-  .collection-comparison-table > div {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .collection-comparison-table span,
@@ -4420,6 +4412,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
     grid-template-columns: 1.2fr 1fr;
     gap: 1.5rem;
     margin-top: 1.5rem;
+
+    .visualizer-left,
+    .visualizer-right {
+      min-width: 0;
+    }
   }
 
   .dictionary-card-display {
@@ -4427,6 +4424,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     border: 1px solid var(--cds-border-subtle-01);
     border-radius: 4px;
     padding: 1.5rem;
+    min-width: 0;
 
     .card-header {
       display: block;
@@ -4480,6 +4478,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
       .dict-value {
         font-family: var(--cds-code-01-font-family);
         color: var(--cds-text-primary);
+        word-break: break-all;
       }
 
       .delete-item-btn {
@@ -4501,12 +4500,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
       border: 1px solid var(--cds-border-subtle-01);
       border-radius: 4px;
       padding: 1rem;
+      min-width: 0;
       
       pre {
         margin: 0;
         font-family: var(--cds-code-01-font-family);
         font-size: 0.85rem;
+        max-width: 100%;
         overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
       }
     }
   }
@@ -4781,6 +4784,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
     .code-block-pane,
     .output-block-pane {
+      min-width: 0;
       background: var(--cds-layer-01);
       border: 1px solid var(--cds-border-subtle-01);
       border-radius: 4px;
@@ -4798,7 +4802,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
         padding: 0.5rem;
         background: var(--cds-layer-02);
         border-radius: 4px;
+        max-width: 100%;
         overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
         font-family: var(--cds-code-01-font-family);
       }
     }
@@ -4819,6 +4826,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
     .code-display-block,
     .output-display-block {
+      min-width: 0;
       background: var(--cds-layer-01);
       border: 1px solid var(--cds-border-subtle-01);
       border-radius: 4px;
@@ -4836,7 +4844,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
         padding: 0.5rem;
         background: var(--cds-layer-02);
         border-radius: 4px;
+        max-width: 100%;
         overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
         font-family: var(--cds-code-01-font-family);
       }
     }

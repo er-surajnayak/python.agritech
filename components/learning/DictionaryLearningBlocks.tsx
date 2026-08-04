@@ -258,7 +258,7 @@ export function DictionaryAccessingSection({ accessing }: { accessing: Pack["acc
       <p>{accessing.body}</p>
 
       <div className="access-table-container">
-        <div className="collection-comparison-table" role="table">
+        <div className="collection-comparison-table collection-comparison-table--4col" role="table">
           <div role="row" className="comparison-heading">
             <strong role="columnheader">Method</strong>
             <strong role="columnheader">Code Example</strong>
@@ -360,7 +360,7 @@ export function DictionaryRemovingSection({ removing }: { removing: Pack["removi
       <h2 id="removals-title">{removing.title}</h2>
       <p>{removing.body}</p>
 
-      <div className="collection-comparison-table" role="table">
+      <div className="collection-comparison-table collection-comparison-table--3col" role="table">
         <div role="row" className="comparison-heading">
           <strong role="columnheader">Command</strong>
           <strong role="columnheader">Code snippet</strong>
@@ -504,7 +504,7 @@ export function DictionaryComparisonSection({ comparison }: { comparison: Pack["
       <h2 id="comparison-title">{comparison.title}</h2>
       <p>{comparison.body}</p>
 
-      <div className="collection-comparison-table" role="table">
+      <div className="collection-comparison-table collection-comparison-table--3col" role="table">
         <div role="row" className="comparison-heading">
           <strong role="columnheader">Collection Type</strong>
           <strong role="columnheader">Best Used For</strong>
@@ -538,7 +538,7 @@ export function RealWorldMappingSection() {
         As you move into advanced modules, databases, and data science, you will repeatedly encounter these collections mapping to concrete software systems.
       </p>
       
-      <div className="collection-comparison-table" role="table">
+      <div className="collection-comparison-table collection-comparison-table--2col" role="table">
         <div role="row" className="comparison-heading">
           <strong role="columnheader">Python Collection</strong>
           <strong role="columnheader">Real-world Equivalent Structure</strong>

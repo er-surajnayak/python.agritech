@@ -47,6 +47,8 @@ import { FunctionCapstoneLessonRenderer } from "@/components/learning/FunctionCa
 import { WhyCollectionsLessonRenderer } from "@/components/learning/WhyCollectionsLessonRenderer";
 import { PythonListsLessonRenderer } from "@/components/learning/PythonListsLessonRenderer";
 import { WorkingWithListsLessonRenderer } from "@/components/learning/WorkingWithListsLessonRenderer";
+import { TupleLessonRenderer } from "@/components/learning/TupleLessonRenderer";
+import { SetsLessonRenderer } from "@/components/learning/SetsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -181,6 +183,12 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "working-with-lists") {
     return <WorkingWithListsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "tuples") {
+    return <TupleLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "sets") {
+    return <SetsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

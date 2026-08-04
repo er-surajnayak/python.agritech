@@ -1,6 +1,8 @@
 import { whyCollectionsDevelopmentPack } from "@/content/development-packs/lesson-4-1";
 import { pythonListsDevelopmentPack } from "@/content/development-packs/lesson-4-2";
 import { workingWithListsDevelopmentPack } from "@/content/development-packs/lesson-4-3";
+import { tuplesDevelopmentPack } from "@/content/development-packs/lesson-4-4";
+import { setsDevelopmentPack } from "@/content/development-packs/lesson-4-5";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -125,14 +127,259 @@ export const moduleFourLessons: LessonDocument[] = [
     whatsNext: { title: "Lesson 4.4 · Tuples", body: "Next, explore immutable ordered collections, understand why fixed data benefits from protection, and compare Tuples directly with Lists." },
     developmentPack: workingWithListsDevelopmentPack,
   },
+  {
+    id: "module-4-lesson-4",
+    moduleId: "module-4",
+    number: "4.4",
+    title: "Tuples: Immutable Collections",
+    summary: "Protect fixed farm metadata with ordered, immutable Tuples, practice packing and unpacking, and compare tuple behavior with list behavior before moving to sets and dictionaries.",
+    durationMinutes: 120,
+    level: "Beginner",
+    introduction: {
+      title: "Protect fixed records from accidental edits",
+      body: "By now you can store and process changing List data. This lesson teaches when you should not use mutability: important configuration values that should remain stable across execution.",
+    },
+    objectives: [
+      "Understand why tuples exist",
+      "Create tuples, including single-item tuple syntax",
+      "Access tuple elements using indexes",
+      "Recognize and use tuple immutability",
+      "Use tuple packing and unpacking",
+      "Use built-in functions with tuples",
+      "Understand tuple methods",
+      "Decide when tuple is safer than list",
+    ],
+    whyThisMatters: {
+      title: "Fixed data should communicate its intent",
+      body: "When a record should not change during execution, immutability reduces accidental corruption and makes intent explicit for teammates and future maintainers.",
+    },
+    industryMotivation: {
+      title: "Every codebase protects identity fields",
+      body: "IDs, coordinates, and registration metadata often need stronger constraints than ordinary sensor history lists.",
+      signal: "This lesson keeps indexing and tuple operations focused, and avoids collection mixing with sets or dictionaries.",
+    },
+    concept: {
+      title: "A Tuple is an ordered, immutable collection",
+      body: "A tuple stores related values under one variable like a List, but writes are restricted after creation.",
+      items: ["Ordered values", "Immutable records", "Single-item syntax", "Packing", "Unpacking", "count(), index()"],
+    },
+    workflow: {
+      title: "Protect read-only data with intent",
+      description: "When data is fixed by design, represent it as a Tuple and pass it explicitly to functions and modules.",
+      steps: [
+        { title: "Identify fixed data", description: "Find fields that should not change." },
+        { title: "Create tuple", description: "Use parentheses and commas for grouping." },
+        { title: "Read by index", description: "Inspect data with tuple positions." },
+        { title: "Avoid mutation", description: "Do not reassign tuple element slots." },
+      ],
+    },
+    agritechExample: { title: "Tuple-suitable farm metadata", body: "Keep Farm ID, registration year, and GPS coordinates as immutable tuples so accidental updates are caught immediately." },
+    playground: {
+      title: "Tuple syntax and behavior",
+      description: "Experiment with tuple creation, indexing examples, immutability checks, and small packed tuple operations.",
+      starterCode: "location = (17.3850, 78.4867)\n\nsensor = (101, \"Moisture\", 29.5)\n\nprint(location[0])\nprint(len(sensor))\nsensor_id, sensor_type, value = sensor\nprint(sensor_type)\n\n# location[0] = 18  # uncomment to see tuple immutability error\n",
+      expectedOutcome: "Python prints the first coordinate, tuple length, and unpacked sensor_type. The assignment is commented because it would raise a TypeError in this lesson.",
+    },
+    practice: [
+      { level: "Easy", title: "Create one tuple", prompt: "Create a tuple for one farm registration entry and print its first value.", guidance: "Use parentheses and commas correctly." },
+      { level: "Medium", title: "Packing and unpacking", prompt: "Create (farm_id, farm_name, year) and unpack into variables.", guidance: "Print each variable after unpacking." },
+      { level: "Challenge", title: "Tuple vs list decision", prompt: "Given three values for fixed metadata and two for live readings, decide where tuples and where lists belong.", guidance: "Explain your decision briefly." },
+    ],
+    quiz: [
+      { title: "Question 1", question: "What makes a single-item tuple from a single value?", options: ["(value)", "(value,)", "[value]", "{value}"], correctOptionIndex: 1, note: "The trailing comma makes tuple syntax explicit.", explanation: "Without a comma, parentheses are treated as grouping." },
+      { title: "Question 2", question: "What happens if you assign to tuple[0]?", options: ["Tuple changes in place", "A new tuple is returned", "TypeError", "Nothing, assignment is ignored"], correctOptionIndex: 2, note: "Tuples are immutable.", explanation: "Python prevents direct item assignment." },
+      { title: "Question 3", question: "Which tuple methods are available?", options: ["append(), pop()", "count(), index()", "add(), remove()", "sort(), reverse()"], correctOptionIndex: 1, note: "Tuples are sequence objects with limited methods.", explanation: "count() and index() are tuple methods." },
+    ],
+    assignment: {
+      title: "Protect fixed Smart Farm settings",
+      brief: "Refactor fixed parts of a demo program to tuples and write comments explaining why each tuple should stay immutable.",
+      deliverables: [
+        "farm_info tuple",
+        "sensor_location tuple",
+        "single-item tuple correction example",
+        "at least one tuple unpacking example",
+        "notes comparing tuple and list behavior",
+      ],
+    },
+    summarySection: {
+      title: "Tuples are simple, clear, and protective",
+      body: "You now use Tuples for fixed records, know why lists are not always safe for all data, and can choose tuple-specific operations confidently.",
+      items: ["Tuple creation", "Indexing", "Packing", "Unpacking", "Immutability", "Tuple methods", "Tuple/list trade-off"],
+    },
+    keyTakeaways: [
+      "Tuples are ordered and can hold mixed values",
+      "Tuple immutability protects fixed records",
+      "Single-item tuples need a trailing comma",
+      "Unpacking distributes tuple values into readable variables",
+      "Built-in functions inspect tuples like other iterable collections",
+      "count() and index() are tuple-specific methods",
+    ],
+    whatsNext: { title: "Lesson 4.5 · Sets", body: "After immutability, move to unordered collections and uniqueness-focused workflows in Sets." },
+    developmentPack: tuplesDevelopmentPack,
+  },
+  {
+    id: "module-4-lesson-5",
+    moduleId: "module-4",
+    number: "4.5",
+    title: "Sets: Unique Collections",
+    summary: "Eliminate duplicate sensor logs automatically, explore unordered collections, perform mathematical union/intersection checks, and choose the correct collection for your data.",
+    durationMinutes: 120,
+    level: "Beginner",
+    introduction: {
+      title: "Eliminate duplicate sensor logs",
+      body: "By now you can store sequence streams in Lists and protect configuration records in Tuples. This lesson introduces Sets as a structure designed to enforce uniqueness and optimize lookups automatically."
+    },
+    objectives: [
+      "Understand why sets exist and why lists aren't always enough",
+      "Create sets using curly braces {} and the set() constructor",
+      "Understand set uniqueness and why duplicates are ignored",
+      "Understand unordered collections and why indexing is unsupported",
+      "Add elements using add() and remove elements using remove(), discard(), and clear()",
+      "Perform union (|), intersection (&), difference (-), and symmetric difference (^)",
+      "Apply built-in functions len(), min(), max(), sum(), sorted(), any(), and all()",
+      "Apply set methods like issubset(), issuperset(), isdisjoint()",
+      "Choose when to use a set instead of a list or tuple using a decision tree"
+    ],
+    whyThisMatters: {
+      title: "Clean records prevent wrong statistics",
+      body: "Telemetry duplicates skew metrics like averages or totals. A collection that handles deduplication at insertion reduces clean-up logic and guarantees data validity."
+    },
+    industryMotivation: {
+      title: "Hardware IDs must register exactly once",
+      body: "Central dashboards register device configurations. If a device has multiple redundant gateways, registering them under a Set ensures no duplicate registrations occur.",
+      signal: "This lesson focuses on unique set collections, O(1) membership testing, and mathematical relationships. Frozen sets, hashing details, and set comprehensions are out of scope."
+    },
+    concept: {
+      title: "A Set is unordered, mutable, and enforces uniqueness",
+      body: "Values are stored without indexes or positions. If a value is added twice, the second addition is ignored. Sets are excellent for filtering data and finding intersections.",
+      items: ["Unique values only", "Mutable insertions", "Unordered elements", "O(1) hash lookup speed", "Mathematical set operators"]
+    },
+    workflow: {
+      title: "Initialize, modify, and check sets",
+      description: "Perform common operations to filter duplicate sensor registries.",
+      steps: [
+        { title: "Initialize Set", description: "Use curly braces {101, 205} or set(list_of_ids)." },
+        { title: "Add Element", description: "Use add() to append new elements." },
+        { title: "Remove Element", description: "Use discard() to remove safely without errors." },
+        { title: "Perform Union", description: "Use | operator to merge two sets into a unique registry." }
+      ]
+    },
+    agritechExample: {
+      title: "Registering unique hardware across networks",
+      body: "Combining registered sensors from Barn A and Barn B using sets ensures no device is counted twice even if both barns share some sensors."
+    },
+    playground: {
+      title: "Explore unique sensor set behavior",
+      description: "Edit the code to add duplicate sensor IDs, compute unions/intersections, and witness indexing errors.",
+      starterCode: `sensor_ids = {101, 101, 205, 310}\n\nfarm_a = {101, 102, 103}\nfarm_b = {103, 104, 105}\n\nprint("Unique sensor_ids:", sensor_ids)\nprint("Union of Farm A & B:", farm_a | farm_b)\nprint("Intersection of Farm A & B:", farm_a & farm_b)`,
+      expectedOutcome: "Python prints unique sensor_ids {101, 205, 310}, their union {101, 102, 103, 104, 105}, and their intersection {103}."
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Create a crop set",
+        prompt: "Create a set of crop names containing 'Rice', 'Wheat', and 'Corn', print the set, and observe its unordered state.",
+        guidance: "Use curly braces {} for initialization."
+      },
+      {
+        level: "Medium",
+        title: "Deduplicate a list",
+        prompt: "Given a list containing duplicates, convert it to a unique set using the set() constructor and print it.",
+        guidance: "Pass the list directly into set()."
+      },
+      {
+        level: "Challenge",
+        title: "Find overlapping sensors",
+        prompt: "Write a program that takes two sets of sensors and prints the overlapping sensors (intersection) and exclusive sensors (symmetric difference).",
+        guidance: "Use the & and ^ operators."
+      }
+    ],
+    quiz: [
+      {
+        title: "Question 1",
+        question: "What happens if you add a duplicate value to a Python set?",
+        options: ["An error is raised", "The duplicate is silently ignored and the set is unchanged", "The duplicate replaces the existing item", "The set becomes a dictionary"],
+        correctOptionIndex: 1,
+        note: "Sets enforce uniqueness.",
+        explanation: "Adding a value that is already present in a set has no effect."
+      },
+      {
+        title: "Question 2",
+        question: "How do you create a set that is initially empty?",
+        options: ["empty = {}", "empty = set()", "empty = []", "empty = set([])"],
+        correctOptionIndex: 1,
+        note: "Empty braces default to dictionaries.",
+        explanation: "empty = {} creates an empty dictionary. Use set() for an empty set."
+      },
+      {
+        title: "Question 3",
+        question: "Which index selects the first element of set A?",
+        options: ["A[0]", "A[1]", "A[-1]", "Indexing is not supported on sets"],
+        correctOptionIndex: 3,
+        note: "Sets are unordered.",
+        explanation: "Sets are unordered collections and do not support indexing or subscripting."
+      },
+      {
+        title: "Question 4",
+        question: "What is the difference between remove() and discard() in sets?",
+        options: [
+          "remove() deletes a random element, while discard() deletes a specific one",
+          "remove() raises an error if the item is missing, while discard() fails silently",
+          "remove() changes the set in-place, while discard() returns a new set",
+          "They are completely identical"
+        ],
+        correctOptionIndex: 1,
+        note: "discard() is a safe deletion method.",
+        explanation: "remove() raises a KeyError if the element is not found, while discard() does not raise any error."
+      },
+      {
+        title: "Question 5",
+        question: "Which set operator calculates intersection?",
+        options: ["|", "&", "-", "^"],
+        correctOptionIndex: 1,
+        note: "Ampersand is used for intersection.",
+        explanation: "& performs mathematical intersection; | performs union; - performs difference; ^ performs symmetric difference."
+      }
+    ],
+    assignment: {
+      title: "Build unique sensor telemetry registry",
+      brief: "Create and manage a telemetry registry using sets to deduplicate incoming data, merge active sensor batches, and verify registrations using membership testing.",
+      deliverables: [
+        "Create empty set for registrations",
+        "Add sensor IDs to the set including duplicates",
+        "Remove sensor IDs using remove() and discard()",
+        "Perform mathematical operations: union and intersection with incoming gateway sets",
+        "Verify existence with 'in' operator",
+        "Document list vs tuple vs set decisions"
+      ]
+    },
+    summarySection: {
+      title: "Sets automate uniqueness and set relations",
+      body: "You now know how to construct sets, filter redundant records, use set operators like union and intersection, check membership in O(1) time, and select the correct collection using the decision tree.",
+      items: ["Set creation", "Uniqueness", "Unordered characteristics", "add, remove, discard", "Union & Intersection", "O(1) lookups"]
+    },
+    keyTakeaways: [
+      "Sets automatically delete duplicate values",
+      "Sets are mutable but unordered, and do not support indexing",
+      "empty_set = set() initializes an empty set; {} initializes a dictionary",
+      "discard() removes elements safely without raising KeyErrors",
+      "Operators like | and & support mathematical union and intersection",
+      "Sets offer fast, constant-time lookups for membership checking"
+    ],
+    whatsNext: {
+      title: "Lesson 4.6 · Dictionaries",
+      body: "Next, explore key-value mappings in Python dictionaries to represent complex structured objects like sensor metadata."
+    },
+    developmentPack: setsDevelopmentPack,
+  },
 ];
 
 export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-1", moduleId: "module-4", order: 1, title: "4.1 Why Collections?", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-2", moduleId: "module-4", order: 2, title: "4.2 Python Lists", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-3", moduleId: "module-4", order: 3, title: "4.3 Working with Lists", estimatedMinutes: 180, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-4", moduleId: "module-4", order: 4, title: "4.4 Tuples", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
-  { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 Sets", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-4", moduleId: "module-4", order: 4, title: "4.4 Tuples", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
+  { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 Sets", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-ins", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Choosing the Right Collection", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },

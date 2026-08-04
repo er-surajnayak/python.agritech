@@ -1338,6 +1338,104 @@ export interface WorkingWithListsDevelopmentPack {
   engineerScenario: { title: string; body: string; operations: string[]; question: string };
 }
 
+export interface TupleDevelopmentPack {
+  kind: "tuples";
+  prerequisite: string;
+  story: LessonTextSection & {
+    problem: { title: string; body: string; examples: string[] };
+    locked: { title: string; body: string; items: string[] };
+  };
+  whyTuples: LessonTextSection & { bullets: string[] };
+  creation: LessonTextSection & { examples: Array<{ label: string; code: string; note: string }> };
+  anatomy: LessonTextSection & { tupleName: string; values: Array<string | number | boolean> };
+  indexing: LessonTextSection & { examples: Array<{ code: string; index: number | string; result: string | number | boolean }>; slicing?: string };
+  immutability: {
+    title: string;
+    body: string;
+    example: {
+      code: string;
+      result: string;
+    };
+    message: string;
+  };
+  packing: { title: string; code: string; body: string };
+  unpacking: { title: string; code: string; mapping: Array<{ variable: string; variableValue: string | number | boolean }>; body: string };
+  builtIns: {
+    title: string;
+    body: string;
+    examples: Array<{ name: "len" | "max" | "min" | "sum" | "sorted" | "any" | "all"; purpose: string; code: string; output: string }>;
+  };
+  methods: {
+    title: string;
+    body: string;
+    rows: Array<{ method: "count" | "index"; purpose: string; example: string; output: string }>;
+  };
+  comparison: {
+    title: string;
+    body: string;
+    rows: Array<{ feature: string; list: string; tuple: string }>;
+  };
+  agritech: LessonTextSection & { immutableValues: Array<string | number | boolean>; mutableValues: Array<string | number | boolean>; question: string };
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; body: string; question: string };
+}
+
+export interface SetsDevelopmentPack {
+  kind: "sets";
+  prerequisite: string;
+  story: LessonTextSection & {
+    problem: { title: string; body: string; examples: string[] };
+    whyListsNotEnough: LessonTextSection & { body: string; examples: string[] };
+  };
+  whatIsSet: LessonTextSection & { characteristics: string[] };
+  creation: LessonTextSection & {
+    examples: Array<{ label: string; code: string; note: string }>;
+    emptyCreation: { title: string; body: string; correct: string; incorrect: string; reason: string };
+  };
+  characteristics: {
+    title: string;
+    body: string;
+    items: Array<{ name: string; description: string; check: boolean }>;
+  };
+  adding: LessonTextSection & { code: string; duplicateCode: string };
+  removing: LessonTextSection & {
+    removeCode: string;
+    discardCode: string;
+    clearCode: string;
+    rows: Array<{ method: string; behavior: string }>;
+  };
+  operations: {
+    title: string;
+    body: string;
+    farmAValues: number[];
+    farmBValues: number[];
+    rows: Array<{ operation: string; code: string; result: string; description: string }>;
+  };
+  builtIns: {
+    title: string;
+    body: string;
+    examples: Array<{ name: "len" | "min" | "max" | "sum" | "sorted" | "any" | "all"; purpose: string; code: string; output: string }>;
+  };
+  methods: {
+    title: string;
+    body: string;
+    rows: Array<{ method: string; purpose: string; example: string; output: string }>;
+  };
+  comparison: {
+    title: string;
+    body: string;
+    rows: Array<{ feature: string; list: string; tuple: string; set: string }>;
+  };
+  agritech: LessonTextSection & {
+    sensorIds: number[];
+    newSensorIds: number[];
+    unionResult: number[];
+    explanation: string;
+  };
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; body: string; question: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1366,7 +1464,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

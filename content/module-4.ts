@@ -5,6 +5,7 @@ import { tuplesDevelopmentPack } from "@/content/development-packs/lesson-4-4";
 import { setsDevelopmentPack } from "@/content/development-packs/lesson-4-5";
 import { dictionaryDevelopmentPack } from "@/content/development-packs/lesson-4-6";
 import { collectionOperationsDevelopmentPack } from "@/content/development-packs/lesson-4-7";
+import { listTuplePracticeDevelopmentPack } from "@/content/development-packs/lesson-4-8";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -688,6 +689,144 @@ Farm Keys: ['name', 'crop']`
       body: "Next, solve real-world agritech programming challenges using Lists and Tuples with step-by-step dry runs and complexity breakdowns."
     },
     developmentPack: collectionOperationsDevelopmentPack
+  },
+  {
+    id: "module-4-lesson-8",
+    moduleId: "module-4",
+    number: "4.8",
+    title: "Solved Programming Questions (Lists & Tuples)",
+    summary: "Solve 30 real-world agritech programming problems using Lists and Tuples with accordion solutions, dry runs, and interactive playgrounds.",
+    durationMinutes: 210,
+    level: "Beginner to Intermediate",
+    introduction: {
+      title: "Applying Lists and Tuples to Real Agritech Problems",
+      body: "Master problem-solving with Lists and Tuples by working through 30 structured questions across Easy, Medium, and Advanced difficulty tiers."
+    },
+    objectives: [
+      "Solve real programming problems using Lists and Tuples",
+      "Apply list methods and built-in functions confidently",
+      "Use tuples for immutable fixed metadata and coordinate pairs",
+      "Dry run programs and predict exact runtime outputs",
+      "Develop problem-solving skills before advancing to NumPy and Pandas"
+    ],
+    whyThisMatters: {
+      title: "Problem-solving builds production readiness",
+      body: "Knowing syntax rules is only the first step. Solving practical problems equips you to design robust telemetry pipelines and data processors."
+    },
+    industryMotivation: {
+      title: "Agritech Telemetry & Data Processing",
+      body: "Production farm management software processes continuous streams of list data and fixed tuple coordinates to generate irrigation schedules and crop health metrics.",
+      signal: "Hands-on problem solving bridges basic Python syntax to real-world data science libraries like NumPy and Pandas."
+    },
+    concept: {
+      title: "Structured Problem-Solving Methodology",
+      body: "Every question provides the problem statement, agritech scenario, hint, Python solution, step-by-step dry run, expected output, detailed explanation, common pitfalls, and challenge extension."
+    },
+    workflow: {
+      title: "Problem Solving Pipeline",
+      description: "How to approach each programming challenge effectively.",
+      steps: [
+        { title: "1. Read Scenario", description: "Understand the real-world agritech requirement." },
+        { title: "2. Formulate Plan", description: "Choose appropriate list methods or tuple operations." },
+        { title: "3. Write Code", description: "Implement the solution in the interactive playground." },
+        { title: "4. Verify Dry Run", description: "Trace execution line-by-line to confirm accuracy." }
+      ]
+    },
+    agritechExample: {
+      title: "Smart Farm Reading Analyzer",
+      body: "A complete telemetry manager script integrating list creation, index updates, mutation, built-in calculations, and sorting."
+    },
+    playground: {
+      title: "Lists & Tuples Interactive Workspace",
+      description: "Run and experiment with solutions to any of the 30 programming questions.",
+      starterCode: `# Interactive Solved Questions Playground
+# Try Q1: Create a List of Crops
+crops = ["Rice", "Wheat", "Corn", "Sugarcane", "Cotton"]
+print("Crops List:", crops)
+
+# Try Q18: GPS Tuple Unpacking
+location = (17.385, 78.486)
+lat, long = location
+print(f"Latitude: {lat}, Longitude: {long}")
+`,
+      expectedOutcome: `Crops List: ['Rice', 'Wheat', 'Corn', 'Sugarcane', 'Cotton']
+Latitude: 17.385, Longitude: 78.486`
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Crop List Creation",
+        prompt: "Create a list of 5 crops and print the first and last elements.",
+        guidance: "Use `crops[0]` and `crops[-1]`."
+      },
+      {
+        level: "Medium",
+        title: "Weekday Moisture Slicing",
+        prompt: "Given 7 daily readings, extract Monday to Friday using slice syntax `[0:5]`.",
+        guidance: "Slicing `[0:5]` extracts indices 0, 1, 2, 3, and 4."
+      },
+      {
+        level: "Challenge",
+        title: "Farm Reading Analyzer Capstone",
+        prompt: "Build an automated script that appends a reading, removes invalid entries, and calculates min, max, average, and sorted list.",
+        guidance: "Combine `.append()`, `.remove()`, `min()`, `max()`, `sum()`, `len()`, and `sorted()`."
+      }
+    ],
+    quiz: [
+      {
+        title: "List Slicing Bounds",
+        question: "Given `readings = [10, 20, 30, 40, 50]`, what does `readings[1:4]` return?",
+        options: [
+          "[10, 20, 30]",
+          "[20, 30, 40]",
+          "[20, 30, 40, 50]",
+          "[10, 20, 30, 40]"
+        ],
+        note: "Slice syntax [start:stop] excludes the stop index.",
+        correctOptionIndex: 1,
+        explanation: "Index 1 is 20, index 2 is 30, index 3 is 40. Index 4 (50) is excluded."
+      },
+      {
+        title: "Tuple Immutability",
+        question: "What happens if you run `t = (1, 2); t[0] = 99`?",
+        options: [
+          "The tuple becomes (99, 2)",
+          "The tuple becomes [99, 2]",
+          "Python raises a TypeError because tuples are immutable",
+          "Python automatically converts t to a list"
+        ],
+        note: "Tuples cannot be mutated in-place.",
+        correctOptionIndex: 2,
+        explanation: "Tuples are immutable; item assignment raises a TypeError."
+      }
+    ],
+    assignment: {
+      title: "Smart Farm Reading Analyzer Project",
+      brief: "Build an interactive CLI tool that stores telemetry readings, removes outlier noise, computes statistics, and formats a summary report.",
+      deliverables: [
+        "Script managing lists and tuples for sensor data",
+        "Demonstrated use of slicing, max, min, average, and sorting",
+        "Execution output log matching capstone specifications"
+      ]
+    },
+    summarySection: {
+      title: "Problem solving builds Python fluency",
+      body: "You have now solved 30 practical programming questions using Lists and Tuples. You can confidently create, access, slice, mutate, pack, unpack, and process list and tuple data structures.",
+      items: ["List creation and 0-based indexing", "Slicing [start:stop]", "In-place mutation vs non-destructive built-ins", "Tuple immutability & unpacking", "Aggregating metrics with min(), max(), sum(), len()"]
+    },
+    keyTakeaways: [
+      "Lists [] are ordered, mutable sequence collections",
+      "Tuples () are ordered, immutable sequence collections used for fixed records and coordinate pairs",
+      ".append() adds to the end; .remove() deletes by value; .insert() inserts at position",
+      "sorted() and reversed() return new collections without mutating original objects",
+      "Tuple unpacking assigns elements directly to variables in a single clean expression",
+      "Mastering lists and tuples lays the foundation for NumPy arrays and pandas DataFrames"
+    ],
+    whatsNext: {
+      title: "Lesson 4.9 · Solved Programming Questions (Sets & Dictionaries)",
+      body: "Next, solve practical problems using Sets and Dictionaries, including duplicate removal, membership testing, key-value manipulation, and structured farm records."
+    },
+    developmentPack: listTuplePracticeDevelopmentPack
   }
 ];
 
@@ -699,8 +838,9 @@ export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 Sets", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-in Functions", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Solved Programming Questions (List + Tuple)", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Solved Programming Questions (List + Tuple)", estimatedMinutes: 210, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Solved Programming Questions (Set + Dictionary)", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-10", moduleId: "module-4", order: 10, title: "4.10 Smart Farm Data Management Capstone", estimatedMinutes: 240, status: "not-started" as const, isPlaceholder: true },
 ];
+
 

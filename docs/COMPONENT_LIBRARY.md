@@ -239,13 +239,19 @@ This library catalogs the reusable React components in the Digital Interactive N
 - **Reusability**: Collection Operations lesson (4.7).
 - **Future Reuse**: Demonstrating polymorphic built-in functions across data structures, NumPy arrays, and pandas Series.
 
-### `MethodExplorer` (Collection Operations Edition)
-- **Purpose**: Dynamic method inspector allowing learners to select a collection type (List, Tuple, Set, Dictionary) and method, displaying signatures and behavioral breakdowns.
-- **Props**: `methodsSummary: Pack["methodsSummary"]`.
-- **Reusability**: Collection Operations lesson (4.7).
-- **Future Reuse**: General type methods reference dashboard.
+### `QuestionAccordionCard`
+- **Purpose**: Interactive Carbon Accordion card rendering individual solved programming problems with collapsible sections for Hint, Solution, Dry Run, Output, Explanation, Common Pitfall, and Challenge Extension. Includes a completion checkbox and a button to load code into the Monaco playground.
+- **Props**: `question: SolvedQuestionItem`, `isCompleted: boolean`, `onToggleComplete: () => void`, `onLoadCode: (code: string) => void`.
+- **Reusability**: Solved Questions lessons (4.8, 4.9).
+- **Future Reuse**: Problem set cards across future practice modules.
+
+### `QuestionFilterHeader` & `QuestionNavigator`
+- **Purpose**: Filter bar for difficulty tiers (Easy, Medium, Advanced, All) with an interactive progress counter (`X / 30 Questions Completed`) and a jump-navigation grid.
+- **Props**: `questions: SolvedQuestionItem[]`, `activeFilter: string`, `completedIds: Set<string>`.
+- **Reusability**: Solved Questions lessons (4.8, 4.9).
+- **Future Reuse**: Interactive quiz & problem dashboards.
 
 ---
 
 ## 5. Summary and Future Guidelines
-When creating new lessons (e.g. Lesson 4.8 Solved Programming Questions: List + Tuple), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.
+When creating new lessons (e.g. Lesson 4.9 Solved Programming Questions: Set + Dictionary), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.

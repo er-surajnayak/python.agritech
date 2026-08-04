@@ -5553,3 +5553,787 @@ button, a { -webkit-tap-highlight-color: transparent; }
     .box-title { color: var(--practice-accent); }
   }
 }
+
+/* ─── Module 5 · Object-Oriented Programming (OOP_STYLE_GUIDE.md) ───────────── */
+
+.oop-development-pack {
+  --oop-class:        #8a3ffc;
+  --oop-object:       #33b1ff;
+  --oop-method:       #08bdba;
+  --oop-attribute:    #ff7eb6;
+  --oop-constructor:  #f1c21b;
+  --oop-inheritance:  #42be65;
+  --oop-composition:  #ff832b;
+  --oop-memory:       #a2191f;
+  --oop-flash:        #ffffff;
+  --oop-abstract:     #be95ff;
+
+  /* Keyframe animations */
+  @keyframes oop-object-create {
+    0% { transform: scale(0.7); opacity: 0; }
+    70% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes oop-heap-appear {
+    0% { transform: translateY(10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* 1. Growing Problem */
+  .oop-growing-problem {
+    .oop-scaling-visualizer {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+
+      .oop-scaling-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        width: 100%;
+
+        .oop-scaling-node {
+          background: var(--cds-layer-02);
+          border: 2px solid var(--cds-border-subtle-01);
+          border-radius: 6px;
+          padding: 1rem 0.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            border-color: var(--oop-object);
+          }
+
+          &.active {
+            border-color: var(--oop-object);
+            background: rgba(51, 177, 255, 0.08);
+          }
+
+          &.highlight {
+            border-color: var(--cds-support-error);
+            &.active {
+              background: rgba(218, 30, 40, 0.08);
+            }
+          }
+
+          .oop-scaling-label {
+            font-size: 0.85rem;
+            color: var(--cds-text-secondary);
+          }
+
+          .oop-scaling-count {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--cds-text-primary);
+            margin: 0.25rem 0;
+          }
+
+          .oop-scaling-unit {
+            font-size: 0.75rem;
+            color: var(--cds-text-helper);
+          }
+        }
+      }
+
+      .oop-scaling-spotlight {
+        text-align: center;
+        padding: 1.5rem;
+        width: 100%;
+        background: var(--cds-layer-02);
+        border-radius: 6px;
+        border-left: 4px solid var(--oop-object);
+
+        &.is-critical {
+          border-left-color: var(--cds-support-error);
+        }
+
+        .oop-scaling-spotlight-farm {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--cds-text-primary);
+        }
+
+        .oop-scaling-spotlight-count {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: var(--oop-object);
+          line-height: 1.2;
+          margin: 0.25rem 0;
+        }
+
+        .oop-scaling-spotlight-unit {
+          font-size: 0.9rem;
+          color: var(--cds-text-secondary);
+        }
+
+        .oop-scaling-crisis {
+          color: var(--cds-support-error);
+          font-weight: 600;
+          margin-top: 0.5rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .oop-scaling-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .oop-scaling-counter {
+          font-size: 0.85rem;
+          color: var(--cds-text-secondary);
+        }
+      }
+    }
+
+    .oop-pain-points {
+      margin: 1.5rem 0;
+
+      .oop-pain-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.75rem 0 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .oop-pain-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: var(--cds-layer-01);
+          padding: 0.75rem 1rem;
+          border-radius: 4px;
+          border-left: 3px solid var(--cds-support-error);
+
+          .oop-pain-icon {
+            color: var(--cds-support-error);
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    .oop-scaling-question {
+      margin-top: 1.5rem;
+      background: var(--cds-layer-02);
+      border-left: 4px solid var(--cds-support-warning);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      p {
+        font-weight: 600;
+        color: var(--cds-text-primary);
+        margin: 0;
+      }
+    }
+  }
+
+  /* 2. Class-Object Visualizer */
+  .oop-class-object-visualizer {
+    .oop-cov-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--cds-border-subtle-01);
+      margin: 1rem 0 1.5rem 0;
+
+      .oop-cov-tab {
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--cds-text-secondary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: var(--cds-text-primary);
+        }
+
+        &.active {
+          color: var(--oop-class);
+          border-bottom-color: var(--oop-class);
+        }
+      }
+    }
+
+    .oop-cov-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .oop-class-card {
+        background: var(--cds-layer-01);
+        border: 2px solid var(--oop-class);
+        border-radius: 8px;
+        overflow: hidden;
+        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+        .oop-class-header {
+          background: rgba(138, 63, 252, 0.15);
+          padding: 0.75rem 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          border-bottom: 1px solid var(--cds-border-subtle-01);
+
+          .oop-class-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cds-text-primary);
+          }
+        }
+
+        .oop-class-body {
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .oop-class-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+
+            .oop-class-section-label {
+              font-size: 0.7rem;
+              font-weight: 700;
+              letter-spacing: 0.5px;
+              color: var(--cds-text-helper);
+              margin-bottom: 0.2rem;
+            }
+
+            .oop-class-attr-row {
+              display: flex;
+              gap: 0.5rem;
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-size: 0.85rem;
+
+              .oop-attr-name { color: var(--oop-attribute); }
+              .oop-attr-colon { color: var(--cds-text-helper); }
+              .oop-attr-type { color: var(--cds-text-secondary); }
+            }
+
+            .oop-class-method-row {
+              display: flex;
+              gap: 0.25rem;
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-size: 0.85rem;
+
+              .oop-method-name { color: var(--oop-method); font-weight: 600; }
+              .oop-method-params { color: var(--cds-text-secondary); }
+              .oop-method-arrow { color: var(--cds-text-helper); }
+              .oop-method-return { color: var(--cds-text-helper); }
+            }
+          }
+        }
+      }
+
+      .oop-concept-box {
+        background: var(--cds-layer-01);
+        padding: 1.25rem;
+        border-radius: 6px;
+        border-left: 4px solid var(--oop-class);
+
+        h3 { margin-top: 0; margin-bottom: 0.5rem; }
+        p { margin: 0; color: var(--cds-text-secondary); }
+        .oop-agritech-context { margin-top: 0.5rem; font-style: italic; }
+      }
+
+      .oop-object-instances-area {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .oop-object-instances-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: 1rem;
+
+          .oop-object-card {
+            background: var(--cds-layer-01);
+            border: 2px solid var(--oop-object);
+            border-radius: 6px;
+            overflow: hidden;
+            opacity: 0.3;
+            transform: scale(0.95);
+            transition: all 0.35ms ease;
+
+            &.oop-object-card--visible {
+              opacity: 1;
+              transform: scale(1);
+              animation: oop-object-create 0.35s ease-out;
+            }
+
+            .oop-object-header {
+              background: rgba(51, 177, 255, 0.15);
+              padding: 0.5rem 0.75rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              border-bottom: 1px solid var(--cds-border-subtle-01);
+
+              .oop-object-name {
+                font-weight: 700;
+                color: var(--cds-text-primary);
+                font-size: 0.9rem;
+              }
+            }
+
+            .oop-object-body {
+              padding: 0.75rem;
+              display: flex;
+              flex-direction: column;
+              gap: 0.4rem;
+              font-size: 0.8rem;
+
+              .oop-object-represents {
+                font-weight: 600;
+                color: var(--cds-text-primary);
+              }
+
+              .oop-object-empty-note {
+                color: var(--cds-text-helper);
+                font-style: italic;
+              }
+            }
+          }
+        }
+
+        .oop-object-controls {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .oop-object-count {
+            font-size: 0.85rem;
+            color: var(--cds-text-secondary);
+            margin-left: auto;
+          }
+        }
+      }
+
+      .oop-code-preview {
+        .oop-code-label {
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: var(--cds-text-secondary);
+          margin-bottom: 0.4rem;
+        }
+
+        .oop-output-box {
+          margin-top: 0.5rem;
+          background: var(--cds-layer-02);
+          padding: 0.75rem 1rem;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .oop-output-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--cds-text-helper);
+            text-transform: uppercase;
+          }
+
+          code {
+            color: var(--oop-method);
+            font-family: var(--cds-code-01-font-family, monospace);
+          }
+        }
+      }
+    }
+  }
+
+  /* 3. Memory Basic Viewer */
+  .oop-memory-viewer {
+    .oop-memory-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.5rem;
+
+      .oop-memory-panel-label {
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--oop-memory);
+        margin: 0;
+      }
+
+      .oop-memory-panel-subtitle {
+        font-size: 0.75rem;
+        color: var(--cds-text-helper);
+        margin-top: 0.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .oop-memory-stack {
+        border-right: 1px solid var(--cds-border-subtle-01);
+        padding-right: 1.5rem;
+
+        .oop-memory-stack-rows {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .oop-stack-row {
+            padding: 0.5rem 0.75rem;
+            background: var(--cds-layer-02);
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+
+            &.oop-stack-row--active {
+              opacity: 1;
+              background: rgba(51, 177, 255, 0.1);
+              border: 1px solid var(--oop-object);
+            }
+
+            .oop-stack-varname {
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-weight: 600;
+            }
+
+            .oop-stack-arrow {
+              color: var(--oop-object);
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .oop-memory-heap {
+        .oop-memory-heap-blocks {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 1rem;
+          min-height: 120px;
+
+          .oop-heap-block {
+            background: var(--cds-layer-02);
+            border: 1.5px solid var(--oop-memory);
+            border-radius: 6px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            &.oop-heap-block--appear {
+              animation: oop-heap-appear 0.3s ease-out forwards;
+            }
+
+            .oop-heap-address {
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-size: 0.7rem;
+              color: var(--oop-memory);
+              font-weight: 700;
+            }
+
+            .oop-heap-note {
+              font-size: 0.75rem;
+              color: var(--cds-text-helper);
+              font-style: italic;
+            }
+          }
+
+          .oop-heap-empty {
+            color: var(--cds-text-helper);
+            font-style: italic;
+            margin: auto;
+          }
+        }
+      }
+    }
+
+    .oop-memory-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      .oop-memory-count {
+        font-size: 0.85rem;
+        color: var(--cds-text-secondary);
+        margin-left: auto;
+      }
+    }
+
+    .oop-memory-code {
+      margin-top: 1.5rem;
+
+      .oop-independence-note {
+        margin-top: 1rem;
+        background: var(--cds-layer-01);
+        border-left: 4px solid var(--cds-support-success);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        span { color: var(--cds-text-primary); font-weight: 500; }
+      }
+    }
+  }
+
+  /* 4. Object Evolution Panel */
+  .oop-evolution-panel {
+    background: var(--cds-layer-01);
+    border: 2px solid var(--oop-class);
+    border-radius: 8px;
+
+    .oop-evolution-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--oop-class);
+      margin-bottom: 0.5rem;
+
+      h2 { margin: 0; color: var(--cds-text-primary); }
+    }
+
+    .oop-evolution-subtitle {
+      color: var(--cds-text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .oop-evolution-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+
+      .oop-evolution-progress-steps {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 0.4rem;
+
+        .oop-evolution-step {
+          height: 8px;
+          background: var(--cds-layer-02);
+          border-radius: 4px;
+
+          &.completed {
+            background: var(--oop-class);
+          }
+
+          &.current {
+            background: var(--oop-object);
+            box-shadow: 0 0 8px var(--oop-object);
+          }
+        }
+      }
+
+      .oop-evolution-progress-label {
+        font-size: 0.75rem;
+        color: var(--cds-text-helper);
+        text-align: right;
+      }
+    }
+
+    .oop-evolution-code {
+      margin-bottom: 1rem;
+
+      .oop-evolution-code-title {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--cds-text-primary);
+        margin-bottom: 0.4rem;
+      }
+    }
+
+    .oop-evolution-note {
+      background: var(--cds-layer-02);
+      border-left: 4px solid var(--oop-class);
+      margin-bottom: 1.5rem;
+      p { margin: 0; font-size: 0.9rem; color: var(--cds-text-secondary); }
+    }
+
+    .oop-evolution-roadmap {
+      .oop-evolution-roadmap-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--cds-text-primary);
+        margin-bottom: 0.75rem;
+      }
+
+      .oop-evolution-roadmap-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+
+        .oop-evolution-row {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.4rem 0.75rem;
+          border-radius: 4px;
+          background: var(--cds-layer-02);
+          font-size: 0.85rem;
+
+          &.done {
+            background: rgba(138, 63, 252, 0.1);
+            font-weight: 600;
+
+            .oop-evolution-row-lesson {
+              color: var(--oop-class);
+            }
+          }
+
+          .oop-evolution-row-lesson {
+            font-weight: 700;
+            color: var(--cds-text-helper);
+            min-width: 2rem;
+          }
+
+          .oop-evolution-row-label {
+            color: var(--cds-text-primary);
+          }
+
+          .oop-evolution-check {
+            margin-left: auto;
+            color: var(--oop-class);
+          }
+        }
+      }
+    }
+  }
+
+  /* 5. Debug Challenges */
+  .oop-debug-challenges {
+    .oop-debug-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1rem;
+
+      .oop-debug-item {
+        background: var(--cds-layer-01);
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 6px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .oop-debug-item-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+
+          h3 { margin: 0; font-size: 1.05rem; }
+        }
+
+        .oop-debug-guidance {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          background: var(--cds-layer-02);
+          padding: 1rem;
+          border-radius: 4px;
+
+          .oop-debug-hint {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--cds-text-secondary);
+          }
+        }
+
+        .oop-debug-solution {
+          margin-top: 0.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          background: rgba(66, 190, 101, 0.08);
+          padding: 1rem;
+          border-radius: 4px;
+          border-left: 3px solid var(--cds-support-success);
+
+          .oop-debug-solution-label {
+            margin: 0;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--cds-support-success);
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+
+  /* 6. Engineer Thinking */
+  .oop-engineer-thinking {
+    background: var(--cds-layer-01);
+    border-left: 4px solid var(--cds-link-primary);
+
+    .oop-engineer-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--cds-link-primary);
+      margin-bottom: 1rem;
+
+      h2 { margin: 0; color: var(--cds-text-primary); }
+    }
+
+    .oop-engineer-prompt {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--cds-text-primary);
+    }
+
+    .oop-engineer-note {
+      background: var(--cds-layer-02);
+      margin-top: 1rem;
+      p { margin: 0; font-size: 0.85rem; color: var(--cds-text-secondary); }
+    }
+  }
+}
+
+/* Light theme overrides for OOP */
+[data-carbon-theme="white"] .oop-development-pack {
+  --oop-class:        #6929c4;
+  --oop-object:       #0043ce;
+  --oop-method:       #007d79;
+  --oop-attribute:    #9f1853;
+  --oop-constructor:  #b28600;
+  --oop-inheritance:  #198038;
+  --oop-composition:  #ba4e00;
+  --oop-memory:       #750e13;
+  --oop-flash:        #161616;
+  --oop-abstract:     #491d8b;
+}
+
+@media (max-width: 62rem) {
+  .oop-development-pack {
+    .oop-growing-problem .oop-scaling-visualizer .oop-scaling-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .oop-memory-viewer .oop-memory-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+

@@ -1641,3 +1641,26 @@ test("Vercel serves client routes through the Vite application shell", async () 
   assert.equal(config.framework, "vite");
   assert.deepEqual(config.rewrites, [{ source: "/(.*)", destination: "/index.html" }]);
 });
+
+test("Module 5 publishes Lesson 5.1 (Why OOP?) adhering to OOP_STYLE_GUIDE.md", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-5.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-5-1.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-1LearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-1LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /id: "module-5-lesson-1"[\s\S]*developmentPack: oopWhyOopDevelopmentPack/);
+  assert.match(packSource, /kind: "oop-lesson-5-1"/);
+  assert.match(packSource, /class Farm:/);
+  assert.match(blocksSource, /function OopGrowingProblemTimeline/);
+  assert.match(blocksSource, /function OopClassObjectVisualizer/);
+  assert.match(blocksSource, /function OopMemoryBasicViewer/);
+  assert.match(blocksSource, /function OopObjectEvolutionPanel/);
+  assert.match(rendererSource, /kind !== "oop-lesson-5-1"/);
+  assert.match(stylesSource, /\.oop-development-pack/);
+  assert.match(stylesSource, /--oop-class:\s*#8a3ffc/);
+  assert.match(stylesSource, /--oop-object:\s*#33b1ff/);
+});
+

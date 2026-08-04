@@ -53,6 +53,7 @@ import { DictionaryLessonRenderer } from "@/components/learning/DictionaryLesson
 import { CollectionOperationsLessonRenderer } from "@/components/learning/CollectionOperationsLessonRenderer";
 import { ListTuplePracticeLessonRenderer } from "@/components/learning/ListTuplePracticeLessonRenderer";
 import { SetDictPracticeLessonRenderer } from "@/components/learning/SetDictPracticeLessonRenderer";
+import { OopLesson5_1LessonRenderer } from "@/components/learning/OopLesson5-1LessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -205,6 +206,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "set-dict-practice") {
     return <SetDictPracticeLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "oop-lesson-5-1") {
+    return <OopLesson5_1LessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

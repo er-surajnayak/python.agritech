@@ -1594,6 +1594,99 @@ export interface AssignmentContent {
   deliverables: string[];
 }
 
+// ─── Module 5 · OOP ──────────────────────────────────────────────────────────
+
+export interface OopScalingStep {
+  label: string;
+  count: number;
+  unit: string;
+  highlight?: boolean;
+}
+
+export interface OopClassAttributeDef {
+  name: string;
+  type: string;
+  isPrivate?: boolean;
+}
+
+export interface OopClassMethodDef {
+  name: string;
+  params: string;
+  returnType: string;
+}
+
+export interface OopMemoryObject {
+  instanceName: string;
+  className: string;
+  address: string;
+  attributes: Array<{ key: string; value: string }>;
+}
+
+export interface OopWhyOopDevelopmentPack {
+  kind: "oop-lesson-5-1";
+  prerequisite: string;
+  storyHook: string;
+  growingProblem: {
+    title: string;
+    body: string;
+    scalingSteps: OopScalingStep[];
+    scalingQuestion: string;
+    proceduralCode: string;
+    painPoints: string[];
+  };
+  whyOop: {
+    title: string;
+    body: string;
+    dataItems: string[];
+    behaviourItems: string[];
+    unificationNote: string;
+  };
+  realWorldAnalogy: {
+    title: string;
+    body: string;
+    blueprintSide: string[];
+    instanceSide: string[];
+  };
+  classConcept: {
+    title: string;
+    definition: string;
+    agritechContext: string;
+    attributes: OopClassAttributeDef[];
+    methods: OopClassMethodDef[];
+    code: string;
+  };
+  objectConcept: {
+    title: string;
+    definition: string;
+    instances: Array<{ name: string; represents: string }>;
+    code: string;
+    output: string;
+  };
+  multipleObjects: {
+    title: string;
+    body: string;
+    code: string;
+    independenceNote: string;
+  };
+  agritechExample: {
+    title: string;
+    body: string;
+    code: string;
+    discussion: string;
+  };
+  memoryObjects: OopMemoryObject[];
+  debugChallenges: DebugChallengeContent[];
+  engineerThinkingPrompt: string;
+  objectEvolutionState: {
+    lessonNumber: string;
+    title: string;
+    code: string;
+    note: string;
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export interface LessonDocument {
   id: string;
   moduleId: string;
@@ -1616,7 +1709,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

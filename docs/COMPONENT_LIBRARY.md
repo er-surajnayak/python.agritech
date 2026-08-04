@@ -233,7 +233,19 @@ This library catalogs the reusable React components in the Digital Interactive N
 - **Reusability**: Dictionaries lesson (4.6).
 - **Future Reuse**: Demonstrating object modeling, database record modifications, and API telemetry mapping.
 
+### `FunctionExplorer` (Collection Operations Edition)
+- **Purpose**: Interactive tool executing Python built-in functions (`len()`, `max()`, `min()`, `sum()`, `sorted()`, `reversed()`, `any()`, `all()`) simultaneously across List, Tuple, Set, and Dictionary parallel cards.
+- **Props**: `builtIns: Pack["builtIns"]`.
+- **Reusability**: Collection Operations lesson (4.7).
+- **Future Reuse**: Demonstrating polymorphic built-in functions across data structures, NumPy arrays, and pandas Series.
+
+### `MethodExplorer` (Collection Operations Edition)
+- **Purpose**: Dynamic method inspector allowing learners to select a collection type (List, Tuple, Set, Dictionary) and method, displaying signatures and behavioral breakdowns.
+- **Props**: `methodsSummary: Pack["methodsSummary"]`.
+- **Reusability**: Collection Operations lesson (4.7).
+- **Future Reuse**: General type methods reference dashboard.
+
 ---
 
 ## 5. Summary and Future Guidelines
-When creating new lessons (e.g. Lesson 4.7 Collection Operations & Built-ins), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.
+When creating new lessons (e.g. Lesson 4.8 Solved Programming Questions: List + Tuple), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.

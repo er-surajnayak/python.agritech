@@ -1523,7 +1523,8 @@ test("Module 4 publishes Why Collections and exposes the complete collection roa
     readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
   ]);
   assert.match(moduleSource, /id: "module-4-lesson-1"[\s\S]*isPlaceholder: false/);
-  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 16);
+  assert.match(moduleSource, /id: "module-4-lesson-7"[\s\S]*isPlaceholder: false/);
+  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 17);
   assert.match(moduleSource, /4\.10 Smart Farm Data Management Capstone/);
   assert.match(courseSource, /title: "Python Collections"/);
   assert.match(courseSource, /moduleIndex === 4[\s\S]*moduleFourLessonSummaries/);
@@ -1597,7 +1598,7 @@ test("Lesson 4.3 completes essential List operations and restructures the Module
   assert.match(moduleSource, /4\.4 Tuples/);
   assert.match(moduleSource, /4\.5 Sets/);
   assert.match(moduleSource, /4\.6 Dictionaries/);
-  assert.match(moduleSource, /4\.9 Collections in Real-World Applications/);
+  assert.match(moduleSource, /4\.9 Solved Programming Questions \(Set \+ Dictionary\)/);
   assert.match(packSource, /kind: "working-with-lists"/);
   for (const method of ["append", "insert", "extend", "remove", "pop", "clear", "index", "count", "sort", "reverse", "copy"]) assert.match(packSource, new RegExp(`name: "${method}"`));
   for (const builtIn of ["len", "max", "min", "sum", "sorted", "reversed", "any", "all"]) assert.match(packSource, new RegExp(`name: "${builtIn}"`));

@@ -5008,4 +5008,234 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* Module 4 · Lesson 4.7 Collection Operations & Built-in Functions */
+.collection-operations-development-pack {
+  --ops-accent: #0f62fe;
+
+  .operations-problem-block {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: var(--cds-layer-01);
+    border-radius: 4px;
+    border-left: 4px solid var(--cds-support-info);
+  }
+
+  .multi-payload-flex {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .payload-card {
+      background: var(--cds-layer-02);
+      border: 1px solid var(--cds-border-subtle-01);
+      padding: 1rem;
+
+      .payload-tag {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--cds-text-helper);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      code {
+        font-family: var(--cds-code-01-font-family);
+        font-size: 0.85rem;
+        word-break: break-all;
+      }
+    }
+  }
+
+  /* Function Explorer */
+  .function-tabs-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .function-detail-tile {
+    margin-top: 1rem;
+    background: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-01);
+
+    .func-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+
+      code {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--ops-accent);
+      }
+
+      span {
+        color: var(--cds-text-secondary);
+        font-size: 0.95rem;
+      }
+    }
+
+    .func-dict-note {
+      font-size: 0.875rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--cds-border-subtle-01);
+      color: var(--cds-text-secondary);
+    }
+  }
+
+  .collection-parallel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    .parallel-card {
+      min-width: 0;
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      code {
+        font-family: var(--cds-code-01-font-family);
+        font-size: 0.8rem;
+        background: var(--cds-layer-02);
+        padding: 0.4rem;
+        border-radius: 4px;
+        word-break: break-all;
+      }
+
+      .result-box {
+        margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--cds-border-subtle-01);
+
+        span {
+          display: block;
+          font-size: 0.7rem;
+          color: var(--cds-text-helper);
+        }
+
+        strong {
+          font-size: 1rem;
+          font-family: var(--cds-code-01-font-family);
+          color: var(--ops-accent);
+          word-break: break-word;
+        }
+      }
+    }
+  }
+
+  /* Method Explorer */
+  .type-selector-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .method-explorer-flex {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+
+    .methods-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .method-nav-btn {
+      padding: 0.75rem;
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 4px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      code {
+        font-family: var(--cds-code-01-font-family);
+        font-size: 0.9rem;
+        color: var(--cds-text-primary);
+      }
+
+      &:hover {
+        background: var(--cds-layer-selected-01);
+      }
+
+      &.is-selected {
+        background: var(--cds-layer-selected-01);
+        border-left: 4px solid var(--ops-accent);
+        code {
+          color: var(--ops-accent);
+          font-weight: bold;
+        }
+      }
+    }
+
+    .method-display-pane {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      justify-content: center;
+
+      span {
+        font-size: 0.75rem;
+        color: var(--cds-text-helper);
+        text-transform: uppercase;
+      }
+
+      code {
+        display: block;
+        padding: 0.75rem;
+        background: var(--cds-layer-02);
+        border-radius: 4px;
+        font-family: var(--cds-code-01-font-family);
+        font-size: 1rem;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.55;
+        color: var(--cds-text-secondary);
+      }
+    }
+  }
+}
+
+/* 5-column grid table rule extension */
+.collection-comparison-table--5col > div,
+.collection-comparison-table > div:has(> :nth-child(5)) {
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 2fr;
+}
+
+@media (max-width: 62rem) {
+  .collection-operations-development-pack {
+    .collection-parallel-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .method-explorer-flex {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 42rem) {
+  .collection-operations-development-pack {
+    .collection-parallel-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+
 

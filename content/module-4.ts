@@ -4,6 +4,7 @@ import { workingWithListsDevelopmentPack } from "@/content/development-packs/les
 import { tuplesDevelopmentPack } from "@/content/development-packs/lesson-4-4";
 import { setsDevelopmentPack } from "@/content/development-packs/lesson-4-5";
 import { dictionaryDevelopmentPack } from "@/content/development-packs/lesson-4-6";
+import { collectionOperationsDevelopmentPack } from "@/content/development-packs/lesson-4-7";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -540,6 +541,153 @@ export const moduleFourLessons: LessonDocument[] = [
       body: "Next, combine lists, tuples, sets, and dictionaries in advanced scenarios and explore built-in functions that work across all collections."
     },
     developmentPack: dictionaryDevelopmentPack
+  },
+  {
+    id: "module-4-lesson-7",
+    moduleId: "module-4",
+    number: "4.7",
+    title: "Collection Operations & Built-in Functions",
+    summary: "Master Python built-in functions (len, max, min, sum, sorted, reversed, any, all) across Lists, Tuples, Sets, and Dictionaries and compare collection-specific operations.",
+    durationMinutes: 150,
+    level: "Beginner to Intermediate",
+    introduction: {
+      title: "Universal operations across diverse Python data structures",
+      body: "Now that you understand Lists, Tuples, Sets, and Dictionaries individually, you will learn how to write efficient, clean Python code that leverages built-in functions to process multi-collection payloads."
+    },
+    objectives: [
+      "Apply Python built-in functions across Lists, Tuples, Sets, and Dictionaries",
+      "Identify which built-in operations operate on values versus keys",
+      "Understand the difference between built-in functions and collection methods",
+      "Compare core operations (Add, Update, Remove, Search, Sort, Copy) across collections",
+      "Process multi-API data payloads efficiently in agritech applications"
+    ],
+    whyThisMatters: {
+      title: "Clean, Pythonic multi-payload processing",
+      body: "Real-world systems receive data from multiple endpoints. Knowing which operations are universal prevents writing redundant loops and ensures robust software architecture."
+    },
+    industryMotivation: {
+      title: "Microservice Data Integration",
+      body: "In automated IoT smart farms, individual microservices return data as lists of numbers, fixed coordinate tuples, unique ID sets, or telemetry dictionaries. Universal functions allow unified monitoring.",
+      signal: "Built-in functions like len(), sum(), and sorted() operate across iterables, saving lines of code and reducing bugs."
+    },
+    concept: {
+      title: "Built-in Functions vs Collection Methods",
+      body: "Built-in functions belong to Python itself and accept multiple collection types. Collection methods belong to a specific data type and mutate or inspect that instance."
+    },
+    workflow: {
+      title: "Built-in Operations Pipeline",
+      description: "How Python built-ins inspect iterables, extract values or keys, and produce unified results.",
+      steps: [
+        { title: "1. Payload Arrival", description: "Collect raw lists, tuples, sets, or dictionaries from IoT farm endpoints." },
+        { title: "2. Type Inspection", description: "Identify whether the collection is ordered (list/tuple) or unordered (set/dict)." },
+        { title: "3. Universal Execution", description: "Execute len(), max(), min(), sum(), or sorted() across data elements." },
+        { title: "4. Unified Output", description: "Extract diagnostic indicators without writing custom manual loops." }
+      ]
+    },
+    agritechExample: {
+      title: "Smart Farm Telemetry Manager",
+      body: "This script aggregates telemetry from lists, tuples, sets, and dictionaries into a single automated diagnostic report."
+    },
+    playground: {
+      title: "Collection Operations & Built-ins Playground",
+      description: "Test Python built-in functions (len, max, min, sum, sorted, reversed, any, all) across lists, tuples, sets, and dictionaries.",
+      starterCode: `# Smart Farm Collections Telemetry
+sensor_ids = {101, 102, 103}
+moisture_readings = [25, 30, 28]
+gps_location = (17.385, 78.486)
+farm_info = {
+    "name": "Green Valley",
+    "crop": "Rice"
+}
+
+# Test built-in functions
+print("Total Sensors:", len(sensor_ids))
+print("Max Moisture:", max(moisture_readings))
+print("Sum Moisture:", sum(moisture_readings))
+print("Sorted Sensors:", sorted(sensor_ids))
+print("Farm Keys:", list(farm_info.keys()))
+`,
+      expectedOutcome: `Total Sensors: 3
+Max Moisture: 30
+Sum Moisture: 83
+Sorted Sensors: [101, 102, 103]
+Farm Keys: ['name', 'crop']`
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Universal Built-ins",
+        prompt: "Given a list `readings = [12, 45, 23, 67]`, write code to calculate the length, maximum value, and sum using built-in functions.",
+        guidance: "Use `len(readings)`, `max(readings)`, and `sum(readings)`."
+      },
+      {
+        level: "Medium",
+        title: "Set Sorting & Dict Values Sum",
+        prompt: "Given `sensor_set = {30, 10, 20}` and `yield_dict = {'Field A': 120, 'Field B': 200}`, produce a sorted list of sensor IDs and calculate total crop yield.",
+        guidance: "Call `sorted(sensor_set)` for the set, and `sum(yield_dict.values())` for the dictionary values."
+      },
+      {
+        level: "Challenge",
+        title: "Multi-Collection Telemetry Summary",
+        prompt: "Given a list of farm names `farms = ['Alpha', 'Beta', 'Gamma']`, write a script that applies at least 5 built-in functions and 3 collection methods to print a farm summary.",
+        guidance: "Combine `len()`, `sorted()`, `max()`, `any()`, `all()` with list methods like `.append()` or dictionary `.items()`."
+      }
+    ],
+    quiz: [
+      {
+        title: "Dictionary Built-in Behavior",
+        question: "What does calling `max(my_dict)` on a dictionary return by default?",
+        options: [
+          "The maximum value stored inside the dictionary",
+          "The key with the maximum value",
+          "The maximum key evaluated alphabetically or numerically",
+          "A KeyError exception"
+        ],
+        note: "Built-in functions inspect keys by default.",
+        correctOptionIndex: 2,
+        explanation: "Built-in functions like max(), min(), and sorted() inspect dictionary KEYS by default. To search values, pass my_dict.values()."
+      },
+      {
+        title: "Reversed Compatibility",
+        question: "Which collection type does NOT support the built-in `reversed()` function?",
+        options: [
+          "List",
+          "Tuple",
+          "Set",
+          "Both List and Tuple"
+        ],
+        note: "Reversed requires ordered sequence indexing.",
+        correctOptionIndex: 2,
+        explanation: "Sets are unordered collections without sequence position indices, so reversed() cannot be applied to a set directly."
+      }
+    ],
+    assignment: {
+      title: "Multi-Collection Smart Telemetry Engine",
+      brief: "Build an automated Python diagnostic engine that consumes telemetry payloads in List, Tuple, Set, and Dictionary formats.",
+      deliverables: [
+        "Script applying len(), max(), min(), and sum() across diverse payloads",
+        "Demonstrated use of max(dict.values()) vs max(dict.keys())",
+        "Verification report showcasing sorted() conversions and method operations"
+      ]
+    },
+    summarySection: {
+      title: "Universal built-in operations streamline Python programming",
+      body: "You now understand how to apply Python built-in functions across all four major collection types, differentiate built-ins from collection methods, and select optimal operations.",
+      items: ["Universal len()", "max() and min() on keys vs values", "sum(dict.values())", "sorted() creating new lists", "Sequence restriction of reversed()"]
+    },
+    keyTakeaways: [
+      "Built-in functions belong to Python runtime and operate across iterable collections",
+      "Methods belong exclusively to specific collection types and are called via dot notation",
+      "max(), min(), and sorted() operate on dictionary keys by default",
+      "To sum dictionary values, explicitly pass d.values() to sum()",
+      "reversed() requires ordered sequence indexing (List and Tuple)",
+      "Understanding operations capability avoids runtime TypeErrors and duplicate loops"
+    ],
+    whatsNext: {
+      title: "Lesson 4.8 · Solved Programming Questions (List + Tuple)",
+      body: "Next, solve real-world agritech programming challenges using Lists and Tuples with step-by-step dry runs and complexity breakdowns."
+    },
+    developmentPack: collectionOperationsDevelopmentPack
   }
 ];
 
@@ -550,8 +698,9 @@ export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-4", moduleId: "module-4", order: 4, title: "4.4 Tuples", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 Sets", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-ins", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
-  { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Choosing the Right Collection", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
-  { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Collections in Real-World Applications", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-in Functions", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
+  { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Solved Programming Questions (List + Tuple)", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Solved Programming Questions (Set + Dictionary)", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-10", moduleId: "module-4", order: 10, title: "4.10 Smart Farm Data Management Capstone", estimatedMinutes: 240, status: "not-started" as const, isPlaceholder: true },
 ];
+

@@ -49,6 +49,7 @@ import { PythonListsLessonRenderer } from "@/components/learning/PythonListsLess
 import { WorkingWithListsLessonRenderer } from "@/components/learning/WorkingWithListsLessonRenderer";
 import { TupleLessonRenderer } from "@/components/learning/TupleLessonRenderer";
 import { SetsLessonRenderer } from "@/components/learning/SetsLessonRenderer";
+import { DictionaryLessonRenderer } from "@/components/learning/DictionaryLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -189,6 +190,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "sets") {
     return <SetsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "dictionary") {
+    return <DictionaryLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

@@ -1436,6 +1436,52 @@ export interface SetsDevelopmentPack {
   engineerScenario: { title: string; body: string; question: string };
 }
 
+export interface DictionaryDevelopmentPack {
+  kind: "dictionary";
+  prerequisite: string;
+  story: LessonTextSection & {
+    problem: { title: string; body: string; listSnippet: string; listAccessSnippet: string };
+  };
+  whatIsDict: LessonTextSection & { characteristics: string[] };
+  creation: LessonTextSection & {
+    examples: Array<{ label: string; code: string; note: string }>;
+  };
+  accessing: LessonTextSection & {
+    rows: Array<{ method: string; example: string; result: string; behavior: string }>;
+  };
+  updating: LessonTextSection & { code: string; output: string };
+  adding: LessonTextSection & { code: string; output: string };
+  removing: LessonTextSection & {
+    rows: Array<{ method: string; code: string; behavior: string }>;
+  };
+  builtIns: {
+    title: string;
+    body: string;
+    rows: Array<{ function: string; purpose: string; example: string; output: string }>;
+  };
+  methods: {
+    title: string;
+    body: string;
+    rows: Array<{ method: string; purpose: string; example: string; output: string }>;
+  };
+  iteration: {
+    title: string;
+    body: string;
+    examples: Array<{ label: string; code: string; output: string }>;
+  };
+  comparison: {
+    title: string;
+    body: string;
+    rows: Array<{ collection: string; usage: string; mapping: string }>;
+  };
+  agritech: LessonTextSection & {
+    code: string;
+    output: string;
+  };
+  debugChallenges: DebugChallengeContent[];
+  engineerScenario: { title: string; body: string; question: string };
+}
+
 export interface AssignmentContent {
   title: string;
   brief: string;
@@ -1464,7 +1510,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

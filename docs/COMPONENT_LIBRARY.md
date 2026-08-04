@@ -227,7 +227,13 @@ This library catalogs the reusable React components in the Digital Interactive N
 - **Reusability**: Built-ins, algorithms, and logical lessons.
 - **Future Reuse**: Visualizing list resizing, dictionary hash indexing, or database transactions.
 
+### `DictionaryVisualizer`
+- **Purpose**: Interactive dictionary visualizer showing active key-value mappings. Supports selector rows, type inspections, dynamic key additions/updates, and key deletion.
+- **Props**: None (maintains internal telemetry state).
+- **Reusability**: Dictionaries lesson (4.6).
+- **Future Reuse**: Demonstrating object modeling, database record modifications, and API telemetry mapping.
+
 ---
 
 ## 5. Summary and Future Guidelines
-When creating new lessons (e.g. Lesson 4.6 Dictionaries), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.
+When creating new lessons (e.g. Lesson 4.7 Collection Operations & Built-ins), developers should prioritize **reusing existing blocks** from section 2, mapping coding workspaces to **`CodePlayground`** (section 3), and building custom visualizers by subclassing or modeling components from **section 4**.

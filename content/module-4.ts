@@ -3,6 +3,7 @@ import { pythonListsDevelopmentPack } from "@/content/development-packs/lesson-4
 import { workingWithListsDevelopmentPack } from "@/content/development-packs/lesson-4-3";
 import { tuplesDevelopmentPack } from "@/content/development-packs/lesson-4-4";
 import { setsDevelopmentPack } from "@/content/development-packs/lesson-4-5";
+import { dictionaryDevelopmentPack } from "@/content/development-packs/lesson-4-6";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -372,6 +373,174 @@ export const moduleFourLessons: LessonDocument[] = [
     },
     developmentPack: setsDevelopmentPack,
   },
+  {
+    id: "module-4-lesson-6",
+    moduleId: "module-4",
+    number: "4.6",
+    title: "Dictionaries: Key-Value Collections",
+    summary: "Store labeled information as key-value pairs, access values safely using get() to avoid crashes, update and add data dynamically, apply key-value methods, and map collections to real-world schemas.",
+    durationMinutes: 150,
+    level: "Beginner",
+    introduction: {
+      title: "Introduce labeled structures for complex objects",
+      body: "By now you can manipulate lists, tuples, and sets. This lesson introduces Dictionaries, enabling you to organize measurements using clear descriptive labels instead of numeric index positions."
+    },
+    objectives: [
+      "Understand why dictionaries exist and why lists are not enough for objects",
+      "Create dictionaries using curly braces {} and dict()",
+      "Access values using square brackets [] and the safe get() method",
+      "Update existing values and add new key-value pairs",
+      "Remove key-value pairs using pop(), del, and clear()",
+      "Apply built-in functions len(), sorted(), min(), max(), any(), and all()",
+      "Apply dictionary methods like keys(), values(), items(), and update()",
+      "Iterate through keys, values, and items",
+      "Explain dictionaries relevance to JSON, APIs, and Data Science",
+      "Identify the best collection structure using the real-world mapping matrix"
+    ],
+    whyThisMatters: {
+      title: "Clear labels make robust programs",
+      body: "When code refers to sensor['battery'] instead of sensor[4], it is self-documenting and resilient. Changes in layout or additions of API elements do not break index references."
+    },
+    industryMotivation: {
+      title: "Dictionaries are the structure of APIs and databases",
+      body: "Every JSON response from an API, every MongoDB record, and every spreadsheet row parsed in pandas matches a dictionary structure. Knowing dictionaries is vital for data exchange.",
+      signal: "This lesson teaches core key-value operations, safe get(), view methods, iteration preview, and mapping. Dictionary nesting, default dicts, and counter libraries are deferred."
+    },
+    concept: {
+      title: "A Dictionary is a mutable collection of labeled values",
+      body: "Keys map to values. Keys must be unique and immutable, while values can repeat and mutate. Lookups operate on keys in O(1) constant time.",
+      items: ["Key-value mapping", "Mutable updates", "Unique keys", "Constant lookup speed", "JSON resemblance"]
+    },
+    workflow: {
+      title: "Create, query, update, and manage asset records",
+      description: "Perform CRUD operations on weather stations and sensor nodes.",
+      steps: [
+        { title: "Define Dictionary", description: "Use curly braces to map keys to values: {'id': 101, 'crop': 'Rice'}." },
+        { title: "Query Safely", description: "Use get('key', default) to retrieve values without raising KeyError." },
+        { title: "Mutate Data", description: "Assign new values directly to modify or insert key-value pairs." },
+        { title: "Extract Views", description: "Retrieve dict.keys(), dict.values(), or dict.items() views." }
+      ]
+    },
+    agritechExample: {
+      title: "Modeling a smart crop sensor node",
+      body: "Representing crop, moisture level, temperature, and battery telemetry as a single structured dictionary that can update its metrics dynamically."
+    },
+    playground: {
+      title: "Smart Farm Asset Laboratory",
+      description: "Edit dictionary parameters, access values, add fields, and call keys() or values(). The supplement panel visualizes the dictionary as active key-value cards and JSON blocks.",
+      starterCode: "sensor = {\n    \"id\": 101,\n    \"crop\": \"Rice\",\n    \"moisture\": 24,\n    \"temperature\": 31,\n    \"battery\": 82,\n    \"status\": \"Active\"\n}\n\n# Access crop name\nprint(\"Crop:\", sensor[\"crop\"])\n\n# Safely access battery\nprint(\"Battery:\", sensor.get(\"battery\"))\n\n# Update status\nsensor[\"status\"] = \"Maintenance\"\n\n# Add new coordinate\nsensor[\"lat_lng\"] = (18.52, 73.85)\n\nprint(\"Keys:\", list(sensor.keys()))\nprint(\"Updated:\", sensor)",
+      expectedOutcome: "Python prints the crop name 'Rice', battery 82, updates status to 'Maintenance', appends the location tuple, and lists the dictionary keys."
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Create a crop info card",
+        prompt: "Create a dictionary containing crop name, sowing month, and watering days. Print the complete dictionary.",
+        guidance: "Use descriptive strings as keys: e.g. 'name', 'sowed', 'watering_cycle'."
+      },
+      {
+        level: "Medium",
+        title: "Model a weather station",
+        prompt: "Define a weather station dictionary. Safely query the humidity and battery levels. Supply a default battery level of 100 if missing.",
+        guidance: "Use station.get('battery', 100) to supply the default value."
+      },
+      {
+        level: "Challenge",
+        title: "Manage farm registry updates",
+        prompt: "Create a farm dictionary, update its crop type, add a temperature reading, and delete the location coordinate using pop().",
+        guidance: "Apply farm['crop'] = 'Wheat' for updating, and farm.pop('location') for removing."
+      }
+    ],
+    quiz: [
+      {
+        title: "Question 1",
+        question: "What does a Python dictionary store?",
+        options: ["Unordered elements without labels", "Ordered values indexed only by integers", "Key-value pairs where keys map to values", "Unique items only, with no values"],
+        correctOptionIndex: 2,
+        note: "Dictionaries map descriptive keys to values.",
+        explanation: "Every element in a dictionary is a pair: key and value."
+      },
+      {
+        title: "Question 2",
+        question: "Why is dict.get('key') preferred over dict['key'] for lookup?",
+        options: [
+          "It is faster",
+          "It returns None instead of raising a KeyError if the key is missing",
+          "It automatically creates the key in the dictionary",
+          "It returns a list of keys"
+        ],
+        correctOptionIndex: 1,
+        note: ".get() prevents program crashes on missing keys.",
+        explanation: "Square bracket lookups raise a KeyError if a key is not found, while get() handles it safely."
+      },
+      {
+        title: "Question 3",
+        question: "What happens if you assign a value to a key that does not exist in the dictionary?",
+        options: [
+          "A KeyError is raised",
+          "The dictionary is not modified",
+          "The new key-value pair is automatically added to the dictionary",
+          "The entire dictionary is cleared"
+        ],
+        correctOptionIndex: 2,
+        note: "Dictionaries grow dynamically.",
+        explanation: "Assigning to a new key creates the key-value mapping."
+      },
+      {
+        title: "Question 4",
+        question: "What does the clear() method do to a dictionary?",
+        options: [
+          "Removes only the last element",
+          "Removes all elements, leaving it empty",
+          "Sorts the keys alphabetically",
+          "Creates a backup copy"
+        ],
+        correctOptionIndex: 1,
+        note: "clear() resets the dictionary.",
+        explanation: "clear() removes all key-value pairs, resulting in an empty dictionary {}."
+      },
+      {
+        title: "Question 5",
+        question: "By default, what do max() and min() inspect in a dictionary?",
+        options: ["The values", "The keys", "Both keys and values", "They raise an error"],
+        correctOptionIndex: 1,
+        note: "Built-ins default to dictionary keys.",
+        explanation: "Built-in functions operate on keys unless applied to dict.values() or dict.items() explicitly."
+      }
+    ],
+    assignment: {
+      title: "Implement a Smart Weather Registry",
+      brief: "Write a program that initializes a weather station asset dictionary, demonstrates square brackets vs get() access, updates readings, adds dynamic features, pop() tags, and compares collection types in a markdown report.",
+      deliverables: [
+        "Initialize weather station dictionary",
+        "Retrieve data using square brackets and get()",
+        "Add rain telemetry and update battery levels",
+        "Remove a field using pop()",
+        "sorted() keys and values list outputs",
+        "A comparison matrix outlining Lists, Tuples, Sets, and Dictionaries"
+      ]
+    },
+    summarySection: {
+      title: "Dictionaries bridge program logic to real-world data structures",
+      body: "You now map labeled keys to values, perform safe lookups, mutate fields, delete keys, sort views, and understand how dictionaries represent API outputs and database records.",
+      items: ["Key-value mapping", "Safe get() access", "Dynamic additions", "pop and del", "Keys/Values/Items views", "JSON mapping"]
+    },
+    keyTakeaways: [
+      "Dictionaries store data as key-value pairs, providing descriptive labels",
+      "Keys must be unique; values can repeat and can be of any type",
+      "Square brackets retrieve values but raise a KeyError if the key is missing",
+      "get() safe lookups prevent program crashes, returning None or custom defaults",
+      "Assigning to a new key automatically grows the dictionary",
+      "pop() and del remove keys, while clear() empties the dictionary",
+      "max(), min(), and sorted() operate on keys by default",
+      "Dictionaries are the Python equivalent of JSON objects and database records"
+    ],
+    whatsNext: {
+      title: "Lesson 4.7 · Collection Operations & Built-ins",
+      body: "Next, combine lists, tuples, sets, and dictionaries in advanced scenarios and explore built-in functions that work across all collections."
+    },
+    developmentPack: dictionaryDevelopmentPack
+  }
 ];
 
 export const moduleFourLessonSummaries = [
@@ -380,7 +549,7 @@ export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-3", moduleId: "module-4", order: 3, title: "4.3 Working with Lists", estimatedMinutes: 180, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-4", moduleId: "module-4", order: 4, title: "4.4 Tuples", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-5", moduleId: "module-4", order: 5, title: "4.5 Sets", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-ins", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Choosing the Right Collection", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
   { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Collections in Real-World Applications", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },

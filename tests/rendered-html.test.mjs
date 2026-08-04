@@ -1523,7 +1523,7 @@ test("Module 4 publishes Why Collections and exposes the complete collection roa
     readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
   ]);
   assert.match(moduleSource, /id: "module-4-lesson-1"[\s\S]*isPlaceholder: false/);
-  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 15);
+  assert.equal((moduleSource.match(/id: "module-4-lesson-/g) ?? []).length, 16);
   assert.match(moduleSource, /4\.10 Smart Farm Data Management Capstone/);
   assert.match(courseSource, /title: "Python Collections"/);
   assert.match(courseSource, /moduleIndex === 4[\s\S]*moduleFourLessonSummaries/);

@@ -1,4 +1,5 @@
 import { oopWhyOopDevelopmentPack } from "@/content/development-packs/lesson-5-1";
+import { oopConstructorsDevelopmentPack } from "@/content/development-packs/lesson-5-2";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -233,6 +234,235 @@ print("All sensors independent:", temperature_sensor is moisture_sensor is False
     },
     developmentPack: oopWhyOopDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-2",
+    moduleId: "module-5",
+    number: "5.2",
+    title: "Constructors (__init__) & self",
+    summary:
+      "Understand why empty objects are insufficient, master __init__() for automatic object initialization, demystify the self keyword, and create Farm and Sensor objects that carry their own independent state.",
+    durationMinutes: 165,
+    level: "Beginner",
+    introduction: {
+      title: "Giving every object its own identity",
+      body: "In Lesson 5.1, we created Farm objects, but they were empty. Green Valley Farm and Sunrise Farm looked identical. This lesson teaches constructors (__init__) and the self keyword — the mechanisms Python uses to configure every new object with its own unique data the moment it is born.",
+    },
+    objectives: [
+      "Understand why constructors are needed for reliable object creation",
+      "Explain the exact role and execution flow of __init__()",
+      "Demystify the self parameter using real-world analogies",
+      "Create objects configured with distinct instance variables",
+      "Differentiate between local variables and instance variables (self.attribute)",
+      "Visualize object initialization and state in memory",
+    ],
+    whyThisMatters: {
+      title: "Constructors guarantee valid objects in production",
+      body: "In production software, creating an uninitialized object leads to crashes and NullPointer/AttributeError bugs. Constructors guarantee that every object starts life fully configured with all required fields — like a database record or REST API resource.",
+      items: [
+        "Django models use __init__ to set field defaults",
+        "FastAPI Pydantic schemas validate field values during initialization",
+        "scikit-learn models configure hyperparameters in __init__()",
+        "Smart Farm sensors set sensor_id and default status in __init__()",
+      ],
+    },
+    industryMotivation: {
+      title: "The factory setup script for every Python object",
+      body: "Whether initializing a PyTorch model, a database connection pool, or an IoT sensor node, constructors are the universal gateway for setting initial state. Every professional Python class relies on __init__.",
+      signal:
+        "__init__() is used in 100% of non-trivial Python classes in production.",
+    },
+    concept: {
+      title: "__init__() sets up the object; self refers to IT",
+      body: "When you call Farm('Green Valley', 'Rice'), Python creates a blank object, passes it as self to __init__(), and assigns self.name = 'Green Valley' and self.crop = 'Rice'. The instance variables live on THAT specific object in memory.",
+      items: [
+        "__init__() runs automatically on creation",
+        "self is passed automatically by Python — don't pass it yourself",
+        "self.name creates an instance variable on THAT object",
+        "Without self., a variable inside __init__ vanishes when __init__ finishes",
+        "Default parameter values (e.g. status='Active') simplify initialization",
+      ],
+    },
+    workflow: {
+      title: "The 4-step constructor execution flow",
+      description: "Trace what happens when farm = Farm('Green Valley', 'Rice') runs.",
+      steps: [
+        {
+          title: "Memory allocation",
+          description: "Python allocates a blank memory box for the new Farm object.",
+        },
+        {
+          title: "Pass to __init__",
+          description: "Python passes the new object as self, along with 'Green Valley' and 'Rice'.",
+        },
+        {
+          title: "Attach instance variables",
+          description: "self.name = name and self.crop = crop write data onto the memory box.",
+        },
+        {
+          title: "Return object reference",
+          description: "The fully initialized object reference is assigned to variable farm.",
+        },
+      ],
+    },
+    agritechExample: {
+      title: "Smart Farm Sensors with Unique Identities",
+      body: "Every sensor on the farm has a unique ID, location, and initial reading. Using a constructor ensures no sensor can be created without these critical parameters.",
+    },
+    playground: {
+      title: "Initialize Farm and Sensor Objects with __init__",
+      description:
+        "Modify the constructor arguments, create multiple Farm and Sensor instances, and inspect their instance variables.",
+      starterCode: `# Step 1: Define Farm class with __init__
+class Farm:
+    def __init__(self, name, crop, temperature):
+        self.name = name
+        self.crop = crop
+        self.temperature = temperature
+        print(f"⚡ Initialized farm: {self.name}")
+
+# Step 2: Create initialized farm objects
+green_valley = Farm("Green Valley", "Rice", 31.5)
+sunrise_farm = Farm("Sunrise Farm", "Wheat", 28.0)
+
+# Step 3: Access instance variables using dot notation
+print("\\n--- Farm Summary ---")
+print(f"Farm 1: {green_valley.name} | Crop: {green_valley.crop} | Temp: {green_valley.temperature}°C")
+print(f"Farm 2: {sunrise_farm.name} | Crop: {sunrise_farm.crop} | Temp: {sunrise_farm.temperature}°C")
+
+# Step 4: Define Sensor class with default status
+class Sensor:
+    def __init__(self, sensor_id, location, reading):
+        self.sensor_id = sensor_id
+        self.location = location
+        self.reading = reading
+        self.status = "Active"  # Default value
+
+temp_sensor = Sensor("T-101", "Field A", 31.4)
+soil_sensor = Sensor("M-202", "Greenhouse B", 45.0)
+
+print(f"\\nSensor [{temp_sensor.sensor_id}] at {temp_sensor.location}: {temp_sensor.reading}°C ({temp_sensor.status})")`,
+      expectedOutcome:
+        "Prints initialization messages for both farms, then displays farm summaries and sensor details. The Object Panel displays instance variables for all 4 objects.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Crop class constructor",
+        prompt:
+          "Create a Crop class whose __init__ takes crop_name and growth_days. Create two Crop objects ('Rice', 120) and ('Wheat', 90) and print their attributes.",
+        guidance:
+          "Use def __init__(self, crop_name, growth_days): and assign self.crop_name = crop_name.",
+      },
+      {
+        level: "Medium",
+        title: "Farmer profile class",
+        prompt:
+          "Create a Farmer class storing name, village, and acres_managed. Include a default status='Active'. Instantiate three farmers and print a summary line for each.",
+        guidance:
+          "Add status='Active' inside __init__ (self.status = 'Active') so it doesn't need to be passed as an argument.",
+      },
+      {
+        level: "Challenge",
+        title: "WeatherStation registration system",
+        prompt:
+          "Create a WeatherStation class with station_id, temperature, and humidity. Create two station objects. Print both. Then modify station1's temperature directly (station1.temperature = 34.0) and verify station2 remains unchanged.",
+        guidance:
+          "This proves that changing an attribute on station1 mutates only station1's memory box.",
+      },
+    ],
+    quiz: [
+      {
+        title: "Constructor method name",
+        question: "Which method is called automatically when an object is created?",
+        options: ["__start__()", "__init__()", "__create__()", "__setup__()"],
+        correctOptionIndex: 1,
+        note: "__init__() is Python's standard constructor method.",
+        explanation:
+          "__init__() (double underscores before and after) is automatically invoked when ClassName() is called.",
+      },
+      {
+        title: "The self parameter",
+        question: "What does self refer to inside a class method?",
+        options: [
+          "The Python interpreter",
+          "The Class blueprint",
+          "The current object instance being created or accessed",
+          "The global scope",
+        ],
+        correctOptionIndex: 2,
+        note: "self refers to THAT specific object instance.",
+        explanation:
+          "self is a reference to the specific object instance currently executing the method.",
+      },
+      {
+        title: "Instance variable syntax",
+        question: "Which line correctly creates an instance variable attached to the object?",
+        options: [
+          "name = name",
+          "self.name = name",
+          "object.name = name",
+          "var name = name",
+        ],
+        correctOptionIndex: 1,
+        note: "self. establishes an attribute on the instance.",
+        explanation:
+          "Writing self.name = name attaches the value to the object as an instance variable. Writing name = name creates a local variable that vanishes.",
+      },
+      {
+        title: "Passing arguments",
+        question: "If def __init__(self, name, crop): takes 3 parameters in code, how many arguments do you pass when calling Farm(...)?",
+        options: [
+          "3 (self, name, crop)",
+          "2 (name, crop)",
+          "1 (name)",
+          "0",
+        ],
+        correctOptionIndex: 1,
+        note: "Python passes self automatically behind the scenes.",
+        explanation:
+          "You pass only 2 arguments (name, crop). Python supplies the new object instance as self automatically.",
+      },
+    ],
+    assignment: {
+      title: "Smart Farm Domain Setup — Constructors & Identity",
+      brief:
+        "Implement constructors for the three core Smart Farm classes: Farm, Sensor, and Farmer. Ensure each class accepts required parameters, sets sensible defaults, and provides formatted summaries.",
+      deliverables: [
+        "Implement class Farm: __init__(self, name, crop, temperature, humidity=65.0)",
+        "Implement class Sensor: __init__(self, sensor_id, location, reading, sensor_type='Temperature')",
+        "Implement class Farmer: __init__(self, farmer_id, name, location, experience_years)",
+        "Instantiate 2 Farm objects, 3 Sensor objects, and 2 Farmer objects with realistic agritech data",
+        "Print formatted multi-line summaries for each object using dot notation (e.g. farm1.name)",
+        "Mutate one attribute on farm1 (e.g. farm1.temperature = 33.0) and print both farms to demonstrate independent state",
+        "Write 5 lines of comments explaining: why constructors are needed, what self represents, why self.attribute is required, how default arguments work, and why changing farm1 does not affect farm2",
+      ],
+    },
+    summarySection: {
+      title: "Constructors and self mastered",
+      body: "You moved from empty objects to fully initialized entities with unique identity and state. You mastered __init__(), demystified self, learned to create instance variables, and verified that every object maintains its own data in memory.",
+      items: [
+        "__init__() runs automatically on object creation to initialize state",
+        "self represents the current object instance (like 'YOUR' paper in school)",
+        "self.attribute creates an instance variable that persists on the object",
+        "Without self., variables are local and vanish when __init__() finishes",
+        "Python passes self automatically — you pass only the remaining arguments",
+        "Constructors ensure objects are never born in an invalid or empty state",
+      ],
+    },
+    keyTakeaways: [
+      "__init__() is Python's constructor — it runs automatically when an object is instantiated",
+      "self refers to the current object instance being initialized or accessed",
+      "self.name = name creates an instance variable attached to THAT object",
+      "Every object created from a class gets its own independent set of instance variables",
+      "Python automatically passes the object as self — you pass only the extra parameters",
+      "Constructors can set both passed arguments and default values (e.g. self.status = 'Active')",
+    ],
+    whatsNext: {
+      title: "Lesson 5.3 · Instance Methods, Class Variables & Class Methods",
+      body: "Now that objects carry their own data, they need to perform actions! In Lesson 5.3 we add instance methods like display_info() and update_temperature(). We will also introduce class variables (like total_farms) to track data across all farms, and class methods (@classmethod) to operate on the blueprint itself.",
+    },
+    developmentPack: oopConstructorsDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -250,9 +480,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 2,
     title: "5.2 Constructors & Instance Variables",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 165,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-3",

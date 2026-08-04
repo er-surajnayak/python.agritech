@@ -6337,3 +6337,340 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+
+/* Lesson 5.2 Specific Styles */
+.oop-lesson-5-2-pack {
+  /* 1. Constructor Flow Visualizer */
+  .oop-constructor-flow {
+    .oop-cfv-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.5rem;
+
+      .oop-cfv-code-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .oop-cfv-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .oop-cfv-step-badge {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--cds-text-secondary);
+          }
+        }
+
+        .oop-cfv-code-display {
+          background: var(--cds-layer-02);
+          padding: 1rem;
+          border-radius: 6px;
+          border: 1px solid var(--cds-border-subtle-01);
+
+          pre { margin: 0; }
+          code {
+            font-family: var(--cds-code-01-font-family, monospace);
+            font-size: 0.85rem;
+
+            .oop-cfv-line--active {
+              background: rgba(241, 194, 27, 0.2);
+              border-left: 3px solid var(--oop-constructor);
+              display: inline-block;
+              width: 100%;
+              padding-left: 0.25rem;
+              font-weight: 700;
+            }
+          }
+        }
+
+        .oop-cfv-explanation {
+          background: var(--cds-layer-02);
+          padding: 0.85rem 1rem;
+          border-radius: 4px;
+          border-left: 3px solid var(--oop-constructor);
+
+          .oop-cfv-explanation-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--cds-text-primary);
+            margin: 0 0 0.3rem 0;
+          }
+
+          .oop-cfv-explanation-text {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--cds-text-secondary);
+          }
+        }
+
+        .oop-cfv-controls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+
+      .oop-cfv-state-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .oop-cfv-state-title {
+          font-weight: 700;
+          font-size: 0.85rem;
+          color: var(--cds-text-primary);
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .oop-cfv-self-tag {
+            background: var(--oop-constructor);
+            color: #161616;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-family: var(--cds-code-01-font-family, monospace);
+          }
+        }
+
+        .oop-cfv-state-card {
+          background: var(--cds-layer-02);
+          border: 2px solid var(--oop-object);
+          border-radius: 6px;
+          overflow: hidden;
+
+          .oop-cfv-card-header {
+            background: rgba(51, 177, 255, 0.15);
+            padding: 0.6rem 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cds-border-subtle-01);
+
+            .oop-cfv-card-id {
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-weight: 700;
+              font-size: 0.8rem;
+              color: var(--oop-object);
+            }
+          }
+
+          .oop-cfv-card-attributes {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .oop-cfv-attr-row {
+              display: flex;
+              gap: 0.5rem;
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-size: 0.85rem;
+
+              .oop-cfv-attr-key { color: var(--oop-attribute); font-weight: 600; }
+              .oop-cfv-attr-colon { color: var(--cds-text-helper); }
+              .oop-cfv-attr-val {
+                color: var(--cds-text-helper);
+                font-style: italic;
+
+                &.oop-cfv-attr-val--set {
+                  color: var(--cds-text-primary);
+                  font-style: normal;
+                  font-weight: 600;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* 2. Self Explorer */
+  .oop-self-explorer {
+    .oop-self-analogy-tile {
+      background: var(--cds-layer-02);
+      border-left: 4px solid var(--oop-class);
+      margin: 1rem 0 1.5rem 0;
+
+      h3 { margin-top: 0; margin-bottom: 0.75rem; }
+      .oop-analogy-prompt { color: var(--cds-text-primary); margin-bottom: 0.4rem; }
+      .oop-analogy-action { color: var(--cds-text-primary); margin-bottom: 0.75rem; }
+      .oop-analogy-lesson {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--cds-layer-01);
+        padding: 0.75rem;
+        border-radius: 4px;
+        p { margin: 0; font-weight: 600; color: var(--cds-text-primary); }
+      }
+    }
+
+    .oop-self-interactive {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+
+      h3 { margin-top: 0; margin-bottom: 0.25rem; }
+      p { color: var(--cds-text-secondary); margin-bottom: 1rem; }
+
+      .oop-self-buttons {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+
+        .oop-self-btn {
+          flex: 1;
+          padding: 0.75rem;
+          background: var(--cds-layer-02);
+          border: 2px solid var(--cds-border-subtle-01);
+          border-radius: 6px;
+          color: var(--cds-text-primary);
+          font-family: var(--cds-code-01-font-family, monospace);
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover { border-color: var(--oop-object); }
+          &.active {
+            border-color: var(--oop-object);
+            background: rgba(51, 177, 255, 0.1);
+            font-weight: 700;
+          }
+        }
+      }
+
+      .oop-self-display-box {
+        background: var(--cds-layer-02);
+        padding: 1rem;
+        border-radius: 6px;
+
+        .oop-self-resolved { font-weight: 600; color: var(--cds-text-primary); margin: 0 0 0.5rem 0; }
+        .oop-self-mapping {
+          font-family: var(--cds-code-01-font-family, monospace);
+          color: var(--oop-object);
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+        }
+        .oop-self-effect { margin: 0; color: var(--cds-text-secondary); font-size: 0.9rem; }
+      }
+    }
+
+    .oop-self-rules {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: var(--cds-layer-01);
+          padding: 0.75rem;
+          border-radius: 4px;
+          border-left: 3px solid var(--cds-support-success);
+        }
+      }
+    }
+  }
+
+  /* 3. Instance Variable Inspector */
+  .oop-instance-inspector {
+    .oop-output-box {
+      margin: 1rem 0;
+      background: var(--cds-layer-02);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+
+      .oop-output-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--cds-text-helper);
+        text-transform: uppercase;
+      }
+      pre { margin: 0.4rem 0 0 0; font-family: var(--cds-code-01-font-family, monospace); color: var(--oop-method); }
+    }
+
+    .oop-instance-exp { color: var(--cds-text-secondary); font-style: italic; }
+
+    .oop-memory-state-section {
+      margin-top: 1.5rem;
+
+      .oop-memory-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.25rem;
+        margin-top: 1rem;
+
+        .oop-memory-instance-card {
+          background: var(--cds-layer-01);
+          border: 2px solid var(--oop-object);
+          border-radius: 6px;
+          overflow: hidden;
+
+          .oop-mic-header {
+            background: rgba(51, 177, 255, 0.15);
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cds-border-subtle-01);
+
+            .oop-mic-address {
+              font-family: var(--cds-code-01-font-family, monospace);
+              font-size: 0.75rem;
+              color: var(--oop-memory);
+              font-weight: 700;
+            }
+          }
+
+          .oop-mic-body {
+            padding: 0.85rem;
+
+            .oop-mic-class { font-size: 0.8rem; font-weight: 600; color: var(--cds-text-helper); margin: 0 0 0.5rem 0; }
+
+            .oop-mic-attrs {
+              display: flex;
+              flex-direction: column;
+              gap: 0.4rem;
+
+              .oop-mic-attr-row {
+                display: flex;
+                gap: 0.4rem;
+                font-family: var(--cds-code-01-font-family, monospace);
+                font-size: 0.85rem;
+
+                .oop-mic-key { color: var(--oop-attribute); font-weight: 600; }
+                .oop-mic-eq { color: var(--cds-text-helper); }
+                .oop-mic-val { color: var(--cds-text-primary); font-weight: 600; }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 62rem) {
+  .oop-lesson-5-2-pack {
+    .oop-constructor-flow .oop-cfv-container {
+      grid-template-columns: 1fr;
+    }
+  }
+}

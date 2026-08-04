@@ -1664,3 +1664,24 @@ test("Module 5 publishes Lesson 5.1 (Why OOP?) adhering to OOP_STYLE_GUIDE.md", 
   assert.match(stylesSource, /--oop-object:\s*#33b1ff/);
 });
 
+
+test("Module 5 publishes Lesson 5.2 (Constructors & self) adhering to OOP_STYLE_GUIDE.md", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-5.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-5-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-2LearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-2LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /id: "module-5-lesson-2"[\s\S]*developmentPack: oopConstructorsDevelopmentPack/);
+  assert.match(packSource, /kind: "oop-lesson-5-2"/);
+  assert.match(packSource, /def __init__\(self, name, crop, temperature\):/);
+  assert.match(blocksSource, /function OopConstructorFlowVisualizer/);
+  assert.match(blocksSource, /function OopSelfExplorer/);
+  assert.match(blocksSource, /function OopInstanceVariableInspector/);
+  assert.match(rendererSource, /kind !== "oop-lesson-5-2"/);
+  assert.match(stylesSource, /\.oop-lesson-5-2-pack/);
+  assert.match(stylesSource, /\.oop-constructor-flow/);
+});
+

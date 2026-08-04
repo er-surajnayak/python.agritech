@@ -1756,6 +1756,69 @@ export interface OopConstructorsDevelopmentPack {
   };
 }
 
+export interface OopMethodsAndClassVarsDevelopmentPack {
+  kind: "oop-lesson-5-3";
+  prerequisite: string;
+  storyHook: string;
+  whyObjectsNeedBehaviour: {
+    title: string;
+    body: string;
+    proceduralVsOop: {
+      procedural: string;
+      oop: string;
+    };
+  };
+  instanceMethods: {
+    title: string;
+    definition: string;
+    syntax: string;
+    code: string;
+    output: string;
+    explanation: string;
+  };
+  classVariables: {
+    title: string;
+    definition: string;
+    problemTitle: string;
+    problemBody: string;
+    code: string;
+    output: string;
+  };
+  comparisonTable: Array<{
+    feature: string;
+    instanceVar: string;
+    classVar: string;
+  }>;
+  classMethods: {
+    title: string;
+    definition: string;
+    decorator: string;
+    clsExplanation: string;
+    code: string;
+    output: string;
+  };
+  completeExample: {
+    title: string;
+    body: string;
+    code: string;
+    output: string;
+  };
+  agritechExample: {
+    title: string;
+    body: string;
+    code: string;
+    discussion: string;
+  };
+  debugChallenges: DebugChallengeContent[];
+  engineerThinkingPrompt: string;
+  objectEvolutionState: {
+    lessonNumber: string;
+    title: string;
+    code: string;
+    note: string;
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface LessonDocument {
@@ -1780,7 +1843,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

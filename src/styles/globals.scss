@@ -6674,3 +6674,177 @@ button, a { -webkit-tap-highlight-color: transparent; }
     }
   }
 }
+
+/* Lesson 5.3 Specific Styles */
+.oop-lesson-5-3-pack {
+  /* 1. Variable Comparator */
+  .oop-var-comparator {
+    .oop-vc-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--cds-border-subtle-01);
+      margin: 1rem 0 1.5rem 0;
+
+      .oop-vc-tab {
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--cds-text-secondary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover { color: var(--cds-text-primary); }
+        &.active {
+          color: var(--oop-class);
+          border-bottom-color: var(--oop-class);
+        }
+      }
+    }
+
+    .oop-vc-panel {
+      margin-bottom: 1.5rem;
+
+      .oop-vc-tile {
+        background: var(--cds-layer-01);
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 6px;
+
+        &.oop-vc-tile--instance { border-left: 4px solid var(--oop-object); }
+        &.oop-vc-tile--class { border-left: 4px solid var(--oop-class); }
+
+        .oop-vc-tile-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 0.5rem;
+
+          h3 { margin: 0; font-size: 1.1rem; }
+        }
+
+        p { color: var(--cds-text-secondary); margin-bottom: 0.75rem; }
+
+        .oop-vc-code-box {
+          background: var(--cds-layer-02);
+          padding: 0.75rem 1rem;
+          border-radius: 4px;
+          code {
+            font-family: var(--cds-code-01-font-family, monospace);
+            color: var(--oop-object);
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    .oop-vc-table-wrapper {
+      margin-top: 1.5rem;
+
+      h3 { margin-bottom: 0.75rem; font-size: 1rem; }
+
+      .oop-vc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        background: var(--cds-layer-01);
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 6px;
+        overflow: hidden;
+
+        th, td {
+          padding: 0.75rem 1rem;
+          text-align: left;
+          border-bottom: 1px solid var(--cds-border-subtle-01);
+        }
+
+        th {
+          background: var(--cds-layer-02);
+          font-weight: 700;
+          color: var(--cds-text-primary);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .oop-vct-feature { font-weight: 600; color: var(--cds-text-primary); }
+        .oop-vct-instance { color: var(--oop-object); font-weight: 500; }
+        .oop-vct-class { color: var(--oop-class); font-weight: 500; }
+      }
+    }
+  }
+
+  /* 2. Class Method Explorer */
+  .oop-class-method-explorer {
+    .oop-cm-breakdown {
+      margin: 1rem 0;
+
+      .oop-cm-tile {
+        background: var(--cds-layer-01);
+        border-left: 4px solid var(--oop-constructor);
+
+        .oop-cm-badge-row {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .oop-cm-exp { margin: 0; color: var(--cds-text-secondary); font-size: 0.9rem; }
+      }
+    }
+
+    .oop-cm-simulator {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+
+      h3 { margin-top: 0; margin-bottom: 0.25rem; }
+      p { color: var(--cds-text-secondary); margin-bottom: 1rem; }
+
+      .oop-cms-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .oop-cms-count {
+          margin-left: auto;
+          font-size: 0.9rem;
+          color: var(--cds-text-secondary);
+          strong { color: var(--oop-class); font-size: 1.1rem; }
+        }
+      }
+
+      .oop-cms-execution-box {
+        background: var(--cds-layer-02);
+        padding: 1rem;
+        border-radius: 6px;
+        border-left: 4px solid var(--oop-method);
+
+        .oop-cms-call {
+          margin: 0 0 0.5rem 0;
+          font-size: 0.85rem;
+          color: var(--cds-text-secondary);
+
+          code { color: var(--oop-method); font-family: var(--cds-code-01-font-family, monospace); font-weight: 700; }
+        }
+
+        .oop-cms-result {
+          font-size: 0.95rem;
+          color: var(--cds-text-primary);
+          strong { color: var(--oop-class); }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 62rem) {
+  .oop-lesson-5-3-pack {
+    .oop-vc-table-wrapper {
+      overflow-x: auto;
+    }
+  }
+}

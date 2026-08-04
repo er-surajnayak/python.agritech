@@ -55,6 +55,7 @@ import { ListTuplePracticeLessonRenderer } from "@/components/learning/ListTuple
 import { SetDictPracticeLessonRenderer } from "@/components/learning/SetDictPracticeLessonRenderer";
 import { OopLesson5_1LessonRenderer } from "@/components/learning/OopLesson5-1LessonRenderer";
 import { OopLesson5_2LessonRenderer } from "@/components/learning/OopLesson5-2LessonRenderer";
+import { OopLesson5_3LessonRenderer } from "@/components/learning/OopLesson5-3LessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -213,6 +214,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "oop-lesson-5-2") {
     return <OopLesson5_2LessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "oop-lesson-5-3") {
+    return <OopLesson5_3LessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

@@ -1685,3 +1685,23 @@ test("Module 5 publishes Lesson 5.2 (Constructors & self) adhering to OOP_STYLE_
   assert.match(stylesSource, /\.oop-constructor-flow/);
 });
 
+
+test("Module 5 publishes Lesson 5.3 (Methods & Class Variables) adhering to OOP_STYLE_GUIDE.md", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-5.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-5-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-3LearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-3LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /id: "module-5-lesson-3"[\s\S]*developmentPack: oopMethodsAndClassVarsDevelopmentPack/);
+  assert.match(packSource, /kind: "oop-lesson-5-3"/);
+  assert.match(packSource, /@classmethod/);
+  assert.match(blocksSource, /function OopInstanceVsClassVarComparator/);
+  assert.match(blocksSource, /function OopClassMethodExplorer/);
+  assert.match(rendererSource, /kind !== "oop-lesson-5-3"/);
+  assert.match(stylesSource, /\.oop-lesson-5-3-pack/);
+  assert.match(stylesSource, /\.oop-var-comparator/);
+});
+

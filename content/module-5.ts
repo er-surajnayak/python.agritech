@@ -1,5 +1,6 @@
 import { oopWhyOopDevelopmentPack } from "@/content/development-packs/lesson-5-1";
 import { oopConstructorsDevelopmentPack } from "@/content/development-packs/lesson-5-2";
+import { oopMethodsAndClassVarsDevelopmentPack } from "@/content/development-packs/lesson-5-3";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -463,6 +464,240 @@ print(f"\\nSensor [{temp_sensor.sensor_id}] at {temp_sensor.location}: {temp_sen
     },
     developmentPack: oopConstructorsDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-3",
+    moduleId: "module-5",
+    number: "5.3",
+    title: "Instance Methods, Class Variables & Class Methods",
+    summary:
+      "Teach Smart Farm objects how to perform actions with instance methods, track shared data across all objects using class variables, and implement class-wide operations with @classmethod.",
+    durationMinutes: 180,
+    level: "Beginner",
+    introduction: {
+      title: "Making Smart Farm Objects Intelligent",
+      body: "In Lesson 5.2, our Farm objects gained identity and data. Now it is time to give them intelligence! This lesson teaches instance methods (actions an object performs), class variables (shared counters across all objects), and class methods (@classmethod) to operate on the blueprint itself.",
+    },
+    objectives: [
+      "Understand and define instance methods that operate on object state",
+      "Differentiate between instance variables and shared class variables",
+      "Understand and implement class methods using @classmethod and cls",
+      "Explain the memory layout differences between instance and class variables",
+      "Know when to use instance methods vs class methods",
+      "Build intelligent, self-reporting Smart Farm objects",
+    ],
+    whyThisMatters: {
+      title: "Object behaviour and shared state drive real applications",
+      body: "Methods and shared state are what turn simple data containers into active software components. In production systems, instance methods process business logic on specific records, while class variables and methods manage shared registry state, counters, and factory methods.",
+      items: [
+        "Django models use instance methods like save() and delete()",
+        "scikit-learn models use fit() and predict() as instance methods",
+        "Pydantic and SQLAlchemy use @classmethod for custom factory creators",
+        "Smart Farm IoT registries track total connected sensors with class variables",
+      ],
+    },
+    industryMotivation: {
+      title: "The foundation of object behaviour and fleet tracking",
+      body: "Whether managing an active IoT fleet or an e-commerce order system, software needs both individual object actions and shared system-level tracking. Combining instance methods with class methods provides clean, professional architecture.",
+      signal:
+        "Instance methods, class variables, and @classmethod are core patterns across Django, FastAPI, PyTorch, and SQLAlchemy.",
+    },
+    concept: {
+      title: "Instance methods use self; Class methods use cls",
+      body: "Instance methods receive self and operate on THAT object's data (self.name). Class variables (Farm.total_farms) belong to the Class blueprint and are shared by all instances. Class methods receive cls and operate on the Class itself (@classmethod).",
+      items: [
+        "Instance method: def display_info(self) — accesses self.name",
+        "Class variable: total_farms = 0 — shared across all instances",
+        "Class method: @classmethod def show_total(cls) — accesses cls.total_farms",
+        "Instance variables are unique per object; Class variables are stored once",
+        "Call instance methods on objects (farm1.display_info()); call class methods on the Class (Farm.show_total())",
+      ],
+    },
+    workflow: {
+      title: "Connecting instance behaviour and class-level tracking",
+      description: "Trace how instance operations and class-level tracking work together.",
+      steps: [
+        {
+          title: "Instantiate object",
+          description: "Farm('Green Valley', 'Rice', 31.5) increments Farm.total_farms by 1.",
+        },
+        {
+          title: "Invoke instance method",
+          description: "farm1.display_info() passes farm1 as self to format and print its own data.",
+        },
+        {
+          title: "Update instance state",
+          description: "farm1.update_temperature(33.0) mutates self.temperature for farm1 only.",
+        },
+        {
+          title: "Invoke class method",
+          description: "Farm.show_total_farms() uses cls.total_farms to report network-wide statistics.",
+        },
+      ],
+    },
+    agritechExample: {
+      title: "IoT Sensor Fleet — Telemetry & Network Health",
+      body: "Every sensor instance tracks its own battery level and telemetry reading. At the fleet level, a class variable total_sensors tracks active network scale, and a @classmethod provides network health audits.",
+    },
+    playground: {
+      title: "Practice Instance Methods, Class Variables & Class Methods",
+      description:
+        "Run the code to create farms, call instance methods, observe the class variable counter, and execute the class method.",
+      starterCode: `class Farm:
+    total_farms = 0  # Class variable: shared counter
+
+    def __init__(self, name, crop, temperature):
+        self.name = name
+        self.crop = crop
+        self.temperature = temperature
+        Farm.total_farms += 1  # Increment shared counter
+
+    # Instance Method 1: Display farm report
+    def display_info(self):
+        print(f"🌾 [{self.name}] Crop: {self.crop} | Temp: {self.temperature}°C")
+
+    # Instance Method 2: Update temperature
+    def update_temperature(self, new_temp):
+        print(f"🌡 Updating {self.name} temp: {self.temperature}°C -> {new_temp}°C")
+        self.temperature = new_temp
+
+    # Class Method: Report total farms across system
+    @classmethod
+    def show_total_farms(cls):
+        print(f"🏢 System Overview: {cls.total_farms} farms registered online.")
+
+# Create farm instances
+farm1 = Farm("Green Valley", "Rice", 31.5)
+farm2 = Farm("Sunrise Farm", "Wheat", 28.0)
+
+# Call instance methods
+print("--- Instance Methods ---")
+farm1.display_info()
+farm2.display_info()
+
+# Update temperature on farm1
+farm1.update_temperature(33.0)
+farm1.display_info()
+
+# Call class method on the Class
+print("\\n--- Class Method ---")
+Farm.show_total_farms()`,
+      expectedOutcome:
+        "Prints instance details for farm1 and farm2, demonstrates temperature mutation on farm1, and outputs 'System Overview: 2 farms registered online.' from the class method.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Crop growth tracking method",
+        prompt:
+          "Create a Crop class with __init__(self, crop_name, days=0). Add an instance method grow(self, days) that adds days to self.days and prints an update message. Test it with 'Rice'.",
+        guidance:
+          "In grow(self, days), write self.days += days and print the updated days.",
+      },
+      {
+        level: "Medium",
+        title: "WeatherStation fleet counter",
+        prompt:
+          "Create a WeatherStation class with station_id and temperature. Add a class variable total_stations = 0. Add a @classmethod get_station_count(cls) returning total stations. Create 3 stations and test the class method.",
+        guidance:
+          "Increment WeatherStation.total_stations += 1 inside __init__. Decorate get_station_count with @classmethod.",
+      },
+      {
+        level: "Challenge",
+        title: "Drone fleet management system",
+        prompt:
+          "Create a Drone class with drone_id and battery. Add class variable active_drones = 0 and max_fleet_size = 10. Add instance method fly(self, mins) that reduces battery by 1% per min. Add class method fleet_capacity(cls) that prints remaining capacity (max_fleet_size - active_drones). Create 3 drones and test both methods.",
+        guidance:
+          "Combine instance variable mutation (self.battery -= mins) with class method calculation (cls.max_fleet_size - cls.active_drones).",
+      },
+    ],
+    quiz: [
+      {
+        title: "Instance method parameter",
+        question: "What parameter must every instance method receive as its first argument?",
+        options: ["cls", "self", "this", "object"],
+        correctOptionIndex: 1,
+        note: "self represents the calling instance.",
+        explanation:
+          "Instance methods always take self as their first parameter so they can access THAT object's instance variables.",
+      },
+      {
+        title: "Class variable ownership",
+        question: "Where is a class variable stored in Python?",
+        options: [
+          "In every individual object box in memory",
+          "Once on the Class blueprint itself, shared by all instances",
+          "In global module variables",
+          "Inside local method scope",
+        ],
+        correctOptionIndex: 1,
+        note: "Class variables belong to the Class object and are shared.",
+        explanation:
+          "Class variables are defined inside the class body but outside methods. They are stored once on the Class object and shared by all instances.",
+      },
+      {
+        title: "Class method decorator",
+        question: "Which decorator is required to define a class method in Python?",
+        options: ["@staticmethod", "@classmethod", "@instancemethod", "@property"],
+        correctOptionIndex: 1,
+        note: "@classmethod tells Python to pass the Class as cls.",
+        explanation:
+          "@classmethod informs Python that the method operates on the Class itself and automatically passes cls as the first argument.",
+      },
+      {
+        title: "Modifying class variables inside __init__",
+        question: "How should you correctly increment a class variable total_farms inside __init__?",
+        options: [
+          "self.total_farms += 1",
+          "Farm.total_farms += 1",
+          "total_farms = total_farms + 1",
+          "var.total_farms += 1",
+        ],
+        correctOptionIndex: 1,
+        note: "Use Farm.total_farms to update the shared class variable.",
+        explanation:
+          "Writing self.total_farms += 1 creates a new instance variable on self. To update the shared class variable, use Farm.total_farms += 1.",
+      },
+    ],
+    assignment: {
+      title: "Smart Farm Fleet Management — Methods & Class Counters",
+      brief:
+        "Build a fleet management module for the Smart Farm incorporating instance methods, class variables, and class methods across Farm and Sensor classes.",
+      deliverables: [
+        "Extend class Farm: include total_farms class variable, __init__, display_info(), update_temperature(new_temp), and @classmethod show_total_farms(cls)",
+        "Implement class Sensor: include total_sensors class variable, __init__(sensor_id, type, battery=100), read_data(value), recharge(), and @classmethod show_fleet_status(cls)",
+        "Instantiate 3 Farm objects and 4 Sensor objects with realistic agritech telemetry",
+        "Call display_info() on all farms and read_data() on all sensors",
+        "Execute update_temperature() on farm1 and recharge() on sensor1, demonstrating state mutation",
+        "Call Farm.show_total_farms() and Sensor.show_fleet_status() to verify class-wide counting",
+        "Write 6 comment lines comparing: instance variables vs class variables, instance methods vs class methods, self vs cls, and memory efficiency when storing shared metrics",
+      ],
+    },
+    summarySection: {
+      title: "Methods and Class Variables mastered",
+      body: "You taught Smart Farm objects how to perform actions, mastered instance methods, learned to share class-wide counters with class variables, and implemented class methods using @classmethod and cls.",
+      items: [
+        "Instance methods operate on individual objects using self",
+        "Instance variables (self.attribute) store object-specific data",
+        "Class variables (Farm.total_farms) are defined on the class body and shared by all instances",
+        "@classmethod defines methods bound to the Class that receive cls as their first argument",
+        "Class methods are called directly on the Class (Farm.show_total_farms())",
+        "Combining instance behaviour with class tracking provides a complete object-oriented foundation",
+      ],
+    },
+    keyTakeaways: [
+      "Instance methods take self and operate on specific object instances",
+      "Class variables are defined on the class body and shared across all instances",
+      "Class methods use @classmethod, take cls, and operate on class-level data",
+      "Use Farm.total_farms += 1 (not self.total_farms) to update a shared counter",
+      "Instance variables store unique state; Class variables store shared state",
+      "Class methods can be called on the class directly without creating an object instance",
+    ],
+    whatsNext: {
+      title: "Lesson 5.4 · Encapsulation & Data Protection",
+      body: "Now that our objects can perform actions and update state, we need to protect their data! What prevents a user from setting farm.temperature = -999°C? In Lesson 5.4 we learn Encapsulation — using private attributes (_temperature), getter/setter methods, and Python's @property decorator to enforce validation rules.",
+    },
+    developmentPack: oopMethodsAndClassVarsDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -489,9 +724,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 3,
     title: "5.3 Managing Multiple Farm Records",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 180,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-4",

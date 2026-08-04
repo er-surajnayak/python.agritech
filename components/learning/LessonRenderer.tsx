@@ -57,6 +57,7 @@ import { OopLesson5_1LessonRenderer } from "@/components/learning/OopLesson5-1Le
 import { OopLesson5_2LessonRenderer } from "@/components/learning/OopLesson5-2LessonRenderer";
 import { OopLesson5_3LessonRenderer } from "@/components/learning/OopLesson5-3LessonRenderer";
 import { OopLesson5_4LessonRenderer } from "@/components/learning/OopLesson5-4LessonRenderer";
+import { OopLesson5_5LessonRenderer } from "@/components/learning/OopLesson5-5LessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -221,6 +222,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "oop-lesson-5-4") {
     return <OopLesson5_4LessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "oop-lesson-5-5") {
+    return <OopLesson5_5LessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

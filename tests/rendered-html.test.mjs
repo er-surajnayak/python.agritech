@@ -1726,3 +1726,24 @@ test("Module 5 publishes Lesson 5.4 (Encapsulation) adhering to OOP_STYLE_GUIDE.
   assert.match(stylesSource, /\.oop-access-inspector/);
 });
 
+
+test("Module 5 publishes Lesson 5.5 (Inheritance) adhering to OOP_STYLE_GUIDE.md", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-5.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-5-5.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-5LearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-5LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /id: "module-5-lesson-5"[\s\S]*developmentPack: oopInheritanceDevelopmentPack/);
+  assert.match(packSource, /kind: "oop-lesson-5-5"/);
+  assert.match(packSource, /super\(\)\.__init__/);
+  assert.match(packSource, /savedPercentage: 61/);
+  assert.match(blocksSource, /function OopCodeSavingsCounter/);
+  assert.match(blocksSource, /function OopInheritanceTreeVisualizer/);
+  assert.match(rendererSource, /kind !== "oop-lesson-5-5"/);
+  assert.match(stylesSource, /\.oop-lesson-5-5-pack/);
+  assert.match(stylesSource, /\.oop-code-savings/);
+});
+

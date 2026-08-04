@@ -2,6 +2,7 @@ import { oopWhyOopDevelopmentPack } from "@/content/development-packs/lesson-5-1
 import { oopConstructorsDevelopmentPack } from "@/content/development-packs/lesson-5-2";
 import { oopMethodsAndClassVarsDevelopmentPack } from "@/content/development-packs/lesson-5-3";
 import { oopEncapsulationDevelopmentPack } from "@/content/development-packs/lesson-5-4";
+import { oopInheritanceDevelopmentPack } from "@/content/development-packs/lesson-5-5";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -944,6 +945,245 @@ except AttributeError as e:
     },
     developmentPack: oopEncapsulationDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-5",
+    moduleId: "module-5",
+    number: "5.5",
+    title: "Inheritance: Reusing Code Efficiently",
+    summary:
+      "Solve sensor code duplication using OOP Inheritance. Master parent and child classes, super() constructor delegation, method overriding, and explore single, multilevel, hierarchical, and multiple inheritance types.",
+    durationMinutes: 180,
+    level: "Intermediate",
+    introduction: {
+      title: "Building Different Types of Smart Farm Sensors",
+      body: "Creating 4 separate sensor classes (TemperatureSensor, MoistureSensor, HumiditySensor, RainfallSensor) results in duplicate boilerplate code. Inheritance allows child classes to automatically inherit common attributes (sensor_id, battery) from a parent Sensor class, drastically reducing codebase size.",
+    },
+    objectives: [
+      "Understand why inheritance exists to eliminate code duplication",
+      "Define Parent (Superclass) and Child (Subclass) classes using Python syntax",
+      "Use super().__init__() to delegate initialization to the parent constructor",
+      "Override inherited parent methods inside child classes to customize behaviour",
+      "Differentiate between Single, Multilevel, Hierarchical, and Multiple inheritance",
+      "Build maintainable sensor and machinery hierarchies for Agritech applications",
+    ],
+    whyThisMatters: {
+      title: "Inheritance creates clean, maintainable class hierarchies",
+      body: "In production systems, inheritance avoids copying identical fields and methods across dozens of classes. Updating common logic in the base class instantly updates all derived subclasses.",
+      items: [
+        "Django models inherit from models.Model to gain database query capabilities",
+        "PyTorch neural networks inherit from nn.Module to gain automatic differentiation",
+        "FastAPI exception handlers inherit from HTTPException for custom API error responses",
+        "Smart Farm sensor fleets extend base Sensor class to standardize telemetry and battery management",
+      ],
+    },
+    industryMotivation: {
+      title: "Extending frameworks without modifying original code",
+      body: "Professional libraries provide base classes that developers extend. You don't rewrite PyTorch or Django from scratch — you inherit from their base classes and add your custom domain logic.",
+      signal:
+        "Inheritance is used in 100% of major Python frameworks (Django, PyTorch, FastAPI, Flask).",
+    },
+    concept: {
+      title: "Child extends Parent; super() delegates initialization",
+      body: "class Child(Parent) establishes inheritance. super().__init__(args) invokes the parent constructor to set up common attributes. Method overriding replaces a parent method with a specialized child version.",
+      items: [
+        "Parent Class: Sensor — defines common attributes (sensor_id, battery)",
+        "Child Class: TemperatureSensor(Sensor) — inherits parent features",
+        "super(): super().__init__(sensor_id, battery) initializes parent properties",
+        "Method Overriding: Child redefines display() to print temperature-specific data",
+        "Code Reuse: Eliminates duplicate boilerplate across sensor types",
+      ],
+    },
+    workflow: {
+      title: "The 4-step inheritance execution flow",
+      description: "Trace what happens when temp = TemperatureSensor('T-101', 95, 31.5) runs.",
+      steps: [
+        {
+          title: "Instantiate child object",
+          description: "Python calls TemperatureSensor.__init__(temp, 'T-101', 95, 31.5).",
+        },
+        {
+          title: "Delegate to parent with super()",
+          description: "super().__init__('T-101', 95) executes Sensor.__init__ to set sensor_id and battery.",
+        },
+        {
+          title: "Initialize child state",
+          description: "self.temperature = 31.5 sets the child-specific attribute on the object.",
+        },
+        {
+          title: "Execute overridden method",
+          description: "temp.display() executes TemperatureSensor's overridden display() method.",
+        },
+      ],
+    },
+    agritechExample: {
+      title: "Smart Farm Machine Hierarchy — Tractor extends Machine",
+      body: "Inheritance applies across the entire Smart Farm ecosystem. Agricultural machinery shares machine_id and fuel_level, while specialized tractors add hitch_capacity and plow_status.",
+    },
+    playground: {
+      title: "Practice Inheritance, super(), and Method Overriding",
+      description:
+        "Run the code below to test parent-child inheritance, super() initialization, and method overriding across sensor classes.",
+      starterCode: `# Step 1: Base Parent Class
+class Sensor:
+    def __init__(self, sensor_id, battery=100):
+        self.sensor_id = sensor_id
+        self.battery = battery
+
+    def display(self):
+        print(f"📡 Base Sensor [{self.sensor_id}] | Battery: {self.battery}%")
+
+# Step 2: Child Class 1 (TemperatureSensor)
+class TemperatureSensor(Sensor):
+    def __init__(self, sensor_id, battery, temperature):
+        super().__init__(sensor_id, battery)  # Parent setup!
+        self.temperature = temperature       # Child setup!
+
+    def display(self):  # Overridden method!
+        print(f"🌡 Temp Sensor [{self.sensor_id}] | Temp: {self.temperature}°C | Battery: {self.battery}%")
+
+# Step 3: Child Class 2 (MoistureSensor)
+class MoistureSensor(Sensor):
+    def __init__(self, sensor_id, battery, moisture):
+        super().__init__(sensor_id, battery)
+        self.moisture = moisture
+
+    def display(self):  # Overridden method!
+        print(f"💧 Moisture Sensor [{self.sensor_id}] | Moisture: {self.moisture}% | Battery: {self.battery}%")
+
+# Instantiate child objects
+temp = TemperatureSensor("T-101", 95, 31.5)
+moist = MoistureSensor("M-202", 88, 42.0)
+
+temp.display()
+moist.display()`,
+      expectedOutcome:
+        "Outputs customized display statements for TemperatureSensor and MoistureSensor, demonstrating successful parent initialization via super() and method overriding.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Vehicle and Bike inheritance",
+        prompt:
+          "Create a parent Vehicle class with brand and speed. Add display() method. Create a child Bike class inheriting from Vehicle. Test Bike instantiation and display().",
+        guidance:
+          "Define class Bike(Vehicle): pass. Instantiate Bike('Hero', 25) and call bike.display().",
+      },
+      {
+        level: "Medium",
+        title: "Agricultural Tractor subclass",
+        prompt:
+          "Create a Machine class with machine_id and fuel_level. Create a Tractor subclass that adds model. Use super().__init__() in Tractor. Override status() to print model and fuel.",
+        guidance:
+          "In Tractor.__init__, call super().__init__(machine_id, fuel_level) before assigning self.model.",
+      },
+      {
+        level: "Challenge",
+        title: "Multi-sensor hierarchy with overriding",
+        prompt:
+          "Create a base Sensor class and three child classes: TemperatureSensor, MoistureSensor, HumiditySensor. Give each child a unique reading attribute and override display(). Create an array of sensors and call display() on each.",
+        guidance:
+          "Loop over [temp, moist, humid] and call s.display() to preview polymorphic list execution.",
+      },
+    ],
+    quiz: [
+      {
+        title: "Parent class role",
+        question: "What is the primary role of a Parent class in inheritance?",
+        options: [
+          "To hold only private attributes",
+          "To define common attributes and methods shared by child classes",
+          "To delete duplicate objects",
+          "To run global main loops",
+        ],
+        correctOptionIndex: 1,
+        note: "Parent classes hold shared baseline features.",
+        explanation:
+          "A Parent class defines baseline properties and functions once so child classes can inherit them without code duplication.",
+      },
+      {
+        title: "The super() function",
+        question: "What does super().__init__(...) do inside a child constructor?",
+        options: [
+          "Deletes the child class",
+          "Executes the parent constructor to initialize inherited attributes",
+          "Creates a new class instance",
+          "Returns a list of all subclasses",
+        ],
+        correctOptionIndex: 1,
+        note: "super() calls the parent constructor.",
+        explanation:
+          "super().__init__(...) invokes the parent class constructor to set up common parent variables.",
+      },
+      {
+        title: "Method overriding definition",
+        question: "What occurs during method overriding?",
+        options: [
+          "A child class redefines a method that exists in its parent class",
+          "A method calls itself recursively",
+          "A class variable overwrites an instance variable",
+          "A function is deleted at runtime",
+        ],
+        correctOptionIndex: 0,
+        note: "Overriding replaces parent implementation with child logic.",
+        explanation:
+          "Method overriding happens when a child class provides its own specialized implementation of a method defined in its parent.",
+      },
+      {
+        title: "Child class declaration syntax",
+        question: "Which syntax correctly declares TemperatureSensor as a child of Sensor?",
+        options: [
+          "class TemperatureSensor extends Sensor:",
+          "class TemperatureSensor(Sensor):",
+          "class TemperatureSensor inherits Sensor:",
+          "class TemperatureSensor -> Sensor:",
+        ],
+        correctOptionIndex: 1,
+        note: "Python uses parentheses for inheritance.",
+        explanation:
+          "Python specifies parent classes in parentheses after the child class name: class Child(Parent):.",
+      },
+    ],
+    assignment: {
+      title: "Smart Farm Telemetry System — Sensor Hierarchy",
+      brief:
+        "Design and implement a complete sensor hierarchy for the Smart Farm including base Sensor and child TemperatureSensor, MoistureSensor, and RainfallSensor classes.",
+      deliverables: [
+        "Implement base class Sensor: sensor_id, battery=100, location, status='Active', display() method",
+        "Implement child TemperatureSensor(Sensor): add temperature, override display() to print °C",
+        "Implement child MoistureSensor(Sensor): add moisture_pct, override display() to print soil %",
+        "Implement child RainfallSensor(Sensor): add mm_rainfall, override display() to print mm",
+        "Instantiate 2 TemperatureSensors, 2 MoistureSensors, and 1 RainfallSensor with realistic data",
+        "Use super().__init__() in all child constructors to initialize base Sensor properties",
+        "Iterate over a list containing all 5 sensor objects and execute display() on each",
+        "Write 6 comment lines explaining: why inheritance eliminates duplication, the role of super(), method overriding, single vs hierarchical inheritance, and the Code Savings ratio achieved",
+      ],
+    },
+    summarySection: {
+      title: "Inheritance and Code Reuse mastered",
+      body: "You solved sensor code duplication using inheritance, built clean parent-child class hierarchies, mastered super() constructor delegation, customized child behaviour with method overriding, and explored single, multilevel, hierarchical, and multiple inheritance types.",
+      items: [
+        "Inheritance eliminates duplicate boilerplate across related classes",
+        "Parent classes define common state and behaviour once",
+        "Child classes inherit parent capabilities using class Child(Parent):",
+        "super().__init__() delegates parent property initialization",
+        "Method overriding allows child classes to replace parent behaviour with specialized logic",
+        "Inheritance powers major Python frameworks like Django, PyTorch, and FastAPI",
+      ],
+    },
+    keyTakeaways: [
+      "Inheritance promotes code reuse and simplifies maintenance",
+      "class Child(Parent): creates a subclass that inherits parent properties",
+      "super().__init__(args) calls the parent constructor inside the child",
+      "Method overriding lets a child class customize a parent method",
+      "Hierarchical inheritance (1 parent -> multiple children) is the most common pattern",
+      "Shallow inheritance trees (1-2 levels) are easier to maintain than deep hierarchies",
+    ],
+    whatsNext: {
+      title: "Lesson 5.6 · Polymorphism — One Interface, Different Behaviors",
+      body: "Now that we have a sensor hierarchy, how does the Smart Farm dashboard process a list containing 100 mixed sensors? In Lesson 5.6 we learn Polymorphism — executing sensor.read_data() in a single loop where every sensor type responds appropriately based on its own class implementation.",
+    },
+    developmentPack: oopInheritanceDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -988,9 +1228,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 5,
     title: "5.5 Inheritance — Different Types of Sensors",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 180,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-6",

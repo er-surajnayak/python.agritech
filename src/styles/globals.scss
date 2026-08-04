@@ -7034,3 +7034,188 @@ button, a { -webkit-tap-highlight-color: transparent; }
     }
   }
 }
+
+/* Lesson 5.5 Specific Styles */
+.oop-lesson-5-5-pack {
+  /* 1. Code Savings Counter Widget */
+  .oop-code-savings {
+    .oop-cs-toggle-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem 0;
+    }
+
+    .oop-cs-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+
+      .oop-cs-stat-card {
+        background: var(--cds-layer-01);
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 8px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+
+        &.is-active {
+          border-color: var(--oop-class);
+          box-shadow: 0 4px 12px rgba(138, 63, 252, 0.15);
+        }
+
+        .oop-cs-label {
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: var(--cds-text-helper);
+          text-transform: uppercase;
+        }
+
+        .oop-cs-number {
+          font-size: 2rem;
+          font-weight: 800;
+          font-family: var(--cds-code-01-font-family, monospace);
+
+          &.oop-cs-bad { color: var(--cds-support-error); }
+          &.oop-cs-good { color: var(--cds-support-success); }
+          &.oop-cs-highlight { color: var(--oop-class); }
+        }
+
+        .oop-cs-desc {
+          font-size: 0.85rem;
+          color: var(--cds-text-secondary);
+          margin: 0;
+        }
+      }
+
+      .oop-cs-savings-card {
+        background: rgba(138, 63, 252, 0.08);
+        border-color: rgba(138, 63, 252, 0.3);
+      }
+    }
+
+    .oop-cs-explanation {
+      color: var(--cds-text-secondary);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  /* 2. Interactive Inheritance Tree Visualizer */
+  .oop-inheritance-tree {
+    .oop-it-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0 1.5rem 0;
+      flex-wrap: wrap;
+
+      .oop-it-tab {
+        padding: 0.6rem 1rem;
+        background: var(--cds-layer-01);
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 6px;
+        color: var(--cds-text-primary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover { border-color: var(--oop-class); }
+        &.active {
+          border-color: var(--oop-class);
+          background: rgba(138, 63, 252, 0.12);
+          color: var(--oop-class);
+        }
+      }
+    }
+
+    .oop-it-detail-tile {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+
+      .oop-it-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+        h3 { margin: 0; }
+      }
+
+      .oop-it-desc {
+        color: var(--cds-text-secondary);
+        margin-bottom: 1.25rem;
+      }
+
+      .oop-it-tree-preview {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--cds-layer-02);
+        padding: 1.25rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+
+        .oop-it-tree-box {
+          flex: 1;
+          min-width: 200px;
+          padding: 1rem;
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+
+          .oop-it-role {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+          }
+
+          code {
+            font-family: var(--cds-code-01-font-family, monospace);
+            font-size: 0.85rem;
+          }
+        }
+
+        .oop-it-parent {
+          background: rgba(15, 98, 254, 0.1);
+          border: 1px solid rgba(15, 98, 254, 0.3);
+          .oop-it-role { color: var(--cds-link-01); }
+          code { color: var(--cds-text-primary); }
+        }
+
+        .oop-it-child {
+          background: rgba(138, 63, 252, 0.1);
+          border: 1px solid rgba(138, 63, 252, 0.3);
+          .oop-it-role { color: var(--oop-class); }
+          code { color: var(--cds-text-primary); }
+        }
+
+        .oop-it-arrow {
+          color: var(--cds-text-helper);
+        }
+      }
+
+      .oop-it-agritech-badge {
+        font-size: 0.9rem;
+        color: var(--cds-text-primary);
+        strong { color: var(--cds-support-success); }
+      }
+    }
+  }
+}
+
+@media (max-width: 42rem) {
+  .oop-lesson-5-5-pack {
+    .oop-code-savings .oop-cs-toggle-bar {
+      flex-direction: column;
+    }
+    .oop-inheritance-tree .oop-it-tree-preview {
+      flex-direction: column;
+      .oop-it-arrow { transform: rotate(90deg); }
+    }
+  }
+}

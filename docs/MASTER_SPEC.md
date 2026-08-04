@@ -101,63 +101,200 @@ The following core components in `components/learning/` must be reused to mainta
 
 ---
 
-## 5. Design System & Styling (globals.scss)
+## 5. Spacing, Typography & Theme Rules
 
-All components align to the **IBM Carbon Design System** using custom classes under their respective lesson namespace (e.g., `.sets-development-pack`):
+All elements align with the **IBM Carbon Design System** using custom classes under their respective lesson namespace (e.g., `.sets-development-pack`):
 
-### Color System & Themes
-- Built-in support for **Dark** and **Light** modes. Standard variables:
-  - Background layers: `var(--cds-layer-01)`, `var(--cds-layer-02)`.
-  - Selected elements: `var(--cds-layer-selected-01)`, `var(--cds-layer-active-01)`.
-  - Borders: `var(--cds-border-subtle-01)`, `var(--cds-border-strong-01)`.
-  - Colors: Info (`var(--cds-support-info)`), Success (`var(--cds-support-success)`), Danger (`var(--cds-support-error)`).
-  - Custom Lesson Accent variables (e.g. `--sets-accent: #8a3ffc`).
+### Spacing System
+Spacing is configured hierarchically using standard values for consistency:
+- **Card Margins**: Outer page layouts separate core sections using `1.5rem` or `2rem` vertical margins.
+- **Section Paddings**: Component card containers use `1.5rem` or `2rem` padding inside tiles.
+- **Gutters & Grids**: Elements inside simulator grids use a `1rem` or `0.75rem` gap to align controls and displays.
+- **Compact Margins**: Subsections or helper labels utilize `0.5rem` to `0.75rem` margins.
 
-### Typography
-- Headings: Bold, clean sans-serif hierarchy matching IBM Plex Sans.
-- Code blocks and expressions: Monospace (`var(--cds-code-01-font-family)`).
-- Variable chips: Rendered as rounded badges with styled code fonts.
+### Typography Hierarchy
+Typography uses the IBM Plex font families and maintains strict size and weight standards:
+- **Lesson Titles**: Sized at `clamp(1.5rem, 5vw, 2.5rem)` using a bold weight.
+- **Section Headings**: `h2` titles are sized at `1.25rem` to `1.5rem` in semi-bold weight.
+- **Subheadings**: `h3` labels inside simulation cards are sized at `1rem` to `1.15rem`.
+- **Telemetry Indicators**: High-visibility metric numbers are rendered large, using `clamp(2rem, 7vw, 4.5rem)` or bold `1.5rem` numbers.
+- **Section Helpers**: Sized at `.65rem` to `.75rem`, uppercase, letter-spaced, using help text colors (e.g., `var(--cds-text-secondary)` or `var(--cds-text-helper)`).
+- **Code Fonts**: Monospace codes (`var(--cds-code-01-font-family)`) are sized at `0.75rem` to `0.85rem` inside editor screens and chips.
 
-### Spacing & Grid
-- Standard spacing hierarchy (`1rem`, `1.5rem`, `2rem`).
-- Visual blocks lay out in responsive multi-column formats on wide screens, folding cleanly into single columns on smaller mobile viewports.
-
-### Responsive Breakpoints
-- **`78rem`**: Sidebar shifts/hides to optimize outline navigation.
-- **`62rem`**: Dual columns (e.g. sidebar selectors, flowchart trees) stack vertically.
-- **`48rem`**: Tab headers and playground controls adjust for touch.
-- **`42rem`**: Pipeline animations and 3-column rows fold into single-column flows.
-- **`35rem`**: Compact spacing, buttons wrap to 100% width, and complex diagrams collapse.
-
----
-
-## 6. Playground Standard
-
-Interactive playgrounds must follow this baseline blueprint:
-1. **Interactive Text Area**: Custom text area displaying starter code. Blocks execution if validation tests fail (e.g., trying to modify immutable tuples).
-2. **Standard Console Output**: Displays standard output or trace messages. Reflects runner state (loading, running, success, error) via status tags.
-3. **Synchronized Visualization Supplement**: Updates in real time under the code box.
-   - For lists/tuples: displays horizontal arrays indexing every slot.
-   - For sets: displays curly brace containers with active chips.
-   - For dictionaries: displays table structures of keys and values.
-4. **Step-by-step Trace Panel** (optional): Renders chronological execution lines, tracing how local variable values mutate over time.
+### Theme & Contrast Rules (Light & Dark)
+The interface automatically responds to theme modes using system variables:
+- **Background Layering**: Cards sit on `--cds-layer-02` (lighter gray/dark background) placed over the page base `--cds-layer-01` (darker gray/light background).
+- **Interactive Layers**: Selected states get `var(--cds-layer-selected-01)` or `var(--cds-layer-active-01)` variables.
+- **Borders**: Thin subheadings utilize `1px solid var(--cds-border-subtle-01)` for visual structure.
+- **Semantic Text**: Error alerts utilize error variables (`var(--cds-support-error)`), success elements use green (`var(--cds-support-success)` or `var(--brand-green)`), and warnings use yellow (`var(--cds-support-warning)`).
 
 ---
 
-## 7. Educational Animations & Timing
+## 6. Carbon Component Integration Guidelines
 
-Custom visualizers use animations to make programmatic logic visible:
-- **Duplicate Insertion Bounce**: Duplicate items added to sets trigger `animate-bounce-error` (`scale(1.15)` combined with a background error red highlight) to show rejection.
-- **Set Insertion Slide**: Adding new unique elements triggers an `animate-added` fade and zoom-in, illustrating placement.
-- **Pipeline Step Flow**: Values sliding through duplicate eliminator lanes use `animate-flow` (`translateY` transitions) timed with queue progression.
-- **Error Feedback Shake**: Wrong choices or lookup failures trigger `animate-shake` (`translateX` offsets) to visually alert users.
-- **Timing Standards**:
-  - Micro-interactions (hovers, selections): `200ms` or `300ms` ease.
-  - Interactive transitions (Venn updates, pipeline flows): `500ms` to `1200ms`.
+Carbon Design System controls are used to build interactive panels. The standard mappings are:
+- **Buttons (`Button`)**: Trigger events or reset simulators. Use standard size (`size="md"` or `size="sm"`) and matching styles (`kind="primary"`, `kind="secondary"`, `kind="tertiary"`, or `kind="ghost"`).
+- **Form Controls (`TextInput`, `NumberInput`)**: Collect replacement indices, custom telemetry additions, or slider values. Ensure unique labels and descriptive placeholder properties are supplied.
+- **Containers (`Tile`)**: Render highlights, calculation results, or warning boxes.
+- **Tab Managers (`Tabs`, `Tab`, `TabList`, `TabPanels`, `TabPanel`)**: Organize Practice Cards or multi-step tutorial examples.
+- **Accordions (`Accordion`, `AccordionItem`)**: Compress guidance hints or detailed steps in tutorials (e.g. `GuidedPracticeLab`).
+- **Tags (`Tag`)**: Indicate exercise difficulties (`type="green"`, `type="blue"`, `type="purple"`), error states (`type="red"`), or outputs (`type="magenta"`).
 
 ---
 
-## 8. Coding Standards
+## 7. Reusable Visualization Components
+
+Lessons use dedicated visual blocks. Future lessons must adopt these patterns:
+
+```mermaid
+graph TD
+    A[Interactive Visual Blocks] --> B[Sequential Iterators]
+    A --> C[Relationship Inspectors]
+    A --> D[Code Execution Monitors]
+    
+    B --> B1["ListVisualizer / ListAnatomyExplorer<br>(Indexed button rows)"]
+    B --> B2["SliceExplorer<br>(Range selection mapper)"]
+    B --> B3["WorkflowAnimation<br>(Linear step manager)"]
+    
+    C --> C1["SetVisualizer<br>(Unique element collections)"]
+    C --> C2["DuplicateEliminator<br>(Filter flow queue)"]
+    C --> C3["SetOperationsVisualizer<br>(Overlapping Venn Diagram)"]
+    C --> C4["CollectionDecisionTree<br>(Interactive flowchart)"]
+    
+    D --> D1["CodeTracePanel<br>(Line-by-line Pyodide debugger)"]
+```
+
+### Sequential Iterators & Index Mappers
+- **`ListVisualizer`**: Renders indexed arrays as row-oriented buttons with zero-based indexes on top (`index 0`) and physical positions on the bottom (`position 1`).
+- **`ListAnatomyExplorer`**: Wraps visualizer rows with button selectors to output specific values at chosen indexes dynamically (e.g. `moisture[index]`).
+- **`SliceExplorer`**: Interactive slide handlers that isolate index ranges (`A[start:stop]`) and highlight matching elements visually.
+- **`WorkflowAnimation`**: Stepped progress timeline with linear buttons displaying specific explanations at each state.
+
+### Unique & Relationship Inspectors
+- **`SetVisualizer`**: Renders items inside standard set curly braces `{ ... }`. Highlights existing items with error classes if duplicate additions are attempted.
+- **`DuplicateEliminator`**: Flow diagram simulating a queue pipeline: Incoming Value -> Check unique -> Accept (turns green/success) / Reject (turns red/error).
+- **`SetOperationsVisualizer` (Venn Diagram)**: Represents overlapping circular regions with elements. Selecting operators highlights corresponding regions in real time:
+  - **Union**: Highlights Circle A, Overlap, and Circle B.
+  - **Intersection**: Highlights Overlap region only.
+  - **Difference**: Highlights Circle A's exclusive crescent region.
+  - **Symmetric Difference**: Highlights Circle A and Circle B's crescent regions, leaving overlap dark.
+- **`MembershipExplorer`**: Triggers membership tests (`x in A`), flashes searching indicators, and displays validation badges.
+
+### Code Execution Monitors
+- **`CodeTracePanel`**: Interacts with `usePythonRunner` execution logs to show line-by-step program execution. Offers Play/Pause, Step Forward/Backward, Replay controls, call stack lists, local variables tables, and stdout buffers.
+
+---
+
+## 8. Interactive Playground Standards
+
+Every Code Playground follows strict standards to ensure safe, interactive browser-based Python execution:
+
+### Editor & Input Controls
+- Code input uses Carbon `<TextArea>` containing the starter code.
+- Blocking hooks (`validateCode(code: string)`) validate inputs before runtime. Block execution if:
+  - Unordered sets are accessed by indices (e.g. `A[0]`).
+  - Dictionary empty brackets (`{}`) are confused with sets (`set()`).
+  - Immutable tuple elements are modified.
+- Blocks execution by rendering a Carbon `<InlineNotification kind="warning" />` and disabling the "Run code" button.
+
+### Execution Output & Pyodide Worker
+- Triggers execution using the `run(code)` callback from the `usePythonRunner` hook.
+- Preparation and compilation occur inside the background worker thread (`python.worker.ts`).
+- Output panel renders results inside `<pre><code>` blocks, updating loading state dynamically.
+
+### Playground Supplement Integration
+- Playgrounds must implement `renderSupplement` to parse the user's code and display visual representations (arrays, sets, tables) below the output panel.
+- Parses values using regex scripts (e.g. `parseSimpleList` or `parseTupleTuple`), resolving:
+  - Variable names.
+  - List/Set size.
+  - Active selected item.
+  - Maximum/Minimum values.
+
+---
+
+## 9. Comparison & Table Standards
+
+To display data differences (e.g., list vs tuple vs set properties), adopt the grid-based HTML table layout:
+- **Structure**: Rendered using standard `div` tags with explicit role variables (`role="table"`, `role="row"`, `role="columnheader"`, `role="cell"`).
+- **Header formatting**: `.comparison-heading` gets Layer-02 backgrounds and bold labels.
+- **Grids**: Standard columns use `grid-template-columns: repeat(N, minmax(0, 1fr))` for perfect alignment.
+- **Visual styling**: Row fields separate using a bottom border (`1px solid var(--cds-border-subtle-01)`).
+
+---
+
+## 10. Debug Challenge Standards
+
+Debug exercises must enforce error repairs before code execution:
+- **Card Wrapper**: Renders inside a `.problem-debug-challenges` container.
+- **State Details**: Challenges display title, mistakes count tag (`Tag type="red"`), and prompt instructions.
+- **Source Code**: Erroneous code is displayed inside `<pre><code>` blocks.
+- **Solution Triggers**: A Carbon button toggles between "Show solution" and "Hide solution".
+- **Conditional Panels**:
+  - Hidden state: Shows guidance advice (`hiddenGuidance`).
+  - Visible state: Shows the correct code inside a `<pre><code>` block.
+
+---
+
+## 11. Quiz Standards
+
+Every lesson features a diagnostic checking block:
+- **Header**: Sized `h2` under a quiz icon.
+- **Questions**: Organized in a `.quiz-question-list` container. Each question gets a badge (`Tag type="magenta"`) indicating its coordinate name.
+- **Radio Buttons**: Choices render in a Carbon `RadioButtonGroup` (vertical orientation).
+- **Validation feedback**: Checking answers disables choices and shows a feedback panel (`.quiz-question-note`).
+  - Correct choice: `.is-correct` (green border, success message).
+  - Incorrect choice: `.is-incorrect` (red border, review suggestion).
+
+---
+
+## 12. Practice Section Standards
+
+Practice blocks must structure challenges by difficulty:
+- **Tabs Layout**: Carbon `Tabs` organize tasks by level: Easy -> Medium -> Challenge.
+- **State Tags**: Each task gets tagged based on level (`Tag type="green"`, `type="blue"`, or `type="purple"`).
+- **Accordion Guidance**: Students can click on Carbon `Accordion` (`align="start"`) -> `AccordionItem` -> "Show guidance" to expand hints and hints arrays.
+
+---
+
+## 13. Animation & Timing Specifications
+
+Custom CSS keyframe animations handle micro-interactions:
+- **`.animate-bounce-error`**: Bounces duplicate chips to signal rejection.
+  ```css
+  @keyframes bounce-error {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); background-color: var(--cds-support-error); }
+  }
+  ```
+- **`.animate-added`**: Zooms in new elements.
+  ```css
+  @keyframes added-flash {
+    0% { transform: scale(0.8); background-color: var(--cds-support-success); }
+    100% { transform: scale(1); }
+  }
+  ```
+- **`.animate-shake`**: Shakes lookups that fail membership testing.
+  ```css
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  ```
+- **`.animate-flow`**: Slides queue blocks downwards through pipeline lanes.
+  ```css
+  @keyframes flow-down {
+    0% { transform: translateY(-30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  ```
+- **Timing Speeds**:
+  - Hover states and active tabs: `200ms` or `300ms` linear.
+  - Step transitions (pipeline flow, Venn diagrams): `500ms` to `1200ms` ease.
+
+---
+
+## 14. Coding Standards
 
 - **TypeScript Strictness**: Interfaces must explicitly define properties (e.g. `SetsDevelopmentPack`, `TupleDevelopmentPack`). Never use `any`.
 - **Absolute / Alias Imports**: Always import using `@/` path prefixes (e.g. `import { Link } from "@/components/navigation/client-router"`).

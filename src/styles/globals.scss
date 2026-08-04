@@ -6848,3 +6848,189 @@ button, a { -webkit-tap-highlight-color: transparent; }
     }
   }
 }
+
+/* Lesson 5.4 Specific Styles */
+.oop-lesson-5-4-pack {
+  /* 1. Access Modifier Inspector */
+  .oop-access-inspector {
+    .oop-ami-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0 1.5rem 0;
+
+      .oop-ami-btn {
+        flex: 1;
+        padding: 0.75rem;
+        background: var(--cds-layer-01);
+        border: 2px solid var(--cds-border-subtle-01);
+        border-radius: 6px;
+        color: var(--cds-text-primary);
+        font-family: var(--cds-code-01-font-family, monospace);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover { border-color: var(--oop-class); }
+        &.active {
+          border-color: var(--oop-class);
+          background: rgba(138, 63, 252, 0.1);
+          font-weight: 700;
+        }
+      }
+    }
+
+    .oop-ami-tile {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+
+      &.oop-ami-tile--public { border-left: 4px solid var(--oop-object); }
+      &.oop-ami-tile--protected { border-left: 4px solid var(--oop-attribute); }
+      &.oop-ami-tile--private { border-left: 4px solid var(--oop-class); }
+
+      .oop-ami-tile-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+
+        h3 { margin: 0; font-size: 1.1rem; }
+      }
+
+      .oop-ami-desc { color: var(--cds-text-secondary); margin-bottom: 1rem; }
+
+      .oop-ami-test-area {
+        margin-top: 1rem;
+
+        .oop-ami-result {
+          margin-top: 0.75rem;
+          padding: 0.75rem 1rem;
+          border-radius: 4px;
+
+          &.is-success {
+            background: rgba(66, 190, 101, 0.1);
+            border-left: 3px solid var(--cds-support-success);
+            p { color: var(--cds-text-primary); margin: 0; }
+          }
+
+          &.is-error {
+            background: rgba(218, 30, 40, 0.1);
+            border-left: 3px solid var(--cds-support-error);
+            p { color: var(--cds-text-primary); margin: 0; }
+          }
+        }
+      }
+    }
+
+    .oop-philosophy-tile {
+      background: var(--cds-layer-02);
+      border-left: 4px solid var(--cds-support-info);
+
+      .oop-phil-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--cds-support-info);
+        margin-bottom: 0.5rem;
+
+        h3 { margin: 0; color: var(--cds-text-primary); }
+      }
+
+      p { color: var(--cds-text-secondary); margin-bottom: 0.75rem; }
+
+      .oop-phil-quote {
+        margin: 0;
+        font-style: italic;
+        font-weight: 600;
+        color: var(--cds-text-primary);
+        border-left: 3px solid var(--cds-support-info);
+        padding-left: 0.75rem;
+      }
+    }
+  }
+
+  /* 2. Getter & Setter Validation Inspector */
+  .oop-encapsulation-inspector {
+    .oop-val-simulator {
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-01);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+
+      h3 { margin-top: 0; margin-bottom: 0.25rem; }
+      p { color: var(--cds-text-secondary); margin-bottom: 1rem; }
+
+      .oop-val-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+
+        .oop-val-input {
+          padding: 0.4rem 0.75rem;
+          border: 1px solid var(--cds-border-subtle-01);
+          border-radius: 4px;
+          background: var(--cds-layer-02);
+          color: var(--cds-text-primary);
+          font-family: var(--cds-code-01-font-family, monospace);
+          font-size: 0.9rem;
+          width: 130px;
+        }
+      }
+
+      .oop-val-result {
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+
+        &.is-success {
+          background: rgba(66, 190, 101, 0.1);
+          border-left: 3px solid var(--cds-support-success);
+          color: var(--cds-support-success);
+          font-weight: 600;
+        }
+
+        &.is-error {
+          background: rgba(218, 30, 40, 0.1);
+          border-left: 3px solid var(--cds-support-error);
+          color: var(--cds-support-error);
+          font-weight: 600;
+        }
+      }
+
+      .oop-val-current-state {
+        background: var(--cds-layer-02);
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .oop-val-state-label {
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: var(--cds-text-helper);
+          text-transform: uppercase;
+        }
+
+        code {
+          font-family: var(--cds-code-01-font-family, monospace);
+          color: var(--oop-class);
+          strong { color: var(--cds-text-primary); font-size: 1.05rem; }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 62rem) {
+  .oop-lesson-5-4-pack {
+    .oop-access-inspector .oop-ami-buttons {
+      flex-direction: column;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { oopWhyOopDevelopmentPack } from "@/content/development-packs/lesson-5-1";
 import { oopConstructorsDevelopmentPack } from "@/content/development-packs/lesson-5-2";
 import { oopMethodsAndClassVarsDevelopmentPack } from "@/content/development-packs/lesson-5-3";
+import { oopEncapsulationDevelopmentPack } from "@/content/development-packs/lesson-5-4";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -698,6 +699,251 @@ Farm.show_total_farms()`,
     },
     developmentPack: oopMethodsAndClassVarsDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-4",
+    moduleId: "module-5",
+    number: "5.4",
+    title: "Encapsulation: Protecting Object Data",
+    summary:
+      "Learn how to protect object data from invalid corruption using public, protected, and private members, getter and setter validation methods, and understand Python's approach to encapsulation.",
+    durationMinutes: 180,
+    level: "Intermediate",
+    introduction: {
+      title: "Securing Smart Farm Information",
+      body: "Unrestricted attribute access allows bugs like farm.temperature = -999°C or sensor.battery = -500% to ruin system reliability. Encapsulation bundles data with methods and enforces validation rules so objects stay in valid states.",
+    },
+    objectives: [
+      "Understand why encapsulation and data hiding exist",
+      "Differentiate between Public (name), Protected (_name), and Private (__name) members",
+      "Explain Python name mangling (_ClassName__attribute)",
+      "Create Getter methods to retrieve private data safely",
+      "Create Setter methods that validate input before updating state",
+      "Understand Python's 'consenting adults' encapsulation philosophy",
+    ],
+    whyThisMatters: {
+      title: "Data validation and integrity prevent production failures",
+      body: "Corrupted data breaks business rules, crashes telemetry pipelines, and creates security risks. Encapsulation ensures every change to an object passes through validation logic.",
+      items: [
+        "Django models validate field constraints (max_length, choices, validators) before saving",
+        "FastAPI Pydantic models validate request payloads with custom validators",
+        "Smart Farm irrigation controllers prevent reservoir overflow and invalid temperature inputs",
+        "Financial systems validate transaction amounts before modifying account balances",
+      ],
+    },
+    industryMotivation: {
+      title: "Protecting state across large engineering teams",
+      body: "In teams of dozens of engineers, encapsulation prevents developers from accidentally mutating private implementation details directly, ensuring components can be refactored safely.",
+      signal:
+        "Encapsulation with getters, setters, and validation is standard across enterprise Python frameworks.",
+    },
+    concept: {
+      title: "Public for open data; Private + Setters for validated data",
+      body: "Public attributes (self.name) are open. Protected (_location) signals developer convention. Private (__temperature) triggers name mangling to prevent direct access, forcing use of validated setter methods (set_temperature(val)).",
+      items: [
+        "Public: self.name — freely accessible",
+        "Protected: self._location — convention: internal use only",
+        "Private: self.__temperature — name mangled (_Farm__temperature)",
+        "Getter: get_temperature() — retrieves private attribute",
+        "Setter: set_temperature(val) — validates input before assigning",
+      ],
+    },
+    workflow: {
+      title: "The encapsulated mutation workflow",
+      description: "Trace how set_temperature(999.0) protects an object from bad data.",
+      steps: [
+        {
+          title: "External code calls setter",
+          description: "farm.set_temperature(999.0) passes 999.0 to the setter method.",
+        },
+        {
+          title: "Validation check",
+          description: "The setter evaluates if -10.0 <= value <= 60.0.",
+        },
+        {
+          title: "Rejection & Log",
+          description: "Validation fails (999.0 > 60.0). An error is logged and assignment is skipped.",
+        },
+        {
+          title: "State preserved",
+          description: "farm.__temperature remains unchanged at its valid prior state (35.0°C).",
+        },
+      ],
+    },
+    agritechExample: {
+      title: "IrrigationController — Water Level Safeguards",
+      body: "An automated irrigation reservoir controller encapsulates its water level. Refilling and dispensing must pass through validated methods so water levels never drop below 0 or overflow reservoir capacity.",
+    },
+    playground: {
+      title: "Practice Public, Private, and Getter/Setter Validation",
+      description:
+        "Run the code below to test direct attribute access vs private name mangling, and observe how setter validation rejects invalid inputs.",
+      starterCode: `class Farm:
+    def __init__(self, name, crop, temperature):
+        self.name = name                 # Public
+        self._location = "Field A"       # Protected convention
+        self.__temperature = 0.0         # Private!
+        self.set_temperature(temperature)# Validate initial value
+
+    # Getter for private temperature
+    def get_temperature(self):
+        return self.__temperature
+
+    # Setter with validation rules
+    def set_temperature(self, value):
+        if -10.0 <= value <= 60.0:
+            print(f"✅ [{self.name}] Temperature updated to {value}°C")
+            self.__temperature = value
+        else:
+            print(f"❌ [{self.name}] REJECTED invalid temp: {value}°C (Must be -10.0 to 60.0)")
+
+farm1 = Farm("Green Valley", "Rice", 31.5)
+
+# Public access
+print("Public name:", farm1.name)
+
+# Protected convention access
+print("Protected location:", farm1._location)
+
+# Private getter access
+print("Current temp via getter:", farm1.get_temperature())
+
+# Valid update via setter
+farm1.set_temperature(35.0)
+
+# Invalid update rejected by setter!
+farm1.set_temperature(999.0)
+print("Temp after bad update attempt:", farm1.get_temperature())
+
+# Direct private access raises AttributeError
+try:
+    print(farm1.__temperature)
+except AttributeError as e:
+    print("🔒 AttributeError caught:", e)`,
+      expectedOutcome:
+        "Outputs public and protected values, prints current temp via getter, accepts 35.0°C, rejects 999.0°C with error message, and catches AttributeError on direct __temperature access.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Private crop code with getter",
+        prompt:
+          "Create a Crop class with public crop_name and private __crop_code. Add a getter get_crop_code() that returns the code in uppercase. Test it with 'Rice' and 'rc-101'.",
+        guidance:
+          "Assign self.__crop_code = code. In get_crop_code(self), return self.__crop_code.upper().",
+      },
+      {
+        level: "Medium",
+        title: "Farmer mobile number validation",
+        prompt:
+          "Create a Farmer class with name and private __mobile. Add getter get_mobile() and setter set_mobile(val). Ensure set_mobile only accepts strings of exactly 10 digits (len == 10 and isdigit()). Test with valid and invalid numbers.",
+        guidance:
+          "In set_mobile(self, val), check if len(val) == 10 and val.isdigit().",
+      },
+      {
+        level: "Challenge",
+        title: "WeatherStation humidity protection",
+        prompt:
+          "Create a WeatherStation class with station_id and private __humidity. Include getter get_humidity() and setter set_humidity(val) enforcing 0 <= val <= 100. Add a method is_optimal_humidity() returning True if 40 <= humidity <= 70. Test all methods.",
+        guidance:
+          "Use the getter inside is_optimal_humidity() or reference self.__humidity internally.",
+      },
+    ],
+    quiz: [
+      {
+        title: "Protected attribute prefix",
+        question: "Which prefix convention indicates a protected attribute in Python?",
+        options: ["__ (double underscore)", "_ (single underscore)", "# (hash)", "$ (dollar)"],
+        correctOptionIndex: 1,
+        note: "_prefix indicates protected by developer convention.",
+        explanation:
+          "A single underscore prefix (_name) signals to developers that an attribute is internal/protected by convention.",
+      },
+      {
+        title: "Private attribute name mangling",
+        question: "What happens when you try to access obj.__private_attr directly from outside the class?",
+        options: [
+          "Returns None silently",
+          "Raises AttributeError due to name mangling",
+          "Executes the getter method automatically",
+          "Deletes the attribute",
+        ],
+        correctOptionIndex: 1,
+        note: "__private triggers name mangling.",
+        explanation:
+          "Python renames __private_attr to _ClassName__private_attr (name mangling), causing direct external access to raise an AttributeError.",
+      },
+      {
+        title: "Purpose of Setter methods",
+        question: "What is the primary benefit of using a Setter method instead of direct attribute assignment?",
+        options: [
+          "Makes the code run faster",
+          "Allows validating input values before mutating state",
+          "Automatically converts strings to integers",
+          "Creates a new class instance",
+        ],
+        correctOptionIndex: 1,
+        note: "Setters enforce validation logic.",
+        explanation:
+          "Setters allow you to embed validation rules (e.g. 0 <= battery <= 100) before changing internal object state.",
+      },
+      {
+        title: "Python encapsulation philosophy",
+        question: "What does the Python phrase 'We are all consenting adults here' refer to?",
+        options: [
+          "Python requires legal agreements to write code",
+          "Python relies on developer conventions (_protected) rather than strict compiler-enforced access blocking",
+          "Python code can only be written by adults",
+          "All Python variables are global by default",
+        ],
+        correctOptionIndex: 1,
+        note: "Python trusts developers to follow conventions.",
+        explanation:
+          "Python trusts developers to respect underscores and encapsulation guidelines rather than enforcing hard compiler barriers.",
+      },
+    ],
+    assignment: {
+      title: "Smart Farm Security Architecture — Encapsulation & Validation",
+      brief:
+        "Build an encapsulated Smart Farm domain model where Farm, Sensor, and IrrigationController protect their sensitive attributes using private variables and validated setters.",
+      deliverables: [
+        "Implement class Farm: public name, protected _location, private __temperature (-10 to 60°C validation in setter)",
+        "Implement class Sensor: public sensor_id, private __battery (0 to 100% validation in setter), get_battery(), set_battery(val)",
+        "Implement class IrrigationController: private __water_level (0 to capacity validation in refill and dispense methods)",
+        "Instantiate 2 Farm objects, 2 Sensor objects, and 1 IrrigationController object",
+        "Demonstrate valid state updates (e.g. farm1.set_temperature(32.0), sensor1.set_battery(85))",
+        "Demonstrate invalid update rejections (e.g. farm1.set_temperature(-500.0), sensor1.set_battery(150))",
+        "Demonstrate AttributeError handling when attempting direct access to private attributes (__temperature, __battery)",
+        "Write 6 comment lines explaining: encapsulation, why direct attribute mutation is dangerous, the difference between _protected and __private, name mangling, and Python's 'consenting adults' philosophy",
+      ],
+    },
+    summarySection: {
+      title: "Encapsulation and Data Protection mastered",
+      body: "You learned how to secure Smart Farm objects from data corruption, mastered public, protected, and private access modifiers, built validated getters and setters, and understood Python's name mangling mechanism and encapsulation philosophy.",
+      items: [
+        "Encapsulation bundles data with methods and controls external access",
+        "Public attributes (self.name) are open for general use",
+        "Protected attributes (self._location) signal internal developer convention",
+        "Private attributes (self.__temperature) trigger name mangling (_Farm__temperature)",
+        "Getters (get_temp()) retrieve private values safely",
+        "Setters (set_temp(val)) validate input before modifying internal state",
+        "Python relies on developer conventions and name mangling ('consenting adults')",
+      ],
+    },
+    keyTakeaways: [
+      "Encapsulation prevents corrupted object states and ensures system invariants",
+      "Public attributes (self.name) are accessible everywhere",
+      "Protected attributes (self._name) signal internal use by convention",
+      "Private attributes (self.__name) trigger name mangling to reduce accidental access",
+      "Getter methods provide read access to private data",
+      "Setter methods validate input before writing to private data",
+      "Python trusts developers ('consenting adults') while providing mechanisms to protect data",
+    ],
+    whatsNext: {
+      title: "Lesson 5.5 · Inheritance — Building Sensor Hierarchies",
+      body: "Our Farm and Sensor classes are secure! But right now, we have different types of sensors (temperature, moisture, pH) that duplicate common code like sensor_id and battery. In Lesson 5.5 we learn Inheritance — creating specialized child classes (TemperatureSensor, MoistureSensor) from a base Sensor class.",
+    },
+    developmentPack: oopEncapsulationDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -733,9 +979,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 4,
     title: "5.4 Encapsulation & Data Protection",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 180,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-5",

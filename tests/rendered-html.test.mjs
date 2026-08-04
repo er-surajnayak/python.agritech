@@ -1705,3 +1705,24 @@ test("Module 5 publishes Lesson 5.3 (Methods & Class Variables) adhering to OOP_
   assert.match(stylesSource, /\.oop-var-comparator/);
 });
 
+
+test("Module 5 publishes Lesson 5.4 (Encapsulation) adhering to OOP_STYLE_GUIDE.md", async () => {
+  const [moduleSource, packSource, blocksSource, rendererSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-5.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-5-4.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-4LearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/OopLesson5-4LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /id: "module-5-lesson-4"[\s\S]*developmentPack: oopEncapsulationDevelopmentPack/);
+  assert.match(packSource, /kind: "oop-lesson-5-4"/);
+  assert.match(packSource, /self\.__temperature = temperature/);
+  assert.match(packSource, /We are all consenting adults here/);
+  assert.match(blocksSource, /function OopAccessModifierInspector/);
+  assert.match(blocksSource, /function OopEncapsulationInspector/);
+  assert.match(rendererSource, /kind !== "oop-lesson-5-4"/);
+  assert.match(stylesSource, /\.oop-lesson-5-4-pack/);
+  assert.match(stylesSource, /\.oop-access-inspector/);
+});
+

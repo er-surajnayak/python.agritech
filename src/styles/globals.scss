@@ -5537,6 +5537,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* Module 4 · Lesson 4.9 – Solved Programming Questions (Sets & Dictionaries) */
+/* Inherits all .list-tuple-practice-development-pack styles.
+   Only the accent colour and nav-node difficulty tints are overridden here.   */
+.set-dict-practice-development-pack {
+  --practice-accent: #0e7c7b;  /* teal – visually distinguishes 4.9 from 4.8 (purple) */
 
+  .question-nav-node.easy   { border-color: var(--cds-support-info); }
+  .question-nav-node.medium { border-color: var(--practice-accent); }
+  .question-nav-node.advanced { border-color: var(--cds-support-error); }
 
-
+  .challenge-box {
+    background: rgba(14, 124, 123, 0.1);
+    border-left: 3px solid var(--practice-accent);
+    .box-title { color: var(--practice-accent); }
+  }
+}

@@ -6,6 +6,7 @@ import { setsDevelopmentPack } from "@/content/development-packs/lesson-4-5";
 import { dictionaryDevelopmentPack } from "@/content/development-packs/lesson-4-6";
 import { collectionOperationsDevelopmentPack } from "@/content/development-packs/lesson-4-7";
 import { listTuplePracticeDevelopmentPack } from "@/content/development-packs/lesson-4-8";
+import { setDictPracticeDevelopmentPack } from "@/content/development-packs/lesson-4-9";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFourLessons: LessonDocument[] = [
@@ -827,6 +828,107 @@ Latitude: 17.385, Longitude: 78.486`
       body: "Next, solve practical problems using Sets and Dictionaries, including duplicate removal, membership testing, key-value manipulation, and structured farm records."
     },
     developmentPack: listTuplePracticeDevelopmentPack
+  },
+  {
+    id: "module-4-lesson-9",
+    moduleId: "module-4",
+    number: "4.9",
+    title: "Solved Programming Questions (Sets & Dictionaries)",
+    summary: "Work through 30 progressively difficult solved questions that apply Sets and Dictionaries to real-world Agritech scenarios — from duplicate removal and set algebra through structured farm records and nested dictionary design.",
+    durationMinutes: 210,
+    level: "Beginner to Intermediate",
+    introduction: { title: "Practice makes Python intuitive", body: "Lesson 4.8 gave you confidence with Lists and Tuples. Now build the same fluency with Sets and Dictionaries — the two structures that power deduplication, fast membership testing, and structured data modelling." },
+    objectives: [
+      "Apply Sets to remove duplicates and perform set algebra",
+      "Use set operations: union, intersection, difference",
+      "Create, access, update, and delete dictionary key-value pairs",
+      "Use dictionary methods: keys(), values(), items(), get(), update(), copy()",
+      "Model real-world Agritech data as nested dictionaries",
+      "Detect duplicate entries using set-vs-list length comparison",
+      "Build a complete Smart Farm Asset Manager mini-project",
+    ],
+    whyThisMatters: { title: "Sets and Dictionaries power modern data engineering", body: "Sets drive O(1) membership testing and deduplication. Dictionaries are the universal data interchange format — every JSON API, database document, and ML feature vector is a dictionary at its core." },
+    industryMotivation: { title: "The data structures behind every real system", body: "REST APIs return JSON (dictionaries). IoT sensor registries use sets for deduplication. Data pipelines use frequency dicts for aggregation. Mastering these two structures is essential before NumPy, Pandas, and machine learning.", signal: "Sets and Dictionaries are fundamental to Data Science, DevOps, and Backend Engineering alike." },
+    concept: { title: "Sets for uniqueness, Dictionaries for structure", body: "A Set stores unique, unordered elements for fast membership testing and mathematical operations. A Dictionary maps unique keys to values, modelling real-world objects as structured records.", items: ["Set: unique unordered elements", "Dictionary: key-value pairs", "Set algebra: union, intersection, difference", "Dict methods: get, update, items", "Nested dicts for complex records"] },
+    workflow: { title: "From raw data to clean structured records", description: "Use a Set to deduplicate inputs then load clean data into a Dictionary for structured storage.", steps: [
+      { title: "Collect", description: "Receive raw sensor IDs or crop names with potential duplicates." },
+      { title: "Deduplicate", description: "Convert to a Set to discard repeated values automatically." },
+      { title: "Structure", description: "Load unique data into a Dictionary with descriptive keys." },
+      { title: "Update", description: "Modify dictionary values as new telemetry arrives." },
+      { title: "Report", description: "Iterate with .items() to print formatted output." },
+    ] },
+    agritechExample: { title: "Sensor deduplication and farm record management", body: "IoT gateways receive duplicate sensor pings. A Set instantly collapses duplicates. The resulting unique IDs are stored in a Dictionary alongside temperature, humidity, and crop metadata for a complete farm record." },
+    playground: {
+      title: "Sensor Registry & Farm Profile Playground",
+      description: "Build a live sensor registry set and a farm profile dictionary. Add sensors, update values, and print a formatted dashboard report.",
+      starterCode: `# Sensor Registry & Farm Profile
+
+# Set: unique sensor IDs
+sensor_registry = {101, 102, 103}
+sensor_registry.add(104)
+sensor_registry.discard(999)  # safe — 999 not present
+
+print("Active sensors:", sorted(sensor_registry))
+
+# Dictionary: farm profile
+farm = {
+    "name": "Green Valley",
+    "crop": "Rice",
+    "temperature": 31,
+    "humidity": 68,
+    "battery": 87,
+    "status": "Active"
+}
+
+farm["temperature"] = 33  # update
+farm.update({"rainfall": 14, "wind_speed": 18})  # merge
+
+print("\\n=== Farm Dashboard ===")
+for key, value in farm.items():
+    print(f"  {key.upper()}: {value}")`,
+      expectedOutcome: "Sensor registry printed in ascending order. Farm dashboard displays all fields including merged rainfall and wind_speed.",
+    },
+    practice: [
+      { level: "Easy", title: "Fertilizer Unique Registry", prompt: "Create a list of fertilizers with duplicates and convert to a set. Print unique fertilizers sorted.", guidance: "Use set() and sorted() together." },
+      { level: "Medium", title: "Farm Sensor Audit Report", prompt: "Given two farm sensor sets, print common sensors, sensors only in Farm A, sensors only in Farm B, and total unique sensors.", guidance: "Use intersection, difference, and union." },
+      { level: "Challenge", title: "Crop Frequency Counter", prompt: "Given a log of 20 crop harvest entries with repeats, build a frequency dictionary and print the top 3 most harvested crops in descending order.", guidance: "Use .get(key, 0) + 1 inside a loop and sorted() with key=lambda." },
+    ],
+    quiz: [
+      { title: "Empty Set", question: "Which of these creates an empty set in Python?", options: ["{}", "set()", "[]", "()"], correctOptionIndex: 1, note: "{} creates an empty dictionary.", explanation: "Only set() creates an empty set. {} always evaluates to an empty dictionary." },
+      { title: "Safe Key Access", question: "Which dictionary method safely returns a default value when a key is missing?", options: ["dict[key]", "dict.find(key)", "dict.get(key, default)", "dict.search(key)"], correctOptionIndex: 2, note: ".get() never raises KeyError.", explanation: ".get(key, default) returns the default instead of crashing when the key is absent." },
+      { title: "Set Intersection", question: "What does `{1, 2, 3} & {2, 3, 4}` return?", options: ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "{1, 2, 3}"], correctOptionIndex: 1, note: "& is the intersection operator.", explanation: "Intersection returns only elements present in both sets." },
+      { title: "Dictionary Iteration", question: "Which method gives you both keys and values in a loop?", options: [".keys()", ".values()", ".items()", ".pairs()"], correctOptionIndex: 2, note: ".items() yields (key, value) tuples.", explanation: "Use `.items()` when you need both the key and value in each loop iteration." },
+    ],
+    assignment: {
+      title: "Smart Farm Asset Manager Project",
+      brief: "Build a complete command-line Smart Farm Asset Manager that combines a Set-based sensor registry with a Dictionary-based farm profile system.",
+      deliverables: [
+        "Set-based sensor registry with add, remove, and duplicate detection",
+        "Dictionary storing complete farm profile (name, crop, location, weather, battery)",
+        "Functions: register_farm(), update_battery(), search_farm(), print_all_farms()",
+        "Execution output matching the capstone expected output",
+        "Written explanation of when to use Set vs Dictionary"
+      ]
+    },
+    summarySection: {
+      title: "Sets and Dictionaries mastered through practice",
+      body: "You have now solved 30 practical programming questions using Sets and Dictionaries. You can confidently remove duplicates, perform set algebra, create and mutate dictionaries, use all key dictionary methods, and model complex Agritech data structures.",
+      items: ["Set deduplication and set algebra (union, intersection, difference)", "Dictionary CRUD: create, read, update, delete", "Safe access with .get()", "Iterating with .keys(), .values(), .items()", "Nested dictionaries for structured records", "Frequency counting with dict.get(key, 0)"]
+    },
+    keyTakeaways: [
+      "Sets {} store only unique values and support O(1) membership testing",
+      "Empty sets require set() — {} creates an empty dictionary",
+      ".add() and .discard() are the safe set mutation methods",
+      "Dictionary keys must be unique — duplicate keys silently overwrite previous values",
+      ".get(key, default) prevents KeyError crashes on missing keys",
+      ".items() is the most versatile dictionary iteration method — it yields (key, value) pairs",
+      "Sets and Dictionaries are the core data structures behind JSON APIs, databases, and ML pipelines"
+    ],
+    whatsNext: {
+      title: "Lesson 4.10 · Smart Farm Data Management Capstone",
+      body: "The final lesson of Module 4 brings together all four collection types — Lists, Tuples, Sets, and Dictionaries — into one integrated Smart Farm Analytics Console. You will model, query, and update a complete farm data system."
+    },
+    developmentPack: setDictPracticeDevelopmentPack
   }
 ];
 
@@ -839,7 +941,7 @@ export const moduleFourLessonSummaries = [
   { id: "module-4-lesson-6", moduleId: "module-4", order: 6, title: "4.6 Dictionaries", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-7", moduleId: "module-4", order: 7, title: "4.7 Collection Operations & Built-in Functions", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-8", moduleId: "module-4", order: 8, title: "4.8 Solved Programming Questions (List + Tuple)", estimatedMinutes: 210, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Solved Programming Questions (Set + Dictionary)", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-4-lesson-9", moduleId: "module-4", order: 9, title: "4.9 Solved Programming Questions (Set + Dictionary)", estimatedMinutes: 210, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-4-lesson-10", moduleId: "module-4", order: 10, title: "4.10 Smart Farm Data Management Capstone", estimatedMinutes: 240, status: "not-started" as const, isPlaceholder: true },
 ];
 

@@ -1,5 +1,6 @@
 import { numpyIntroductionDevelopmentPack } from "@/content/development-packs/lesson-6-1";
 import { numpyArrayCreationDevelopmentPack } from "@/content/development-packs/lesson-6-2";
+import { numpyArrayAttributesDevelopmentPack } from "@/content/development-packs/lesson-6-3";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -210,12 +211,86 @@ print("Moisture:", np.round(moisture, 2))`,
     whatsNext: { title: "Lesson 6.3 · Array Attributes & Data Types", body: "Next, inspect what an array contains and how it is structured with ndim, shape, size, dtype, itemsize, and astype()." },
     developmentPack: numpyArrayCreationDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-3",
+    moduleId: "module-6",
+    number: "6.3",
+    title: "Array Attributes & Data Types: Understanding Smart Farm Data",
+    summary: "Inspect an array's dimensions, shape, element count, dtype, and memory footprint, then convert data safely with astype().",
+    durationMinutes: 120,
+    level: "Intermediate",
+    introduction: { title: "Understand the data before using it", body: "The Smart Farm can create sensor arrays. Now engineers need to verify their axes, structure, storage type, and memory before analysis." },
+    objectives: [
+      "Use ndim, shape, and size and clearly distinguish their meanings",
+      "Inspect an array's dtype",
+      "Recognize common integer, floating-point, Boolean, complex, and string dtypes",
+      "Set dtype while creating an array",
+      "Convert an existing array with astype()",
+      "Explain itemsize and nbytes",
+      "Recognize that dtype and memory details can vary by platform",
+      "Preview the relationship between shape and reshape()",
+    ],
+    whyThisMatters: { title: "Wrong structure creates wrong conclusions", body: "A calculation may run while using the wrong axis, unexpected dtype, or unsuitable memory layout. Inspection makes those assumptions visible.", items: ["Validate field and sensor axes", "Prevent silent dtype surprises", "Estimate element memory", "Prepare arrays for later indexing and reshaping"] },
+    industryMotivation: { title: "Production data pipelines validate structure at every boundary", body: "IoT, analytics, and machine-learning systems inspect shape and dtype when data enters a pipeline because models and numerical operations expect specific structures.", items: ["Models expect a defined feature shape", "Sensor batches must contain the expected reading count", "dtype controls precision and storage", "Memory estimates matter for large telemetry batches"], signal: "Inspecting arrays is the numerical equivalent of checking a contract before processing data." },
+    concept: { title: "Attributes describe the array you already have", body: "ndim counts axes, shape gives each axis length, size counts all values, dtype identifies storage, and itemsize plus nbytes describe element memory.", items: ["ndim → number of axes", "shape → size of each axis", "size → all elements", "dtype → element storage type", "itemsize and nbytes → element memory"] },
+    workflow: { title: "A reliable array inspection workflow", description: "Move from structure to storage before numerical work.", steps: [
+      { title: "View the dataset", description: "Connect rows and columns to fields and sensor meanings." },
+      { title: "Inspect axes", description: "Read ndim, shape, and size without calling them as functions." },
+      { title: "Inspect storage", description: "Check dtype, itemsize, and nbytes rather than assuming defaults." },
+      { title: "Convert deliberately", description: "Use astype() only after considering possible information loss." },
+      { title: "Proceed", description: "Calculate only after the structure matches the intended analysis." },
+    ] },
+    agritechExample: { title: "Four fields, three sensor features", body: "A (4, 3) array stores four field rows and three feature columns—temperature, humidity, and moisture—for twelve total readings." },
+    playground: {
+      title: "Inspect a Smart Farm Sensor Array",
+      description: "Edit the sensor grid and dtype, run NumPy, and compare dimensions, shape, element count, and memory information.",
+      starterCode: `import numpy as np
+
+sensor_data = np.array([
+    [28, 65, 40],
+    [30, 70, 42],
+    [31, 68, 38],
+    [29, 72, 41]
+])
+
+print("Dimensions:", sensor_data.ndim)
+print("Shape:", sensor_data.shape)
+print("Total readings:", sensor_data.size)
+print("Data type:", sensor_data.dtype)
+print("Bytes per value:", sensor_data.itemsize)
+print("Total bytes:", sensor_data.nbytes)`,
+      expectedOutcome: "The array has 2 dimensions, shape (4, 3), and 12 readings; dtype and byte values reflect the active NumPy runtime.",
+    },
+    practice: [
+      { level: "Easy", title: "Inspect temperatures", prompt: "Create [28, 30, 32, 29, 31] and print ndim, shape, size, and dtype.", guidance: "These are attributes, so do not add parentheses." },
+      { level: "Medium", title: "Inspect a soil matrix", prompt: "Create a 3 × 3 soil-moisture array and explain its ndim, shape, and size in words.", guidance: "Two axes means ndim 2; multiply shape values for size." },
+      { level: "Medium", title: "Observe conversion loss", prompt: "Convert [10.5, 20.8, 30.2] to integers with astype() and describe the result.", guidance: "The decimal portion is truncated rather than rounded." },
+      { level: "Challenge", title: "Preview a 4 × 6 structure", prompt: "Inspect np.arange(24).reshape(4, 6) and explain what every reported attribute means.", guidance: "The 24 values are rearranged into four rows and six columns." },
+    ],
+    quiz: [
+      { title: "Axes", question: "What does arr.ndim report?", options: ["Total bytes", "Number of dimensions", "Data type", "Largest value"], correctOptionIndex: 1, note: "Think: how many axes?", explanation: "ndim reports the count of array axes." },
+      { title: "Shape meaning", question: "What does shape (4, 3) mean?", options: ["4 dimensions and 3 values", "4 rows and 3 columns", "12 dimensions", "4 bytes and 3 bits"], correctOptionIndex: 1, note: "Each tuple entry is an axis length.", explanation: "For this 2D dataset, shape (4, 3) means four rows and three columns." },
+      { title: "Element count", question: "What is the size of an array with shape (4, 3)?", options: ["2", "7", "12", "43"], correctOptionIndex: 2, note: "Multiply axis lengths.", explanation: "4 × 3 gives twelve elements." },
+      { title: "Storage type", question: "What does dtype describe?", options: ["Element storage type", "Array variable name", "Row labels", "Number of axes"], correctOptionIndex: 0, note: "dtype means data type.", explanation: "dtype identifies the compatible type NumPy uses for elements." },
+      { title: "Conversion", question: "How does astype() differ from dtype= in np.array()?", options: ["It sorts values", "It converts an existing array", "It changes shape", "There is no difference"], correctOptionIndex: 1, note: "Think about when conversion occurs.", explanation: "dtype= sets storage during creation; astype() produces a converted array from an existing one." },
+      { title: "Per element", question: "What does itemsize report?", options: ["Array size", "Bytes per element", "Total bytes", "Column count"], correctOptionIndex: 1, note: "One item at a time.", explanation: "itemsize reports memory occupied by one element." },
+      { title: "Total memory", question: "What does nbytes represent?", options: ["Number of dimensions", "Total element bytes", "Bytes per value", "Number of rows"], correctOptionIndex: 1, note: "nbytes = size × itemsize.", explanation: "nbytes reports total memory used by array elements." },
+      { title: "Attribute syntax", question: "Which expression is correct?", options: ["arr.shape()", "shape(arr)", "arr.shape", "arr.get_shape()"], correctOptionIndex: 2, note: "shape is data attached to the array.", explanation: "shape is an attribute and is accessed without parentheses." },
+      { title: "Three dimensions", question: "What is ndim for shape (2, 3, 4)?", options: ["2", "3", "4", "24"], correctOptionIndex: 1, note: "Count tuple entries.", explanation: "Three axis lengths mean three dimensions." },
+      { title: "Integer conversion", question: "What happens when 10.9 is converted to int with astype(int)?", options: ["It becomes 11", "It becomes 10", "It remains 10.9", "It raises an error"], correctOptionIndex: 1, note: "It does not round normally.", explanation: "The fractional portion is removed, producing 10." },
+    ],
+    assignment: { title: "Smart Farm Array Inspection Report", brief: "Inspect three realistic farm arrays and explain every attribute in plain language.", deliverables: ["Inspect a 1D temperature array", "Inspect a 2D field-feature matrix", "Print ndim, shape, size, dtype, itemsize, and nbytes", "Convert one float array to integers", "Explain the information lost during conversion", "Preview one valid reshape while preserving size"] },
+    summarySection: { title: "You can now read an array's structural identity", body: "You distinguished axes, axis lengths, total values, storage types, and memory, then converted an existing array while recognizing potential data loss.", items: ["ndim counts axes", "shape gives axis lengths", "size counts all values", "dtype describes storage", "itemsize is bytes per value", "nbytes is total element bytes", "astype() converts an existing array"] },
+    keyTakeaways: ["Access attributes without parentheses", "Read shape using the meaning of each axis", "Calculate size by multiplying shape values", "Never assume a platform-specific dtype or byte count", "Float-to-int conversion removes fractional information", "Reshape changes structure, not element count"],
+    whatsNext: { title: "Lesson 6.4 · Indexing, Slicing & Reshaping", body: "Next, access individual readings and array regions, then reshape, flatten, ravel, and transpose Smart Farm datasets." },
+    developmentPack: numpyArrayAttributesDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-1", moduleId: "module-6", order: 1, title: "6.1 Introduction to NumPy", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-2", moduleId: "module-6", order: 2, title: "6.2 Creating NumPy Arrays", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },

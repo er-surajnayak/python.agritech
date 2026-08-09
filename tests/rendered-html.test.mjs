@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 12, "two published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 13, "three published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1802,4 +1802,29 @@ test("Lesson 6.2 publishes the NumPy array creation toolbox", async () => {
   assert.match(blocksSource, /label=\{kind === "arange" \? "Step" : "Number of values"\}/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.2 — NumPy array creation/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-creation-pack/);
+});
+
+test("Lesson 6.3 publishes the NumPy array inspector and dtype tools", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayAttributesLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayAttributesLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Array Attributes & Data Types: Understanding Smart Farm Data"/);
+  assert.match(moduleSource, /id: "module-6-lesson-3"[\s\S]*developmentPack: numpyArrayAttributesDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-3"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-array-attributes"/);
+  for (const concept of ["ndim", "shape", "size", "dtype", "itemsize", "nbytes", "astype", "reshape"]) assert.match(packSource, new RegExp(concept));
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-array-attributes"/);
+  assert.match(rendererSource, /<ArrayAttributeInspector/);
+  assert.match(rendererSource, /<DimensionStructureVisualizer/);
+  assert.match(blocksSource, /export function ArrayAttributeInspector/);
+  assert.match(blocksSource, /role="tab" aria-selected/);
+  assert.match(blocksSource, /Correct: <code>arr\.shape<\/code>/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.3 — NumPy array attributes and data types/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-attributes-pack/);
 });

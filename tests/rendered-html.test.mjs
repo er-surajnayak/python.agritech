@@ -1995,7 +1995,7 @@ test("Module 7 begins with two published Pandas lessons and an eight-lesson road
     readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 10, "two published lessons and eight navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 11, "three published lessons and eight navigation summaries should exist");
   assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2036,4 +2036,29 @@ test("Module 7.2 teaches DataFrames, inspection, columns, and real-data loading"
   assert.match(blocksSource, /Load CSV/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.2 — Pandas DataFrames and loading real data/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-dataframe-pack/);
+});
+
+test("Module 7.3 teaches label, position, Boolean, and query selection", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasSelectionLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasSelectionLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "Selecting, Filtering & Querying DataFrames"/);
+  assert.match(moduleSource, /id: "module-7-lesson-3"[\s\S]*developmentPack: pandasSelectionDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-3"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-selection-filtering"/);
+  for (const concept of [".loc", ".iloc", ".isin", ".between", ".query", "@min_yield", "Soil_Moisture", "Temperature"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-selection-filtering"/);
+  assert.match(rendererSource, /<FarmDataFilterLab/);
+  assert.match(rendererSource, /<MultiConditionBuilder/);
+  assert.match(rendererSource, /<LocIlocExplorer/);
+  assert.match(blocksSource, /export function QueryPatternExplorer/);
+  assert.match(blocksSource, /Boolean mask/);
+  assert.match(blocksSource, /Labels answer/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.3 — Selecting, filtering, and querying DataFrames/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-selection-pack/);
 });

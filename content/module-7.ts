@@ -1,5 +1,6 @@
 import { pandasSeriesDevelopmentPack } from "@/content/development-packs/lesson-7-1";
 import { pandasDataFrameDevelopmentPack } from "@/content/development-packs/lesson-7-2";
+import { pandasSelectionDevelopmentPack } from "@/content/development-packs/lesson-7-3";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSevenLessons: LessonDocument[] = [{
@@ -146,12 +147,93 @@ print(indexed)`,
   keyTakeaways: ["Inspect a new dataset before calculating", "DataFrame shape is rows then columns", "Use info() for structure and describe() for statistics", "Single and multiple column selection return different dimensionality", "Column arithmetic is vectorized", "drop() returns a new DataFrame unless told otherwise", "read_csv() and read_excel() bring real files into Pandas", "index=False avoids saving an unwanted row-index column"],
   whatsNext: { title: "Lesson 7.3 · Selecting, Filtering & Querying", body: "Next, select specific rows and cells with loc and iloc, build Boolean filters, combine conditions, and express readable filters with query()." },
   developmentPack: pandasDataFrameDevelopmentPack,
+}, {
+  id: "module-7-lesson-3", moduleId: "module-7", number: "7.3", title: "Selecting, Filtering & Querying DataFrames", durationMinutes: 150, level: "Intermediate",
+  summary: "Ask practical questions from farm data with label-based loc, position-based iloc, Boolean masks, combined conditions, isin, between, and query.",
+  introduction: { title: "From seeing data to asking questions", body: "A DataFrame becomes useful when learners can request exactly the records and features needed for a decision: dry fields, high-yield fields, selected measurements, or a readable multi-condition query." },
+  objectives: ["Select one or several columns", "Use loc for label-based selection", "Use iloc for position-based selection", "Explain inclusive loc slicing and exclusive iloc slicing", "Select rows and columns together", "Filter rows with Boolean conditions", "Combine conditions with &, |, and ~", "Explain why and/or do not combine Pandas Series", "Filter multiple values with isin()", "Filter inclusive ranges with between()", "Write readable expressions with query()", "Reference Python variables inside query() with @"],
+  whyThisMatters: { title: "Farm decisions start with a precise question", body: "A controller rarely needs every column and every field. Precise selection reduces noise and makes the relationship between a business question, a Boolean mask, and an actionable result visible.", items: ["Identify irrigation fields", "Compare selected measurements", "Combine heat and moisture thresholds", "Keep only decision-relevant columns"] },
+  industryMotivation: { title: "Analytical subsets are the foundation of every downstream workflow", body: "Cleaning, reporting, modeling, and monitoring all depend on selecting the correct records without losing alignment between columns.", items: ["Labels protect record identity", "Masks preserve complete matching rows", "Readable queries improve review", "Explicit columns reduce accidental data exposure"], signal: "The most reusable Pandas pattern is df.loc[row_condition, selected_columns]." },
+  concept: { title: "Selection asks where; filtering asks whether", body: "loc speaks in labels, iloc speaks in positions, and Boolean filtering retains rows whose conditions evaluate to True.", items: ["loc → labels", "iloc → positions", "& → element-wise AND", "| → element-wise OR", "~ → invert mask", "query → readable expression"] },
+  workflow: { title: "Translate a farm question into Pandas", description: "Move from a natural-language requirement to a focused result.", steps: [
+    { title: "Name the question", description: "Identify the decision and threshold." }, { title: "Choose rows", description: "Use labels, positions, or a condition." },
+    { title: "Choose columns", description: "Keep only relevant measurements." }, { title: "Combine safely", description: "Parenthesize Series conditions and use & or |." },
+    { title: "Inspect result", description: "Confirm Field IDs and values." }, { title: "Communicate", description: "Explain the code as the original farm question." },
+  ] },
+  agritechExample: { title: "Find hot, dry fields", body: "Temperature above 34 and soil moisture below 30 identifies Fields 103 and 105. The result keeps their complete records aligned for an irrigation decision." },
+  playground: {
+    title: "Run Smart Farm Selection Queries",
+    description: "Compare loc and iloc, build Boolean filters, select relevant columns, and use isin, between, query, and query variables.",
+    starterCode: `import pandas as pd
+
+data = {
+    "Field_ID": [101, 102, 103, 104, 105, 106],
+    "Temperature": [28, 32, 35, 29, 38, 31],
+    "Humidity": [65, 70, 72, 68, 75, 66],
+    "Soil_Moisture": [42, 35, 28, 48, 22, 40],
+    "Yield": [520, 480, 410, 560, 390, 510]
+}
+
+df = pd.DataFrame(data)
+indexed = df.set_index("Field_ID")
+
+print("loc label 103:")
+print(indexed.loc[103, ["Temperature", "Yield"]])
+print("\\niloc position 2:")
+print(df.iloc[2, [0, 1, 4]])
+
+hot_and_dry = df[
+    (df["Temperature"] > 34) &
+    (df["Soil_Moisture"] < 30)
+]
+print("\\nHot and dry fields:")
+print(hot_and_dry[["Field_ID", "Temperature", "Soil_Moisture"]])
+
+print("\\nSelected IDs:")
+print(df[df["Field_ID"].isin([101, 103, 106])])
+print("\\nTemperature between 30 and 35:")
+print(df[df["Temperature"].between(30, 35)])
+
+min_yield = 500
+print("\\nYield above variable threshold:")
+print(df.query("Yield > @min_yield")[["Field_ID", "Yield"]])`,
+    expectedOutcome: "The runner distinguishes label 103 from position 2, identifies Fields 103 and 105 as hot and dry, selects requested IDs, returns the inclusive temperature range, and finds yields above 500.",
+  },
+  practice: [
+    { level: "Easy", title: "One column", prompt: "Select Temperature as a Series.", guidance: "Use one column label inside brackets." },
+    { level: "Easy", title: "Three columns", prompt: "Select Temperature, Humidity, and Yield as a DataFrame.", guidance: "Pass a list of labels." },
+    { level: "Medium", title: "Field labels", prompt: "After set_index, use loc to select Fields 101, 103, and 105.", guidance: "Pass the labels as a list." },
+    { level: "Medium", title: "First positions", prompt: "Use iloc to return the first three rows.", guidance: "Position slicing excludes 3." },
+    { level: "Medium", title: "Dry fields", prompt: "Find fields with soil moisture below 30.", guidance: "Use the comparison Series as a mask." },
+    { level: "Medium", title: "Hot and productive", prompt: "Find Temperature > 30 AND Yield > 500.", guidance: "Parenthesize each condition and combine with &." },
+    { level: "Challenge", title: "Extreme condition", prompt: "Find Temperature > 34 OR Soil_Moisture < 25.", guidance: "Use | between parenthesized masks." },
+    { level: "Challenge", title: "Inclusive range", prompt: "Use between() for temperatures from 30 through 35.", guidance: "Both endpoints are included." },
+    { level: "Challenge", title: "Readable query", prompt: "Use query() for Humidity > 68 AND Yield > 400.", guidance: "Inside query strings, use the word and." },
+    { level: "Challenge", title: "Focused answer", prompt: "For temperatures above 30, return only Field_ID, Temperature, and Yield.", guidance: "Use df.loc[condition, columns]." },
+  ],
+  quiz: [
+    { title: "loc", question: "What does loc use?", options: ["Labels", "Only integer positions", "File paths", "Dtypes"], correctOptionIndex: 0, note: "Think label.", explanation: "loc selects by row and column labels." },
+    { title: "iloc", question: "What does iloc use?", options: ["Integer positions", "Field names only", "SQL strings", "Boolean words"], correctOptionIndex: 0, note: "i means integer position.", explanation: "iloc selects by zero-based position." },
+    { title: "loc slice", question: "What does indexed.loc[101:104] include?", options: ["101 through 104", "101 through 103", "Only 104", "Positions 101–104"], correctOptionIndex: 0, note: "The ending label is included.", explanation: "Label slicing with loc is inclusive." },
+    { title: "iloc slice", question: "What does df.iloc[:2] return?", options: ["Positions 0 and 1", "Positions 0, 1, and 2", "Label 2", "Last two rows"], correctOptionIndex: 0, note: "Normal Python slicing rules.", explanation: "The ending position is excluded." },
+    { title: "AND", question: "Which operator combines two Pandas Series conditions with AND?", options: ["&", "and", "&&", "+"], correctOptionIndex: 0, note: "Parenthesize both comparisons.", explanation: "& performs element-wise Boolean AND." },
+    { title: "OR", question: "Which operator combines conditions with OR?", options: ["|", "or", "||", "~"], correctOptionIndex: 0, note: "A single pipe.", explanation: "| performs element-wise Boolean OR." },
+    { title: "NOT", question: "What does ~ do to a Boolean mask?", options: ["Inverts it", "Sorts it", "Groups it", "Saves it"], correctOptionIndex: 0, note: "True becomes False.", explanation: "~ performs element-wise logical inversion." },
+    { title: "isin", question: "Which method matches values from a list?", options: ["isin()", "between()", "query() only", "iloc()"], correctOptionIndex: 0, note: "Is this value in the list?", explanation: "isin creates a membership mask." },
+    { title: "between", question: "Is between(30, 35) inclusive by default?", options: ["Yes, both endpoints", "No endpoints", "Only 30", "Only 35"], correctOptionIndex: 0, note: "30 ≤ value ≤ 35.", explanation: "between includes both limits by default." },
+    { title: "query variable", question: "How is min_yield referenced inside query()?", options: ["@min_yield", "$min_yield", "{min_yield}", "#min_yield"], correctOptionIndex: 0, note: "Use @.", explanation: "@ tells query to read a Python variable." },
+  ],
+  assignment: { title: "Farm Question Workbook", brief: "Answer ten farm questions using labels, positions, masks, membership, ranges, and readable queries.", deliverables: ["One-column Series selection", "Multi-column DataFrame selection", "loc row and grid selections", "iloc row and grid selections", "Single-condition mask", "AND and OR filters", "NOT filter", "isin membership filter", "between range filter", "query with @ variable"] },
+  summarySection: { title: "You can now ask focused questions from DataFrames", body: "You selected identities with loc, positions with iloc, matching records with masks, and readable subsets with specialized filtering methods.", items: ["loc uses labels", "iloc uses positions", "loc label ranges include the end", "Boolean masks keep True rows", "& and | combine Series conditions", "~ inverts", "isin matches lists", "between checks ranges", "query expresses readable conditions"] },
+  keyTakeaways: ["Use loc when labels carry meaning", "Use iloc when position is the requirement", "Parenthesize every Series comparison", "Use & and | outside query strings", "Use and and or inside query strings", "isin is clearer for membership", "between is clearer for inclusive ranges", "df.loc[condition, columns] produces focused analytical answers"],
+  whatsNext: { title: "Lesson 7.4 · Cleaning & Preparing Data", body: "Next, detect and repair missing values, remove duplicates, convert data types, standardize labels, and prepare inconsistent farm data for reliable analysis." },
+  developmentPack: pandasSelectionDevelopmentPack,
 }];
 
 export const moduleSevenLessonSummaries = [
   { id: "module-7-lesson-1", moduleId: "module-7", order: 1, title: "7.1 Pandas Introduction & Series", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-2", moduleId: "module-7", order: 2, title: "7.2 Pandas DataFrames & Loading Real Data", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-7-lesson-3", moduleId: "module-7", order: 3, title: "7.3 Selecting, Filtering & Querying", estimatedMinutes: 150, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-7-lesson-3", moduleId: "module-7", order: 3, title: "7.3 Selecting, Filtering & Querying DataFrames", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Cleaning & Preparing Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Transformation & Feature Engineering", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Analysis", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },

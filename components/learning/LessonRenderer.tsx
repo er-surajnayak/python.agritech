@@ -72,6 +72,7 @@ import { NumpyArrayManagementLessonRenderer } from "@/components/learning/NumpyA
 import { NumpyDataAnalysisLessonRenderer } from "@/components/learning/NumpyDataAnalysisLessonRenderer";
 import { PandasSeriesLessonRenderer } from "@/components/learning/PandasSeriesLessonRenderer";
 import { PandasDataFrameLessonRenderer } from "@/components/learning/PandasDataFrameLessonRenderer";
+import { PandasSelectionLessonRenderer } from "@/components/learning/PandasSelectionLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -281,6 +282,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "pandas-dataframes-loading") {
     return <PandasDataFrameLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "pandas-selection-filtering") {
+    return <PandasSelectionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

@@ -5,8 +5,9 @@ import { moduleThreeLessons } from "@/content/module-3";
 import { moduleFourLessons } from "@/content/module-4";
 import { moduleFiveLessons } from "@/content/module-5";
 import { moduleSixLessons } from "@/content/module-6";
+import { moduleSevenLessons } from "@/content/module-7";
 
-export const publishedLessons = [...moduleZeroLessons, ...moduleOneLessons, ...moduleTwoLessons, ...moduleThreeLessons, ...moduleFourLessons, ...moduleFiveLessons, ...moduleSixLessons];
+export const publishedLessons = [...moduleZeroLessons, ...moduleOneLessons, ...moduleTwoLessons, ...moduleThreeLessons, ...moduleFourLessons, ...moduleFiveLessons, ...moduleSixLessons, ...moduleSevenLessons];
 
 
 export function getPublishedLesson(lessonId: string) {

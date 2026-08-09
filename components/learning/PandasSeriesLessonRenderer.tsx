@@ -1,0 +1,17 @@
+import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
+import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
+import { CodePlayground } from "@/components/learning/CodePlayground";
+import { FarmSensorSeriesExplorer, IrrigationSeriesPanel, NumpyPandasBridge, PandasSeriesQuickReference, SeriesPropertiesMethods } from "@/components/learning/PandasSeriesLearningBlocks";
+import { LessonHero } from "@/components/learning/LessonHero";
+import { IndustryInsightCard, KeyTakeawaysCard, LearningObjectivesCard, PracticeCard, QuizCard, SummaryCard, WhatsNextCard } from "@/components/learning/LearningBlocks";
+import { DebugChallengeCollection } from "@/components/learning/ProblemSolvingLearningBlocks";
+import type { LessonDocument } from "@/types/content";
+import type { CourseLesson, CourseModule } from "@/types/course";
+
+const outline = [["objectives", "Objectives"], ["bridge", "NumPy → Pandas"], ["series-explorer", "Series explorer"], ["inspect", "Properties & methods"], ["irrigation", "Irrigation"], ["playground", "Code runner"], ["practice", "Practice"], ["debug-challenge", "Debug"], ["quiz", "Quiz"], ["quick-reference", "Quick reference"], ["summary", "Summary"], ["whats-next", "What's next"]] as const;
+
+export function PandasSeriesLessonRenderer({ lesson, courseLesson, module, previous, next }: { lesson: LessonDocument; courseLesson: CourseLesson; module: CourseModule; previous: CourseLesson | null; next: CourseLesson | null }) {
+  const pack = lesson.developmentPack;
+  if (!pack || pack.kind !== "pandas-introduction-series") return null;
+  return <article className="published-lesson pandas-series-pack"><CourseBreadcrumb module={module} lesson={courseLesson} /><LessonHero eyebrow={`Module ${module.index} · Lesson ${lesson.number}`} title={lesson.title} summary={lesson.summary} icon={module.icon} level={lesson.level} durationMinutes={lesson.durationMinutes} prerequisite={pack.prerequisite} /><div className="published-lesson-layout"><div className="published-lesson-flow"><LearningObjectivesCard id="objectives" objectives={lesson.objectives} /><section className="lesson-card"><p className="lesson-section-label">Smart Farm transition</p><h2>Move from positions to meaningful labels</h2><p>{pack.storyHook}</p><div className="pandas-story-flow"><span>NumPy array</span><span>Labeled Series</span><span>Filter</span><span>Farm decision</span></div></section><NumpyPandasBridge comparison={pack.comparison} /><FarmSensorSeriesExplorer series={pack.series} operations={pack.operations} /><SeriesPropertiesMethods properties={pack.properties} methods={pack.methods} /><IrrigationSeriesPanel content={pack.moisture} /><IndustryInsightCard id="industry-insight" section={lesson.industryMotivation} /><CodePlayground id="playground" content={lesson.playground} className="pandas-playground" /><PracticeCard id="practice" tasks={lesson.practice} /><DebugChallengeCollection challenges={pack.debugChallenges} /><QuizCard id="quiz" quiz={lesson.quiz} /><PandasSeriesQuickReference rows={pack.quickReference} /><SummaryCard id="summary" section={lesson.summarySection} /><KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways} /><WhatsNextCard id="whats-next" section={lesson.whatsNext} /></div><aside className="lesson-outline published-lesson-outline" aria-label="On this page"><p>On this page</p>{outline.map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}</aside></div><PreviousNextNavigation previous={previous} next={next} /></article>;
+}

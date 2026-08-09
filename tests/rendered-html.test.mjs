@@ -1983,3 +1983,32 @@ test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () =>
   assert.match(stylesSource, /Module 6 · Lesson 6\.9 — NumPy data-analysis capstone/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });
+
+test("Module 7 begins with a labeled Pandas Series lesson and eight-lesson roadmap", async () => {
+  const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-1.ts", projectRoot), "utf8"),
+    readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),
+    readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasSeriesLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 9, "one published lesson and eight navigation summaries should exist");
+  assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
+  assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-introduction-series"/);
+  for (const concept of ["pd.Series", ".loc", ".iloc", ".shape", ".mean()", ".describe()", "temperature > 30"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(frameworkSource, /moduleIndex === 7\s*\? moduleSevenLessonSummaries/);
+  assert.match(lessonsSource, /\.\.\.moduleSevenLessons/);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-introduction-series"/);
+  assert.match(rendererSource, /<FarmSensorSeriesExplorer/);
+  assert.match(rendererSource, /<IrrigationSeriesPanel/);
+  assert.match(blocksSource, /export function FarmSensorSeriesExplorer/);
+  assert.match(blocksSource, /Label-based/);
+  assert.match(blocksSource, /Position-based/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.1 — Pandas introduction and Series/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-series-pack/);
+});

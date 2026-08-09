@@ -1,0 +1,18 @@
+import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
+import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
+import { AggregationBuilder, FarmGroupByExplorer, GroupByConcept, GroupedResultPatterns, MultiGroupExplorer, PandasGroupByQuickReference, TransformVisualizer } from "@/components/learning/PandasGroupByLearningBlocks";
+import { CodePlayground } from "@/components/learning/CodePlayground";
+import { LessonHero } from "@/components/learning/LessonHero";
+import { IndustryInsightCard, KeyTakeawaysCard, LearningObjectivesCard, PracticeCard, QuizCard, SummaryCard, WhatsNextCard } from "@/components/learning/LearningBlocks";
+import { DebugChallengeCollection } from "@/components/learning/ProblemSolvingLearningBlocks";
+import type { LessonDocument } from "@/types/content";
+import type { CourseLesson, CourseModule } from "@/types/course";
+
+const outline = [["objectives", "Objectives"], ["groupby-concept", "GroupBy"], ["groupby-explorer", "Explorer"], ["multi-group-explorer", "Multiple groups"], ["agg-builder", "agg builder"], ["transform-visualizer", "transform"], ["result-patterns", "Results"], ["playground", "Code runner"], ["practice", "Practice"], ["debug-challenge", "Debug"], ["quiz", "Quiz"], ["quick-reference", "Quick reference"], ["summary", "Summary"], ["whats-next", "What's next"]] as const;
+
+export function PandasGroupByLessonRenderer({ lesson, courseLesson, module, previous, next }: { lesson: LessonDocument; courseLesson: CourseLesson; module: CourseModule; previous: CourseLesson | null; next: CourseLesson | null }) {
+  const pack = lesson.developmentPack;
+  if (!pack || pack.kind !== "pandas-groupby-aggregation") return null;
+  return <article className="published-lesson pandas-series-pack pandas-groupby-pack"><CourseBreadcrumb module={module} lesson={courseLesson} /><LessonHero eyebrow={`Module ${module.index} · Lesson ${lesson.number}`} title={lesson.title} summary={lesson.summary} icon={module.icon} level={lesson.level} durationMinutes={lesson.durationMinutes} prerequisite={pack.prerequisite} /><div className="published-lesson-layout"><div className="published-lesson-flow"><LearningObjectivesCard id="objectives" objectives={lesson.objectives} /><section className="lesson-card"><p className="lesson-section-label">From records to comparisons</p><h2>Ask one question across meaningful groups</h2><p>{pack.storyHook}</p><div className="pandas-story-flow"><span>Rows</span><span>Group</span><span>Aggregate</span><span>Interpret</span></div></section><GroupByConcept /><FarmGroupByExplorer pack={pack} /><MultiGroupExplorer pack={pack} /><AggregationBuilder options={pack.aggOptions} rows={pack.dataset.rows} /><TransformVisualizer rows={pack.dataset.rows} /><GroupedResultPatterns /><IndustryInsightCard id="industry-insight" section={lesson.industryMotivation} /><CodePlayground id="playground" content={lesson.playground} className="pandas-playground" /><PracticeCard id="practice" tasks={lesson.practice} /><DebugChallengeCollection challenges={pack.debugChallenges} /><QuizCard id="quiz" quiz={lesson.quiz} /><PandasGroupByQuickReference rows={pack.quickReference} /><SummaryCard id="summary" section={lesson.summarySection} /><KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways} /><WhatsNextCard id="whats-next" section={lesson.whatsNext} /></div><aside className="lesson-outline published-lesson-outline" aria-label="On this page"><p>On this page</p>{outline.map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}</aside></div><PreviousNextNavigation previous={previous} next={next} /></article>;
+}
+

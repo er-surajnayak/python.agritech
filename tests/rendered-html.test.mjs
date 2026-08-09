@@ -1984,7 +1984,7 @@ test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () =>
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });
 
-test("Module 7 begins with five published Pandas lessons and an eight-lesson roadmap", async () => {
+test("Module 7 begins with six published Pandas lessons and an eight-lesson roadmap", async () => {
   const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
     readFile(new URL("content/development-packs/lesson-7-1.ts", projectRoot), "utf8"),
@@ -1995,7 +1995,7 @@ test("Module 7 begins with five published Pandas lessons and an eight-lesson roa
     readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 13, "five published lessons and eight navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 14, "six published lessons and eight navigation summaries should exist");
   assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2111,4 +2111,30 @@ test("Module 7.5 teaches transformation and explainable feature engineering", as
   assert.match(blocksSource, /A generated expression is only useful/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.5 — Data transformation and feature engineering/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-transformation-pack/);
+});
+
+test("Module 7.6 teaches grouped aggregation and row-aligned transform", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-6.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasGroupByLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasGroupByLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "GroupBy, Aggregation & Summary Analysis"/);
+  assert.match(moduleSource, /id: "module-7-lesson-6"[\s\S]*developmentPack: pandasGroupByDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-6"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-groupby-aggregation"/);
+  for (const concept of ["groupby", "mean", "sum", "median", "count", "size", "std", "agg", "as_index", "reset_index", "transform", "sort_values"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-groupby-aggregation"/);
+  assert.match(rendererSource, /<FarmGroupByExplorer/);
+  assert.match(rendererSource, /<MultiGroupExplorer/);
+  assert.match(rendererSource, /<AggregationBuilder/);
+  assert.match(rendererSource, /<TransformVisualizer/);
+  assert.match(blocksSource, /Grouping turns repeated categories into comparable summaries/);
+  assert.match(blocksSource, /Counts all rows in each group/);
+  assert.match(blocksSource, /Broadcast each group average back to its original rows/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.6 — GroupBy, aggregation, and summary analysis/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-groupby-pack/);
 });

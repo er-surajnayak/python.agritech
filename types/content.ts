@@ -2244,6 +2244,19 @@ export interface PandasTransformationDevelopmentPack {
   debugChallenges: DebugChallengeContent[];
 }
 
+export interface PandasGroupByDevelopmentPack {
+  kind: "pandas-groupby-aggregation";
+  prerequisite: string;
+  storyHook: string;
+  dataset: { columns: string[]; rows: Array<Array<number | string>> };
+  groupColumns: Array<"Crop" | "Region">;
+  metricColumns: Array<"Yield" | "Temperature" | "Soil_Moisture" | "Field_ID">;
+  aggregations: Array<{ id: "mean" | "sum" | "min" | "max" | "median" | "count" | "std"; label: string; explanation: string }>;
+  aggOptions: Array<{ column: "Yield" | "Soil_Moisture" | "Temperature"; functions: Array<"mean" | "min" | "max"> }>;
+  quickReference: Array<{ task: string; code: string }>;
+  debugChallenges: DebugChallengeContent[];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface LessonDocument {
@@ -2268,7 +2281,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack | NumpyFilteringDevelopmentPack | NumpyArrayManagementDevelopmentPack | NumpyDataAnalysisDevelopmentPack | PandasSeriesDevelopmentPack | PandasDataFrameDevelopmentPack | PandasSelectionDevelopmentPack | PandasCleaningDevelopmentPack | PandasTransformationDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack | NumpyFilteringDevelopmentPack | NumpyArrayManagementDevelopmentPack | NumpyDataAnalysisDevelopmentPack | PandasSeriesDevelopmentPack | PandasDataFrameDevelopmentPack | PandasSelectionDevelopmentPack | PandasCleaningDevelopmentPack | PandasTransformationDevelopmentPack | PandasGroupByDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

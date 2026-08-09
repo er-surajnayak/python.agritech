@@ -3,6 +3,7 @@ import { pandasDataFrameDevelopmentPack } from "@/content/development-packs/less
 import { pandasSelectionDevelopmentPack } from "@/content/development-packs/lesson-7-3";
 import { pandasCleaningDevelopmentPack } from "@/content/development-packs/lesson-7-4";
 import { pandasTransformationDevelopmentPack } from "@/content/development-packs/lesson-7-5";
+import { pandasGroupByDevelopmentPack } from "@/content/development-packs/lesson-7-6";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSevenLessons: LessonDocument[] = [{
@@ -410,6 +411,91 @@ print(ranked[[
   keyTakeaways: ["Clean before transforming", "Start with a farm question", "Prefer vectorized expressions when clear", "Validate map category coverage", "Use row-wise apply only when row context is needed", "Document thresholds and units", "Keep features explainable", "Inspect and validate engineered outputs before analysis or ML"],
   whatsNext: { title: "Lesson 7.6 · GroupBy, Aggregation & Analysis", body: "Next, divide farm records into meaningful groups, calculate multiple summaries, count categories, and compare crops, regions, and sensor conditions." },
   developmentPack: pandasTransformationDevelopmentPack,
+}, {
+  id: "module-7-lesson-6", moduleId: "module-7", number: "7.6", title: "GroupBy, Aggregation & Summary Analysis", durationMinutes: 165, level: "Intermediate",
+  summary: "Move from individual farm records to crop and region insights with groupby, common aggregations, named summaries, row-aligned transform, filtering, and ranking.",
+  introduction: { title: "Many rows can answer one comparative question", body: "Grouping separates records by a meaningful category. Aggregation then calculates a statistic for each group so crops, regions, and conditions can be compared fairly." },
+  objectives: ["Explain why grouping is needed", "Create grouped objects with groupby", "Calculate mean, sum, median, minimum, maximum, count, and standard deviation", "Group by one or several columns", "Use agg for several metrics", "Apply different functions to different columns", "Create named aggregations", "Distinguish count from size", "Keep or restore grouping columns", "Sort and filter aggregated results", "Use transform to align group statistics to original rows", "Answer practical Agritech questions with grouped data"],
+  whyThisMatters: { title: "Averages become meaningful when the comparison group is clear", body: "A single farm-wide average can hide differences between Rice, Wheat, Maize, North, and South. Group summaries preserve those categories while reducing many rows into useful evidence.", items: ["Compare crop performance", "Identify regional patterns", "Measure within-group variation", "Benchmark each field against its crop average"] },
+  industryMotivation: { title: "Grouped summaries power operational reports", body: "Analysts use grouped tables to compare sites, products, seasons, devices, and treatment groups. Clear grouping keys, missing-value rules, and output labels make those summaries auditable.", items: ["Crop reports need more than one total", "count and size answer different completeness questions", "Named aggregations produce stable output schemas", "transform supports row-level benchmarking"], signal: "Define the group → choose the metric → choose the statistic → interpret the result." },
+  concept: { title: "GroupBy follows split, apply, combine", body: "Pandas splits rows by keys, applies calculations within each group, and combines the answers. A direct aggregation reduces rows; transform broadcasts one group calculation back to every original row.", items: ["Split on Crop or Region", "Apply mean, sum, or another statistic", "Combine one row per group", "Use agg for richer summaries", "Use transform for original-row alignment"] },
+  workflow: { title: "A grouped analysis workflow", description: "Build summaries that preserve meaning and remain easy to inspect.", steps: [
+    { title: "Question", description: "State which groups must be compared." }, { title: "Group", description: "Choose one or more category columns." },
+    { title: "Metric", description: "Select the numeric or count target." }, { title: "Aggregate", description: "Choose statistics that answer the question." },
+    { title: "Shape", description: "Name, reset, filter, or sort the result." }, { title: "Interpret", description: "Explain group differences and limitations." },
+  ] },
+  agritechExample: { title: "Benchmark each field against its crop", body: "The lesson calculates one average yield per crop, then uses transform('mean') to place that benchmark beside every field and derive Yield_vs_Crop_Avg." },
+  playground: {
+    title: "Run a Complete Agritech Group Analysis",
+    description: "Create crop and region summaries, named aggregations, count rows, filter high-performing crops, and benchmark every field against its crop average.",
+    starterCode: `import pandas as pd
+
+df = pd.DataFrame({
+    "Field_ID": [101, 102, 103, 104, 105, 106, 107, 108],
+    "Crop": ["Rice", "Rice", "Wheat", "Wheat", "Rice", "Wheat", "Maize", "Maize"],
+    "Region": ["North", "South", "North", "South", "North", "North", "South", "South"],
+    "Temperature": [28, 32, 35, 29, 30, 31, 33, 34],
+    "Soil_Moisture": [42, 35, 28, 48, 40, 39, 30, 27],
+    "Yield": [520, 480, 410, 560, 500, 510, 430, 450]
+})
+
+crop_summary = df.groupby("Crop", as_index=False).agg(
+    average_yield=("Yield", "mean"),
+    minimum_yield=("Yield", "min"),
+    maximum_yield=("Yield", "max"),
+    average_moisture=("Soil_Moisture", "mean"),
+    field_count=("Field_ID", "count")
+)
+crop_summary = crop_summary.sort_values("average_yield", ascending=False)
+print("Crop summary:")
+print(crop_summary.round(2))
+
+print("\\nCrop + Region average yield:")
+print(df.groupby(["Crop", "Region"])["Yield"].mean().round(2))
+
+print("\\nHigh-performing crop groups:")
+print(crop_summary[crop_summary["average_yield"] > 480])
+
+df["Crop_Avg_Yield"] = df.groupby("Crop")["Yield"].transform("mean")
+df["Yield_vs_Crop_Avg"] = df["Yield"] - df["Crop_Avg_Yield"]
+print("\\nField benchmarks:")
+print(df[["Field_ID", "Crop", "Yield", "Crop_Avg_Yield", "Yield_vs_Crop_Avg"]].round(2))
+
+print("\\nRows per crop:")
+print(df.groupby("Crop").size())`,
+    expectedOutcome: "The runner ranks Rice highest by average yield, shows Crop + Region combinations, filters Rice and Wheat above 480, attaches each crop average to all eight records, and reveals above- or below-average fields.",
+  },
+  practice: [
+    { level: "Easy", title: "Average by crop", prompt: "Find average Yield for each Crop.", guidance: "Group on Crop, select Yield, then call mean()." },
+    { level: "Easy", title: "Regional total", prompt: "Find total Yield for each Region.", guidance: "Use groupby('Region') and sum()." },
+    { level: "Easy", title: "Maximum temperature", prompt: "Find maximum Temperature for every Crop.", guidance: "Select Temperature after grouping." },
+    { level: "Medium", title: "Three yield metrics", prompt: "Return minimum, maximum, and mean Yield by Crop.", guidance: "Pass a list of function names to agg()." },
+    { level: "Medium", title: "Count fields", prompt: "Count all rows in each Region and explain size versus count.", guidance: "size counts rows; count ignores missing values in selected columns." },
+    { level: "Medium", title: "Crop and region", prompt: "Find average Yield for every Crop + Region combination.", guidance: "Pass both grouping labels as a list." },
+    { level: "Medium", title: "Rank crops", prompt: "Sort crops from highest to lowest average Yield.", guidance: "Aggregate first, then sort the calculated values." },
+    { level: "Challenge", title: "Named summary", prompt: "Create average_yield, maximum_yield, minimum_yield, and average_soil_moisture by Crop.", guidance: "Use named aggregation tuples." },
+    { level: "Challenge", title: "Keep Crop as a column", prompt: "Create the mean summary using as_index=False, then compare with reset_index().", guidance: "Both can produce an ordinary grouping column." },
+    { level: "Challenge", title: "Row-aligned benchmark", prompt: "Attach Crop_Avg_Yield to every original field with transform.", guidance: "transform returns the same length as df." },
+    { level: "Challenge", title: "Above crop average", prompt: "Create Yield_vs_Crop_Avg and keep fields with positive values.", guidance: "Subtract the transformed mean, then Boolean-filter." },
+    { level: "Challenge", title: "Complete group report", prompt: "Build, filter, sort, and interpret a crop-level summary plus field benchmarks.", guidance: "Separate group-level and row-level outputs." },
+  ],
+  quiz: [
+    { title: "Grouped object", question: "What does df.groupby('Crop') create by itself?", options: ["A grouped object awaiting an operation", "A final mean table", "A merged DataFrame", "A chart"], correctOptionIndex: 0, note: "Group first, calculate next.", explanation: "Grouping defines partitions but does not choose a metric or statistic." },
+    { title: "Mean", question: "Which expression calculates average Yield per Crop?", options: [`df.groupby("Crop")["Yield"].mean()`, `df["Crop"].mean()`, `df.merge("Crop")`, `df.size`], correctOptionIndex: 0, note: "Group, select, aggregate.", explanation: "The selected Yield values are averaged within Crop groups." },
+    { title: "Multiple groups", question: "How do you group by Crop and Region?", options: [`groupby(["Crop", "Region"])`, `groupby("Crop + Region")`, `groupby(2)`, `agg("Region")`], correctOptionIndex: 0, note: "Pass a label list.", explanation: "Several keys create nested combinations." },
+    { title: "agg", question: "What is agg() primarily useful for?", options: ["Requesting several or column-specific calculations", "Loading files", "Removing duplicates", "Selecting one cell"], correctOptionIndex: 0, note: "Build richer summaries.", explanation: "agg accepts lists, dictionaries, and named aggregation rules." },
+    { title: "Count", question: "Which method counts all rows in each group?", options: ["size()", "count() always", "mean()", "transform()"], correctOptionIndex: 0, note: "Missing metrics still count as rows.", explanation: "size measures group length." },
+    { title: "Missing values", question: "What does grouped count() exclude?", options: ["Missing values in the counted column", "Every complete row", "Group labels", "Numeric values"], correctOptionIndex: 0, note: "Non-null count.", explanation: "count reports non-missing observations." },
+    { title: "Index", question: "What does as_index=False do?", options: ["Keeps grouping keys as ordinary columns", "Deletes groups", "Sorts descending", "Broadcasts means"], correctOptionIndex: 0, note: "Analysis-ready table.", explanation: "The grouping keys are not moved into the index." },
+    { title: "Transform", question: "How does transform('mean') differ from mean()?", options: ["It aligns group means to every original row", "It returns one value total", "It removes groups", "It counts rows"], correctOptionIndex: 0, note: "Same length as original.", explanation: "Transform broadcasts each group's result to its members." },
+    { title: "Sort", question: "How should average-yield groups be ranked?", options: ["sort_values on the calculated metric", "sort_index only", "drop_duplicates", "read_csv"], correctOptionIndex: 0, note: "Sort values, not labels.", explanation: "sort_values orders groups by their summary result." },
+    { title: "Benchmark", question: "What does a positive Yield_vs_Crop_Avg mean?", options: ["The field is above its crop average", "Yield is missing", "The crop has one row", "The index was reset"], correctOptionIndex: 0, note: "Individual minus benchmark.", explanation: "Positive values exceed the transformed crop mean." },
+  ],
+  assignment: { title: "Agritech Group Summary Report", brief: "Create crop and regional summaries, then benchmark every field against its crop group.", deliverables: ["Single-column groupby", "Seven common aggregations", "Crop + Region summary", "Multi-function agg", "Per-column agg rules", "Named aggregation table", "count versus size explanation", "as_index/reset_index comparison", "Sorted and filtered groups", "Crop_Avg_Yield transform", "Yield_vs_Crop_Avg", "Interpretation of above-average fields"] },
+  summarySection: { title: "You can now turn repeated farm records into group-level insight", body: "You grouped on one and multiple keys, applied common and custom aggregations, shaped and ranked summaries, distinguished row counts from value counts, and broadcast crop benchmarks back to original rows.", items: ["groupby defines categories", "aggregation reduces groups", "agg builds richer summaries", "named aggregation labels outputs", "size counts rows", "count counts non-null values", "transform preserves original row alignment", "sorted and filtered summaries answer business questions"] },
+  keyTakeaways: ["A grouped object needs a metric and operation", "Choose groups that match the question", "Use agg for analysis-ready summaries", "Use named aggregation for stable labels", "Do not confuse count with size", "Use as_index=False or reset_index intentionally", "Use transform when every row needs its group benchmark", "Interpret variation and small group sizes carefully"],
+  whatsNext: { title: "Lesson 7.7 · Combining & Reshaping Data", body: "Next, connect related farm tables with merge and join, append compatible datasets with concat, and reshape summaries with pivot tables." },
+  developmentPack: pandasGroupByDevelopmentPack,
 }];
 
 export const moduleSevenLessonSummaries = [
@@ -418,7 +504,7 @@ export const moduleSevenLessonSummaries = [
   { id: "module-7-lesson-3", moduleId: "module-7", order: 3, title: "7.3 Selecting, Filtering & Querying DataFrames", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Data Cleaning & Missing Data", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Data Transformation & Feature Engineering", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Analysis", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Summary Analysis", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-7", moduleId: "module-7", order: 7, title: "7.7 Combining & Reshaping Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-8", moduleId: "module-7", order: 8, title: "7.8 Real-World Pandas Project", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
 ];

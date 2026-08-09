@@ -4,6 +4,7 @@ import { pandasSelectionDevelopmentPack } from "@/content/development-packs/less
 import { pandasCleaningDevelopmentPack } from "@/content/development-packs/lesson-7-4";
 import { pandasTransformationDevelopmentPack } from "@/content/development-packs/lesson-7-5";
 import { pandasGroupByDevelopmentPack } from "@/content/development-packs/lesson-7-6";
+import { pandasCombiningReshapingDevelopmentPack } from "@/content/development-packs/lesson-7-7";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSevenLessons: LessonDocument[] = [{
@@ -496,6 +497,117 @@ print(df.groupby("Crop").size())`,
   keyTakeaways: ["A grouped object needs a metric and operation", "Choose groups that match the question", "Use agg for analysis-ready summaries", "Use named aggregation for stable labels", "Do not confuse count with size", "Use as_index=False or reset_index intentionally", "Use transform when every row needs its group benchmark", "Interpret variation and small group sizes carefully"],
   whatsNext: { title: "Lesson 7.7 · Combining & Reshaping Data", body: "Next, connect related farm tables with merge and join, append compatible datasets with concat, and reshape summaries with pivot tables." },
   developmentPack: pandasGroupByDevelopmentPack,
+}, {
+  id: "module-7-lesson-7", moduleId: "module-7", number: "7.7", title: "Combining & Reshaping Data", durationMinutes: 165, level: "Intermediate",
+  summary: "Integrate separate farm datasets with concat, merge, and join, then move between long records and wide analytical summaries with pivot, pivot_table, and melt.",
+  introduction: { title: "One analysis often begins with several files", body: "Field details, sensor observations, yield records, and monthly measurements may describe the same farm from different angles. Pandas provides distinct operations for stacking, matching, and reshaping those records." },
+  objectives: ["Explain why datasets are combined", "Distinguish vertical from horizontal combination", "Stack rows and align columns with pd.concat", "Use ignore_index intentionally", "Match records with merge and a common key", "Compare inner, left, right, and outer merges", "Merge differently named keys", "Combine index-aligned data with join", "Choose between concat, merge, and join", "Reshape unique records with pivot", "Reshape and aggregate with pivot_table", "Convert wide records to long form with melt", "Choose the correct Pandas operation for a farm-data problem"],
+  whyThisMatters: { title: "Correct combination preserves the meaning of every record", body: "Stacking rows and matching identifiers solve different problems. Choosing the wrong operation can silently pair unrelated fields or discard fields that still matter.", items: ["Monthly files need stacking", "Field and sensor tables need key matching", "Indexed tables can be joined", "Reporting layouts often require reshaping"] },
+  industryMotivation: { title: "Data integration is where analytical trust is won or lost", body: "Operational systems separate entities across files and services. Analysts must choose keys, validate unmatched records, document merge types, and preserve tidy shapes before downstream reporting.", items: ["Inner merges can discard unmatched entities", "Left merges preserve a primary population", "Outer merges expose coverage gaps", "Long data supports reusable analysis workflows"], signal: "Inspect keys → choose retention rule → combine → validate row counts → reshape for the next task." },
+  concept: { title: "Stack, match, or reshape", body: "concat places compatible datasets together, merge matches values in key columns, join aligns indexes, pivot turns values into columns, pivot_table adds aggregation, and melt turns wide columns back into long rows.", items: ["axis=0 stacks rows", "axis=1 aligns columns by index", "merge follows keys", "join follows indexes", "pivot expects unique pairs", "pivot_table handles duplicates", "melt creates observations"] },
+  workflow: { title: "A reliable integration workflow", description: "Make the relationship explicit before writing the Pandas expression.", steps: [
+    { title: "Inventory", description: "Inspect columns, indexes, key uniqueness, and row counts." }, { title: "Relationship", description: "Decide whether records stack, match, or reshape." },
+    { title: "Retention", description: "Choose inner, left, right, or outer behavior." }, { title: "Combine", description: "Run concat, merge, or join with explicit arguments." },
+    { title: "Validate", description: "Check keys, unmatched rows, NaN values, and duplicates." }, { title: "Reshape", description: "Use pivot, pivot_table, or melt for the next analysis." },
+  ] },
+  agritechExample: { title: "Build one farm table from three sources", body: "The capstone left-merges sensor readings and yield values into the field registry so Field_ID 104 remains visible even without a sensor record, then summarizes Yield by Crop and Region." },
+  playground: {
+    title: "Run a Complete Farm Data Integration",
+    description: "Compare merge retention rules, build a complete farm table, join indexed data, pivot monthly yields, aggregate a Crop × Region table, and melt wide months into long observations.",
+    starterCode: `import pandas as pd
+
+fields = pd.DataFrame({
+    "Field_ID": [101, 102, 103, 104],
+    "Crop": ["Rice", "Wheat", "Rice", "Maize"],
+    "Region": ["North", "South", "North", "South"]
+})
+sensor = pd.DataFrame({
+    "Field_ID": [101, 102, 103, 105],
+    "Temperature": [28, 31, 30, 34],
+    "Moisture": [42, 35, 40, 25]
+})
+yield_data = pd.DataFrame({
+    "Field_ID": [101, 102, 103, 104],
+    "Yield": [520, 480, 500, 450]
+})
+
+jan = yield_data.iloc[:2]
+feb = yield_data.iloc[2:]
+print("Stacked monthly-compatible rows:")
+print(pd.concat([jan, feb], ignore_index=True))
+
+for how in ["inner", "left", "right", "outer"]:
+    result = fields.merge(sensor, on="Field_ID", how=how)
+    print()
+    print(how.upper(), "keys:", result["Field_ID"].tolist())
+
+farm_data = fields.merge(sensor, on="Field_ID", how="left")
+farm_data = farm_data.merge(yield_data, on="Field_ID", how="left")
+print()
+print("Complete farm dataset:")
+print(farm_data)
+
+indexed = fields.set_index("Field_ID").join(
+    sensor.set_index("Field_ID"), how="left"
+)
+print()
+print("Index join columns:", indexed.columns.tolist())
+
+monthly = pd.DataFrame({
+    "Field_ID": [101, 101, 102, 102],
+    "Month": ["Jan", "Feb", "Jan", "Feb"],
+    "Yield": [500, 520, 470, 490]
+})
+print()
+print("Pivoted monthly yield:")
+print(monthly.pivot(index="Field_ID", columns="Month", values="Yield"))
+
+print()
+print("Crop x Region mean yield:")
+print(farm_data.pivot_table(
+    index="Crop", columns="Region", values="Yield", aggfunc="mean"
+))
+
+wide = pd.DataFrame({
+    "Field_ID": [101, 102],
+    "Jan": [500, 470], "Feb": [520, 490], "Mar": [530, 510]
+})
+print()
+print("Long monthly data:")
+print(wide.melt(
+    id_vars="Field_ID", var_name="Month", value_name="Yield"
+))`,
+    expectedOutcome: "The runner preserves the correct keys for all four merge types, retains Field 104 in the farm registry, produces a Field_ID × Month pivot, calculates Crop × Region mean Yield, and converts six wide month values into long rows.",
+  },
+  practice: [
+    { level: "Easy", title: "Stack months", prompt: "Append January and February DataFrames with a fresh index.", guidance: "Use pd.concat and ignore_index=True." },
+    { level: "Easy", title: "Align columns", prompt: "Combine two DataFrames side by side by their indexes.", guidance: "Use concat with axis=1 and verify index alignment." },
+    { level: "Medium", title: "Match Field_ID", prompt: "Merge fields and sensor using their shared key.", guidance: "Pass on='Field_ID'." },
+    { level: "Medium", title: "Compare retention", prompt: "Run inner, left, right, and outer merges and list the retained IDs.", guidance: "Observe unmatched keys and NaN values." },
+    { level: "Medium", title: "Different key names", prompt: "Merge Field_ID with Sensor_Field_ID.", guidance: "Use left_on and right_on." },
+    { level: "Medium", title: "Index join", prompt: "Set Field_ID as the index on both tables and join them.", guidance: "join is index-oriented." },
+    { level: "Medium", title: "Monthly pivot", prompt: "Turn Month rows into Jan and Feb columns.", guidance: "Set index, columns, and values explicitly." },
+    { level: "Challenge", title: "Crop region summary", prompt: "Calculate average Yield for Crop × Region with pivot_table.", guidance: "Use aggfunc='mean'." },
+    { level: "Challenge", title: "Wide to long", prompt: "Melt Jan, Feb, and Mar into Month and Yield columns.", guidance: "Preserve Field_ID with id_vars." },
+    { level: "Challenge", title: "Complete integration", prompt: "Merge field, sensor, and yield data, validate missing sensor rows, then create a Crop × Region summary.", guidance: "Preserve the field registry with left merges." },
+  ],
+  quiz: [
+    { title: "Vertical combination", question: "Which operation stacks monthly DataFrames with the same columns?", options: ["pd.concat", "pivot", "join only", "melt"], correctOptionIndex: 0, note: "Append compatible rows.", explanation: "concat defaults to axis=0." },
+    { title: "Horizontal concat", question: "What does concat(axis=1) align on?", options: ["Index", "Field_ID values automatically", "Crop values", "Column data types"], correctOptionIndex: 0, note: "Position comes from index labels.", explanation: "Horizontal concat does not perform key matching." },
+    { title: "Merge key", question: "Which method matches related records using Field_ID?", options: ["merge", "melt", "pivot", "describe"], correctOptionIndex: 0, note: "Relational combination.", explanation: "merge compares key-column values." },
+    { title: "Inner", question: "Which merge keeps only keys found on both sides?", options: ["inner", "left", "right", "outer"], correctOptionIndex: 0, note: "Intersection.", explanation: "Inner retains common keys." },
+    { title: "Left", question: "Which merge preserves every field registry row?", options: ["left", "inner", "right", "pivot"], correctOptionIndex: 0, note: "The primary table is left.", explanation: "Unmatched right values become NaN." },
+    { title: "Outer", question: "Which merge exposes keys 104 and 105?", options: ["outer", "inner", "left only", "join with default settings"], correctOptionIndex: 0, note: "Union of keys.", explanation: "Outer preserves keys from both sides." },
+    { title: "Join", question: "When is join especially convenient?", options: ["When keys are already indexes", "When stacking rows", "When melting columns", "When loading CSV"], correctOptionIndex: 0, note: "Index-oriented API.", explanation: "DataFrame.join aligns indexes by default." },
+    { title: "Pivot", question: "What condition does pivot expect for index-column pairs?", options: ["Unique combinations", "Duplicate combinations only", "Missing keys", "String values only"], correctOptionIndex: 0, note: "One cell, one value.", explanation: "Duplicates require aggregation or produce an error." },
+    { title: "Pivot table", question: "Which method reshapes and averages duplicates?", options: ["pivot_table", "pivot", "concat", "join"], correctOptionIndex: 0, note: "Reshape plus aggregation.", explanation: "pivot_table accepts aggfunc." },
+    { title: "Melt", question: "What does melt primarily create?", options: ["Long observations from wide columns", "A key merge", "A grouped mean", "A sorted index"], correctOptionIndex: 0, note: "Columns become values.", explanation: "melt turns measured columns into variable-value rows." },
+  ],
+  assignment: { title: "Integrated Farm Dataset", brief: "Combine three farm datasets, audit unmatched keys, and produce both wide and long analytical views.", deliverables: ["Vertical concat with fresh index", "Horizontal alignment warning", "Four merge types", "Different-name key merge", "Index join", "Validated field registry", "Monthly pivot", "Crop × Region pivot table", "Wide-to-long melt", "Operation choice rationale"] },
+  summarySection: { title: "You can now integrate and reshape farm datasets intentionally", body: "You stacked compatible records, matched keys with explicit retention rules, joined indexed tables, pivoted unique observations, summarized duplicate combinations, and melted wide measurements into tidy rows.", items: ["concat stacks", "merge matches keys", "join aligns indexes", "pivot reshapes unique pairs", "pivot_table reshapes and aggregates", "melt converts wide to long", "validation follows every combination"] },
+  keyTakeaways: ["Choose an operation from the data relationship", "axis=1 concat is not a key merge", "Inner keeps matches only", "Left preserves the primary population", "Outer reveals coverage gaps", "join is convenient for indexes", "pivot requires unique combinations", "pivot_table handles aggregation", "melt preserves identifiers through id_vars", "Validate row counts and unmatched keys"],
+  whatsNext: { title: "Lesson 7.8 · Real-World Pandas Project", body: "Next, combine loading, cleaning, transformation, grouping, integration, and reshaping in a complete Agritech analysis project." },
+  developmentPack: pandasCombiningReshapingDevelopmentPack,
 }];
 
 export const moduleSevenLessonSummaries = [
@@ -505,6 +617,6 @@ export const moduleSevenLessonSummaries = [
   { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Data Cleaning & Missing Data", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Data Transformation & Feature Engineering", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Summary Analysis", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-7-lesson-7", moduleId: "module-7", order: 7, title: "7.7 Combining & Reshaping Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-7-lesson-7", moduleId: "module-7", order: 7, title: "7.7 Combining & Reshaping Data", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-8", moduleId: "module-7", order: 8, title: "7.8 Real-World Pandas Project", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
 ];

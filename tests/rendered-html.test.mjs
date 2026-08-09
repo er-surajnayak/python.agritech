@@ -1984,7 +1984,7 @@ test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () =>
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });
 
-test("Module 7 begins with six published Pandas lessons and an eight-lesson roadmap", async () => {
+test("Module 7 begins with seven published Pandas lessons and an eight-lesson roadmap", async () => {
   const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
     readFile(new URL("content/development-packs/lesson-7-1.ts", projectRoot), "utf8"),
@@ -1995,7 +1995,7 @@ test("Module 7 begins with six published Pandas lessons and an eight-lesson road
     readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 14, "six published lessons and eight navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 15, "seven published lessons and eight navigation summaries should exist");
   assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2137,4 +2137,30 @@ test("Module 7.6 teaches grouped aggregation and row-aligned transform", async (
   assert.match(blocksSource, /Broadcast each group average back to its original rows/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.6 — GroupBy, aggregation, and summary analysis/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-groupby-pack/);
+});
+
+test("Module 7.7 teaches key-based integration and analytical reshaping", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-7.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasCombiningLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasCombiningLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "Combining & Reshaping Data"/);
+  assert.match(moduleSource, /id: "module-7-lesson-7"[\s\S]*developmentPack: pandasCombiningReshapingDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-7"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-combining-reshaping"/);
+  for (const concept of ["pd.concat", "ignore_index", "axis=1", "pd.merge", "inner", "left", "right", "outer", "left_on", "right_on", ".join", ".pivot", "pivot_table", ".melt"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-combining-reshaping"/);
+  assert.match(rendererSource, /<MergeTypesVisualizer/);
+  assert.match(rendererSource, /<FarmDataIntegrationLab/);
+  assert.match(rendererSource, /<ReshapingLab/);
+  assert.match(rendererSource, /<OperationDecisionSimulator/);
+  assert.match(blocksSource, /Choose the operation from the relationship between records/);
+  assert.match(blocksSource, /horizontal concat aligns indexes/);
+  assert.match(blocksSource, /Move between long observations and readable summaries/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.7 — Combining and reshaping data/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-combining-pack/);
 });

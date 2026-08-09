@@ -1,6 +1,7 @@
 import { numpyIntroductionDevelopmentPack } from "@/content/development-packs/lesson-6-1";
 import { numpyArrayCreationDevelopmentPack } from "@/content/development-packs/lesson-6-2";
 import { numpyArrayAttributesDevelopmentPack } from "@/content/development-packs/lesson-6-3";
+import { numpyIndexingDevelopmentPack } from "@/content/development-packs/lesson-6-4";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -285,13 +286,81 @@ print("Total bytes:", sensor_data.nbytes)`,
     whatsNext: { title: "Lesson 6.4 · Indexing, Slicing & Reshaping", body: "Next, access individual readings and array regions, then reshape, flatten, ravel, and transpose Smart Farm datasets." },
     developmentPack: numpyArrayAttributesDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-4",
+    moduleId: "module-6",
+    number: "6.4",
+    title: "Indexing, Slicing & Reshaping: Finding and Restructuring Smart Farm Data",
+    summary: "Select individual readings, rows, columns, and slices; modify values; preview Boolean masks; and restructure arrays with reshape, flatten, ravel, and transpose.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "Use only the readings the question needs", body: "Smart Farm arrays can contain thousands of values. Indexing locates one value, slicing extracts regions, and shape transformations reorganize the same data for a new task." },
+    objectives: ["Access positive and negative 1D indices", "Use row-column indexing in 2D arrays", "Select complete rows and columns", "Use start:stop:step slicing", "Modify one or multiple selected elements", "Create a simple Boolean mask", "Apply reshape() while preserving element count", "Use -1 for one inferred reshape dimension", "Distinguish flatten() from ravel()", "Transpose rows and columns with .T"],
+    whyThisMatters: { title: "Numerical questions usually target a region, not the whole dataset", body: "A dashboard may need one feature column, one field row, a time window, or a matrix orientation expected by a model.", items: ["Retrieve one sensor reading", "Extract a complete feature column", "Correct faulty values in place", "Reorganize data without changing its count"] },
+    industryMotivation: { title: "Array selection is the daily language of analytics", body: "Data pipelines select feature columns, slice time windows, fix batches, flatten images, and transpose matrices before calculations or model input.", items: ["IoT dashboards isolate one sensor channel", "Models require exact row-feature orientation", "Image pipelines flatten or reshape numerical grids", "Boolean masks identify candidate readings"], signal: "Clear selection expressions replace many manual loops and temporary variables." },
+    concept: { title: "Access and shape are separate decisions", body: "Indexing and slicing decide which values to use. reshape(), flatten(), ravel(), and transpose decide how those values are arranged.", items: ["Index → one coordinate", "Slice → a range or region", "Mask → values matching a condition", "Reshape → new compatible structure", "Transpose → swap axes"] },
+    workflow: { title: "Select and restructure safely", description: "Translate a farm-data question into axes and element counts.", steps: [
+      { title: "Identify axes", description: "Decide which axis represents fields, sensors, or time." },
+      { title: "Select", description: "Use one index, a colon, or a slice for the required region." },
+      { title: "Verify", description: "Inspect the selected values and shape before modifying them." },
+      { title: "Restructure", description: "Choose a new shape whose product equals the element count." },
+      { title: "Interpret", description: "Reconnect the result to the farm question." },
+    ] },
+    agritechExample: { title: "Read one feature across every field", body: "sensor_data[:, 2] selects the soil-moisture column from all four fields, while sensor_data[:, 0] selects all temperatures." },
+    playground: {
+      title: "Explore and Reshape a Sensor Matrix",
+      description: "Run indexing, slicing, Boolean selection, reshape, flatten, and transpose operations using the browser NumPy runtime.",
+      starterCode: `import numpy as np
+
+sensor_data = np.array([
+    [28, 65, 40],
+    [30, 70, 42],
+    [31, 68, 38],
+    [29, 72, 41]
+])
+
+print("Cell [1, 2]:", sensor_data[1, 2])
+print("Temperature column:", sensor_data[:, 0])
+print("First 2×2 region:\\n", sensor_data[:2, :2])
+print("Values above 40:", sensor_data[sensor_data > 40])
+print("Reshaped 3×4:\\n", sensor_data.reshape(3, 4))
+print("Transposed shape:", sensor_data.T.shape)`,
+      expectedOutcome: "The runner selects 42, extracts all temperatures and the first 2×2 region, filters values above 40, reshapes twelve values to (3, 4), and reports transpose shape (3, 4).",
+    },
+    practice: [
+      { level: "Easy", title: "Index a temperature array", prompt: "Find the first, last, and third values in [28, 30, 31, 29, 32].", guidance: "Use indices 0, -1, and 2." },
+      { level: "Easy", title: "Read a matrix coordinate", prompt: "From the soil matrix, select the value at row 2, column 1.", guidance: "Use array[row, column]." },
+      { level: "Medium", title: "Select rows and columns", prompt: "Extract the first row and second column from the 3 × 3 soil matrix.", guidance: "Use soil[0] for a row and soil[:, 1] for a column." },
+      { level: "Medium", title: "Slice a corner", prompt: "Extract the first two rows and first two columns.", guidance: "Use [:2, :2]; each stop is excluded." },
+      { level: "Medium", title: "Reshape twelve values", prompt: "Create np.arange(12) and reshape it to 3 × 4.", guidance: "The requested product must equal twelve." },
+      { level: "Challenge", title: "Reorient a 2 × 6 array", prompt: "Reshape a 2 × 6 array into 3 × 4, then transpose it.", guidance: "Both shapes contain twelve values; transpose will produce (4, 3)." },
+      { level: "Challenge", title: "Introductory temperature filter", prompt: "Select values above 30 from [25, 32, 28, 35, 30, 38].", guidance: "Place the comparison expression inside square brackets." },
+    ],
+    quiz: [
+      { title: "First position", question: "Which index selects the first element?", options: ["1", "0", "-1", "first"], correctOptionIndex: 1, note: "Python uses zero-based indexing.", explanation: "Index 0 is the first position." },
+      { title: "From the end", question: "Which index selects the last element?", options: ["0", "1", "-1", "end"], correctOptionIndex: 2, note: "Negative indices count backward.", explanation: "-1 selects the final element." },
+      { title: "Coordinate", question: "What does arr[1, 2] select?", options: ["Rows 1 through 2", "Row 1, column 2", "Column 1, row 2 only in lists", "Two dimensions"], correctOptionIndex: 1, note: "Row comes first.", explanation: "NumPy 2D coordinates use array[row, column]." },
+      { title: "Colon", question: "What does : mean in arr[:, 1]?", options: ["No rows", "All rows", "Reverse rows", "Only row 1"], correctOptionIndex: 1, note: "A bare colon spans an axis.", explanation: "arr[:, 1] takes column 1 from all rows." },
+      { title: "Stop rule", question: "Does arr[1:4] include index 4?", options: ["Yes", "No", "Only for floats", "Only in 2D"], correctOptionIndex: 1, note: "Start included, stop excluded.", explanation: "Indices 1, 2, and 3 are included." },
+      { title: "Step slicing", question: "What does arr[::2] select?", options: ["Two arrays", "Every second value", "The last two values", "Values greater than 2"], correctOptionIndex: 1, note: "The third slice field is step.", explanation: "A step of 2 visits every second position." },
+      { title: "Boolean mask", question: "What does arr[arr > 30] return?", options: ["Boolean values only", "Values greater than 30", "The first 30 values", "A reshaped array"], correctOptionIndex: 1, note: "The mask selects matching positions.", explanation: "Boolean indexing returns elements whose mask entries are True." },
+      { title: "Reshape rule", question: "Which shape is invalid for 12 elements?", options: ["(3, 4)", "(2, 6)", "(1, 12)", "(5, 3)"], correctOptionIndex: 3, note: "Multiply dimensions.", explanation: "5 × 3 requires fifteen elements." },
+      { title: "Flatten or ravel", question: "Which statement is most accurate?", options: ["Both always copy", "flatten usually copies; ravel tries to return a view", "ravel is 2D only", "flatten transposes"], correctOptionIndex: 1, note: "Both produce a 1D representation.", explanation: "Their main beginner-level difference is copy versus view behavior." },
+      { title: "Transpose", question: "What shape results when a (2, 3) matrix is transposed?", options: ["(2, 3)", "(3, 2)", "(6,)", "(1, 6)"], correctOptionIndex: 1, note: "Rows and columns swap.", explanation: "Transpose changes (2, 3) to (3, 2)." },
+    ],
+    assignment: { title: "Smart Farm Sensor Selection Lab", brief: "Write a compact program that selects, corrects, filters, and restructures a field-feature matrix.", deliverables: ["Select one coordinate", "Extract one row and one feature column", "Slice a 2 × 2 region", "Modify one value and one slice", "Use one introductory Boolean mask", "Reshape twelve values using an inferred -1 dimension", "Compare flatten() and ravel()", "Transpose the final matrix"] },
+    summarySection: { title: "You can now find and rearrange the data you need", body: "You moved from whole-array inspection to precise selection, safe modification, introductory masking, and compatible shape transformations.", items: ["Indices start at zero", "array[row, column] locates 2D values", "Slices exclude stop", "A colon spans an axis", "reshape preserves size", "flatten and ravel create 1D representations", ".T swaps rows and columns"] },
+    keyTakeaways: ["Translate farm questions into row and column axes", "Use negative indices to work from the end", "Verify slice boundaries before modifying data", "A reshape is valid only when element counts match", "Use -1 for one inferred dimension", "Treat Boolean indexing here as a preview for Lesson 6.7"],
+    whatsNext: { title: "Lesson 6.5 · Array Operations & Broadcasting", body: "Next, perform scalar and element-wise arithmetic, comparisons, and practical broadcasting across Smart Farm sensor arrays." },
+    developmentPack: numpyIndexingDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-1", moduleId: "module-6", order: 1, title: "6.1 Introduction to NumPy", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-2", moduleId: "module-6", order: 2, title: "6.2 Creating NumPy Arrays", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },

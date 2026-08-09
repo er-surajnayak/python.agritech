@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 13, "three published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 14, "four published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1827,4 +1827,29 @@ test("Lesson 6.3 publishes the NumPy array inspector and dtype tools", async () 
   assert.match(blocksSource, /Correct: <code>arr\.shape<\/code>/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.3 — NumPy array attributes and data types/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-attributes-pack/);
+});
+
+test("Lesson 6.4 publishes indexing, slicing, and reshaping tools", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-4.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyIndexingLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyIndexingLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Indexing, Slicing & Reshaping: Finding and Restructuring Smart Farm Data"/);
+  assert.match(moduleSource, /id: "module-6-lesson-4"[\s\S]*developmentPack: numpyIndexingDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-4"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-indexing-reshaping"/);
+  for (const concept of ["temperature[-1]", "sensor_data[:, 2]", "temperature[::-1]", "reshape(3, -1)", "flatten()", "ravel()", "matrix.T"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-indexing-reshaping"/);
+  assert.match(rendererSource, /<NumpyDataExplorer/);
+  assert.match(rendererSource, /<ReshapePlayground/);
+  assert.match(blocksSource, /export function NumpyDataExplorer/);
+  assert.match(blocksSource, /Cannot reshape 12 elements/);
+  assert.match(blocksSource, /role="gridcell"/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.4 — NumPy indexing, slicing, and reshaping/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-indexing-pack/);
 });

@@ -64,6 +64,7 @@ import { OopLesson5_8LessonRenderer } from "@/components/learning/OopLesson5-8Le
 import { NumpyIntroductionLessonRenderer } from "@/components/learning/NumpyIntroductionLessonRenderer";
 import { NumpyArrayCreationLessonRenderer } from "@/components/learning/NumpyArrayCreationLessonRenderer";
 import { NumpyArrayAttributesLessonRenderer } from "@/components/learning/NumpyArrayAttributesLessonRenderer";
+import { NumpyIndexingLessonRenderer } from "@/components/learning/NumpyIndexingLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -249,6 +250,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "numpy-array-attributes") {
     return <NumpyArrayAttributesLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "numpy-indexing-reshaping") {
+    return <NumpyIndexingLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

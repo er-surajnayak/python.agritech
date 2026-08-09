@@ -81,22 +81,30 @@ export function AgritechExampleCard({ id, section }: { id: string; section: Less
 }
 
 export function PracticeCard({ id, tasks }: { id: string; tasks: PracticeTask[] }) {
+  const groupedTasks = tasks.reduce<Array<{ level: PracticeTask["level"]; tasks: PracticeTask[] }>>((groups, task) => {
+    const existing = groups.find((group) => group.level === task.level);
+    if (existing) existing.tasks.push(task);
+    else groups.push({ level: task.level, tasks: [task] });
+    return groups;
+  }, []);
   return (
     <section id={id} className="lesson-card practice-card" aria-labelledby={`${id}-title`}>
       <p className="lesson-section-label"><Task size={16} /> Practice section</p>
       <h2 id={`${id}-title`}>Strengthen the idea at three levels</h2>
       <Tabs>
         <TabList aria-label="Practice difficulty">
-          {tasks.map((task) => <Tab key={task.level}>{task.level}</Tab>)}
+          {groupedTasks.map((group) => <Tab key={group.level}>{group.level}</Tab>)}
         </TabList>
         <TabPanels>
-          {tasks.map((task) => (
-            <TabPanel key={task.level}>
-              <Tag type={task.level === "Easy" ? "green" : task.level === "Medium" ? "blue" : "purple"}>{task.level}</Tag>
-              <h3>{task.title}</h3>
-              <p>{task.prompt}</p>
-              {task.activities && <ol className="practice-activities">{task.activities.map((activity) => <li key={activity}>{activity}</li>)}</ol>}
-              <Accordion align="start"><AccordionItem title="Show guidance"><p>{task.guidance}</p></AccordionItem></Accordion>
+          {groupedTasks.map((group) => (
+            <TabPanel key={group.level}>
+              {group.tasks.map((task) => <div className="practice-task" key={task.title}>
+                <Tag type={task.level === "Easy" ? "green" : task.level === "Medium" ? "blue" : "purple"}>{task.level}</Tag>
+                <h3>{task.title}</h3>
+                <p>{task.prompt}</p>
+                {task.activities && <ol className="practice-activities">{task.activities.map((activity) => <li key={activity}>{activity}</li>)}</ol>}
+                <Accordion align="start"><AccordionItem title="Show guidance"><p>{task.guidance}</p></AccordionItem></Accordion>
+              </div>)}
             </TabPanel>
           ))}
         </TabPanels>

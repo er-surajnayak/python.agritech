@@ -1738,6 +1738,56 @@
   }
 }
 
+/* Module 6 · Lesson 6.2 — NumPy array creation */
+.numpy-array-creation-pack {
+  .numpy-toolbox-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.25rem; span { min-width: 0; padding: 0.9rem; border-top: 3px solid var(--cds-link-primary); background: var(--cds-layer-01); font-weight: 600; text-align: center; } }
+  .numpy-creation-example-grid, .numpy-initialized-layout, .numpy-eye-layout { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 1rem; align-items: start; margin-top: 1rem; > * { min-width: 0; } }
+  .numpy-factory-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0; button { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.7rem 0.85rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); color: var(--cds-text-primary); text-align: left; cursor: pointer; code { color: var(--cds-link-primary); } span { color: var(--cds-text-secondary); font-size: 0.75rem; } &:hover, &.is-active { border-color: var(--cds-link-primary); background: var(--cds-layer-selected-01); box-shadow: inset 0 -3px var(--cds-link-primary); } } }
+  .numpy-use-case { margin-top: 1rem; background: var(--cds-layer-01); p { margin: 0.65rem 0 0; color: var(--cds-text-secondary); } }
+  .numpy-empty-warning { display: flex; align-items: flex-start; gap: 0.65rem; margin-top: 1rem; border-left: 3px solid var(--cds-support-warning); background: var(--cds-layer-01); svg { flex: 0 0 auto; color: var(--cds-support-warning); } p { margin: 0; } }
+  .numpy-empty-memory { display: flex; min-height: 13rem; flex-direction: column; align-items: center; justify-content: center; gap: 0.55rem; border: 1px solid var(--cds-support-warning); background: var(--cds-layer-01); text-align: center; svg { color: var(--cds-support-warning); } span { max-width: 26rem; color: var(--cds-text-secondary); } }
+  .numpy-sequence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; article { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.65rem; padding: 1rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); h3 { margin: 0; } > code, > strong { overflow-wrap: anywhere; } > strong { color: var(--cds-support-success); } > p { margin: 0; color: var(--cds-text-secondary); } .cds--tile { width: 100%; background: var(--cds-layer-02); span { color: var(--cds-text-helper); font-size: 0.7rem; text-transform: uppercase; } p { margin: 0.35rem 0 0; } } } }
+  .numpy-sequence-memory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1rem; > div { display: flex; min-width: 0; flex-direction: column; gap: 0.35rem; padding: 0.85rem; border-left: 3px solid var(--cds-link-primary); background: var(--cds-layer-01); span { color: var(--cds-text-secondary); } } }
+  .numpy-random-layout { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 1rem; margin-top: 1.25rem; }
+  .numpy-random-list { border: 1px solid var(--cds-border-subtle-01); button { display: flex; width: 100%; flex-direction: column; gap: 0.3rem; padding: 0.85rem 1rem; border: 0; border-bottom: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); color: var(--cds-text-primary); text-align: left; cursor: pointer; &:last-child { border-bottom: 0; } code { color: var(--cds-link-primary); } span { color: var(--cds-text-secondary); } &:hover, &.is-active { background: var(--cds-layer-selected-01); box-shadow: inset 3px 0 var(--cds-link-primary); } } }
+  .numpy-random-result { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.75rem; background: var(--cds-layer-01); code, strong { overflow-wrap: anywhere; } strong { color: var(--cds-support-success); } p { margin: 0; color: var(--cds-text-secondary); } }
+  .numpy-seed-panel { margin-top: 1rem; padding: 1rem; border-left: 3px solid var(--cds-support-success); background: var(--cds-layer-01); > div:first-child { display: flex; gap: 0.75rem; svg { flex: 0 0 auto; color: var(--cds-support-success); } h3, p { margin-top: 0; } } > div:last-child { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; } }
+  .numpy-dtype-example-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; .cds--tile { display: flex; min-width: 0; flex-direction: column; gap: 0.65rem; background: var(--cds-layer-01); > span { color: var(--cds-text-helper); font-size: 0.7rem; text-transform: uppercase; } strong { color: var(--cds-support-success); } p { margin: 0; color: var(--cds-text-secondary); } } }
+  .numpy-cheat-sheet { margin-top: 1.25rem; border: 1px solid var(--cds-border-subtle-01); }
+  .numpy-cheat-row { display: grid; grid-template-columns: minmax(10rem, 0.8fr) minmax(12rem, 1fr) minmax(14rem, 1.2fr); border-bottom: 1px solid var(--cds-border-subtle-01); &:last-child { border-bottom: 0; } > * { min-width: 0; padding: 0.75rem 0.9rem; overflow-wrap: anywhere; } > * + * { border-left: 1px solid var(--cds-border-subtle-01); } &.is-heading { background: var(--cds-layer-02); } code:first-child { color: var(--cds-link-primary); } }
+  .numpy-factory-workspace { display: grid; grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr); gap: 1rem; }
+  .numpy-factory-controls { display: grid; gap: 0.9rem; align-content: start; padding: 1rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); }
+  .numpy-factory-result { min-width: 0; }
+  .numpy-simulator-controls { display: flex; align-items: end; gap: 0.75rem; margin-top: 1rem; .cds--number { max-width: 12rem; } }
+  .numpy-simulator-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; > * { min-width: 0; } }
+  .numpy-seed-note { margin: 0.75rem 0 0; color: var(--cds-text-secondary); }
+}
+
+@media (max-width: 64rem) {
+  .numpy-array-creation-pack {
+    .numpy-creation-example-grid, .numpy-initialized-layout, .numpy-eye-layout, .numpy-random-layout, .numpy-factory-workspace { grid-template-columns: 1fr; }
+    .numpy-toolbox-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .numpy-simulator-grid { grid-template-columns: 1fr; }
+  }
+}
+
+@media (max-width: 48rem) {
+  .numpy-array-creation-pack {
+    .numpy-sequence-grid, .numpy-sequence-memory, .numpy-dtype-example-grid { grid-template-columns: 1fr; }
+    .numpy-cheat-sheet { overflow-x: auto; }
+    .numpy-cheat-row { min-width: 42rem; }
+    .numpy-factory-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 35rem) {
+  .numpy-array-creation-pack {
+    .numpy-toolbox-flow, .numpy-factory-tabs { grid-template-columns: 1fr; }
+    .numpy-factory-tabs button { width: 100%; }
+    .numpy-simulator-controls { align-items: stretch; flex-direction: column; .cds--number, .cds--btn { width: 100%; max-width: none; } }
+  }
+}
+
 /* Topic-wise assignment hub */
 .assignments-page { padding-top: clamp(3rem, 6vw, 6rem); padding-bottom: clamp(4rem, 8vw, 8rem); }
 .assignments-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(20rem, .8fr); gap: clamp(2rem, 6vw, 6rem); align-items: end; padding-bottom: 3rem; border-bottom: 1px solid var(--cds-border-subtle-01); }
@@ -3105,7 +3155,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .code-playground { --lesson-accent: #198038; padding: 0; overflow: hidden; }.code-playground > .lesson-card-heading { padding: 2rem; }.playground-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--cds-border-subtle-01); }.playground-editor { min-width: 0; padding: 1rem; background: var(--cds-layer-02); border-right: 1px solid var(--cds-border-subtle-01); }.playground-editor textarea { font-family: var(--cds-code-02-font-family, "IBM Plex Mono", monospace); font-size: .8rem; line-height: 1.55; tab-size: 4; }.playground-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: 1rem; }.playground-actions .cds--inline-loading { width: auto; min-width: 9rem; }
 .playground-output { min-width: 0; display: flex; flex-direction: column; background: #161616; color: #f4f4f4; }.playground-output-heading { min-height: 3rem; display: flex; justify-content: space-between; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid #393939; color: #c6c6c6; font: .7rem/1 monospace; text-transform: uppercase; letter-spacing: .08em; }.playground-output pre { flex: 1; min-height: 12rem; margin: 0; padding: 1rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .8rem/1.6 var(--cds-code-02-font-family, "IBM Plex Mono", monospace); }.playground-output > p { margin: 0; padding: 1rem; border-top: 1px solid #393939; color: #a8a8a8; font-size: .7rem; line-height: 1.45; }
 
-.practice-card { --lesson-accent: #0072c3; }.practice-card .cds--tabs { margin-top: 2rem; }.practice-card .cds--tab-content { padding: 1.5rem 0 0; }.practice-card .cds--tab-content h3 { margin: 1rem 0 .5rem; font-size: 1.1rem; font-weight: 500; }.practice-card .cds--tab-content > p { margin: 0 0 1rem; color: var(--cds-text-secondary); line-height: 1.55; }.practice-card .cds--accordion__content p { margin: 0; color: var(--cds-text-secondary); font-size: .8rem; line-height: 1.5; }
+.practice-card { --lesson-accent: #0072c3; }.practice-card .cds--tabs { margin-top: 2rem; }.practice-card .cds--tab-content { padding: 1.5rem 0 0; }.practice-card .cds--tab-content h3 { margin: 1rem 0 .5rem; font-size: 1.1rem; font-weight: 500; }.practice-card .cds--tab-content > p { margin: 0 0 1rem; color: var(--cds-text-secondary); line-height: 1.55; }.practice-card .cds--accordion__content p { margin: 0; color: var(--cds-text-secondary); font-size: .8rem; line-height: 1.5; }.practice-card .practice-task + .practice-task { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--cds-border-subtle-01); }
 .quiz-card { --lesson-accent: #d02670; }.quiz-card .cds--radio-button-group { margin-top: 1.5rem; }.quiz-placeholder-footer { display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--cds-border-subtle-01); }.quiz-placeholder-footer p { margin: 0; color: var(--cds-text-helper); font-size: .7rem; line-height: 1.45; }
 .assignment-card { --lesson-accent: #8a3ffc; }.assignment-deliverables { margin-top: 2rem; padding: 1.25rem; background: var(--cds-layer-02); }.assignment-deliverables h3 { margin: 0 0 1rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }.assignment-deliverables ul, .takeaways-card ul { margin: 0; padding: 0; list-style: none; }.assignment-deliverables li, .takeaways-card li { display: flex; gap: .65rem; align-items: flex-start; margin-bottom: .75rem; color: var(--cds-text-secondary); font-size: .82rem; line-height: 1.45; }.assignment-deliverables li:last-child, .takeaways-card li:last-child { margin-bottom: 0; }.assignment-deliverables svg, .takeaways-card svg { flex: 0 0 auto; margin-top: .1rem; color: var(--brand-green); }
 .takeaways-card { --lesson-accent: #198038; }.takeaways-card ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 2rem; background: var(--cds-border-subtle-01); }.takeaways-card li { min-height: 9rem; flex-direction: column; justify-content: space-between; margin: 0; padding: 1rem; background: var(--cds-layer-02); }

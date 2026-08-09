@@ -62,6 +62,7 @@ import { OopLesson5_6LessonRenderer } from "@/components/learning/OopLesson5-6Le
 import { OopLesson5_7LessonRenderer } from "@/components/learning/OopLesson5-7LessonRenderer";
 import { OopLesson5_8LessonRenderer } from "@/components/learning/OopLesson5-8LessonRenderer";
 import { NumpyIntroductionLessonRenderer } from "@/components/learning/NumpyIntroductionLessonRenderer";
+import { NumpyArrayCreationLessonRenderer } from "@/components/learning/NumpyArrayCreationLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -241,6 +242,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "numpy-introduction") {
     return <NumpyIntroductionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "numpy-array-creation") {
+    return <NumpyArrayCreationLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

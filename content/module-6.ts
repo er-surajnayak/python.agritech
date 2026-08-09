@@ -1,4 +1,5 @@
 import { numpyIntroductionDevelopmentPack } from "@/content/development-packs/lesson-6-1";
+import { numpyArrayCreationDevelopmentPack } from "@/content/development-packs/lesson-6-2";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -141,11 +142,79 @@ print("Minimum:", np.min(temperature))`,
     },
     developmentPack: numpyIntroductionDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-2",
+    moduleId: "module-6",
+    number: "6.2",
+    title: "Creating NumPy Arrays: Building Smart Farm Data Structures",
+    summary: "Choose the right NumPy creation tool for existing readings, initialized grids, numerical sequences, identity matrices, and reproducible simulated sensor data.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "Build the right starting structure", body: "Lesson 6.1 introduced ndarray. Now the Smart Farm needs a practical creation toolbox for known readings, future storage, calibration sequences, special matrices, and simulated datasets." },
+    objectives: [
+      "Create arrays from Python data with np.array()",
+      "Choose between zeros(), ones(), full(), and empty()",
+      "Generate step-controlled sequences with arange()",
+      "Generate count-controlled sequences with linspace()",
+      "Recognize an identity matrix created by eye()",
+      "Generate random floats, integers, measurements, and categories",
+      "Use random.seed() for reproducible results",
+      "Specify dtype and explain possible conversion data loss",
+    ],
+    whyThisMatters: { title: "Initialization communicates intent", body: "The creation function tells future readers whether an array contains real observations, reserved storage, defaults, time points, calibration values, or simulated data.", items: ["Predictable defaults reduce setup mistakes", "Purpose-built sequences avoid manual value entry", "Seeds make experiments repeatable", "Explicit dtype controls storage behavior"] },
+    industryMotivation: { title: "Data workflows start by allocating the right shape and values", body: "Scientific simulations, machine-learning experiments, image processing, and IoT pipelines repeatedly create initialized, ranged, and random arrays before any analysis begins.", items: ["Sensor buffers begin as allocated grids", "Model experiments need reproducible random data", "Calibration schedules use even numerical sequences", "Identity matrices support later transformations"], signal: "Choosing an array factory is a data-design decision, not just a syntax choice." },
+    concept: { title: "Array creation is a toolbox", body: "Each factory answers a different question: do values already exist, should every position start the same, do we need a sequence, or are we simulating observations?", items: ["Existing values → array()", "Known default → zeros(), ones(), or full()", "Step or count → arange() or linspace()", "Simulation → random functions plus a seed"] },
+    workflow: { title: "Choose an array creator by intent", description: "Identify the source and initialization rule before choosing syntax.", steps: [
+      { title: "Identify the data source", description: "Existing observations, generated sequence, reserved storage, or simulation?" },
+      { title: "Choose shape", description: "Decide whether one sequence or a field-by-sensor grid is required." },
+      { title: "Choose initialization", description: "Use known values, a constant fill, a range rule, or random generation." },
+      { title: "Choose dtype", description: "Accept inference or explicitly request a compatible type." },
+      { title: "Verify", description: "Print the result and confirm shape, values, and reproducibility." },
+    ] },
+    agritechExample: { title: "Simulate a repeatable sensor batch", body: "A fixed seed produces the same synthetic temperature and soil-moisture readings, helping every learner inspect and discuss identical results." },
+    playground: {
+      title: "Run a Reproducible Smart Farm Simulation",
+      description: "Change the seed, ranges, and sample count, then run the same NumPy random workflow in the existing browser runtime.",
+      starterCode: `import numpy as np
+
+np.random.seed(42)
+
+temperature = np.random.randint(20, 40, 10)
+moisture = np.random.uniform(30, 60, 10)
+
+print("Temperature:", temperature)
+print("Moisture:", np.round(moisture, 2))`,
+      expectedOutcome: "Seed 42 produces the same 10 temperature integers and 10 rounded moisture values each time.",
+    },
+    practice: [
+      { level: "Easy", title: "Zero and one buffers", prompt: "Create np.zeros(10) and np.ones(10), then explain one suitable use for each.", guidance: "Both default to floating-point output unless dtype is specified." },
+      { level: "Easy", title: "Default temperature grid", prompt: "Create a 3 × 3 array where every value is 25 using np.full().", guidance: "Pass the shape tuple first and the fill value second." },
+      { level: "Medium", title: "Two-hour schedule", prompt: "Generate 6, 8, 10, 12, 14, 16, 18 using np.arange().", guidance: "Use stop 19 because arange excludes the stop value." },
+      { level: "Medium", title: "Calibration points", prompt: "Generate seven evenly spaced temperature values between 20°C and 35°C.", guidance: "linspace receives start, stop, and number of values." },
+      { level: "Challenge", title: "Random moisture simulation", prompt: "Generate 10 floating-point soil-moisture readings between 25 and 70 with a reproducible seed.", guidance: "Set seed first, then call np.random.uniform(25, 70, 10)." },
+      { level: "Challenge", title: "Analyze 20 temperatures", prompt: "Simulate 20 integer temperatures from 18°C through 40°C and calculate minimum, maximum, and average.", guidance: "randint excludes the upper bound, so use 41 to allow 40." },
+    ],
+    quiz: [
+      { title: "Zero fill", question: "Which function creates an array filled with zeros?", options: ["np.empty()", "np.zeros()", "np.full()", "np.eye()"], correctOptionIndex: 1, note: "The name describes the fill value.", explanation: "np.zeros() initializes every position to zero." },
+      { title: "Chosen fill", question: "Which function fills an array with a chosen value?", options: ["np.full()", "np.ones()", "np.arange()", "np.array()"], correctOptionIndex: 0, note: "full receives a shape and fill value.", explanation: "np.full((3, 3), 25) creates a 3 × 3 grid of 25." },
+      { title: "Uninitialized storage", question: "Why should np.empty() be used carefully?", options: ["It creates strings", "Its initial values are not predictable", "It cannot create 2D arrays", "It always raises an error"], correctOptionIndex: 1, note: "Empty describes initialization, not size.", explanation: "Allocated memory contents should not be assumed to be zero." },
+      { title: "Sequence rule", question: "What controls np.arange()?", options: ["Number of values", "Step size", "Random seed", "dtype only"], correctOptionIndex: 1, note: "Think: how large is each step?", explanation: "arange generates values by repeatedly adding the specified step." },
+      { title: "Even count", question: "Does np.linspace() include both endpoints by default?", options: ["Yes", "No", "Only for integers", "Only with a seed"], correctOptionIndex: 0, note: "This differs from arange's excluded stop.", explanation: "linspace includes start and stop by default." },
+      { title: "Identity", question: "What does np.eye(3) create?", options: ["Three random values", "A 3 × 3 identity matrix", "Three ones", "An empty matrix"], correctOptionIndex: 1, note: "Ones lie on the main diagonal.", explanation: "An identity matrix has diagonal ones and zeros elsewhere." },
+      { title: "Random integers", question: "Which function generates random integers?", options: ["np.random.rand()", "np.random.uniform()", "np.random.randint()", "np.random.choice()"], correctOptionIndex: 2, note: "The name ends in int.", explanation: "randint generates integers over a specified interval." },
+      { title: "Reproducibility", question: "Why set np.random.seed()?", options: ["To make arrays larger", "To repeat the same pseudo-random sequence", "To convert floats", "To sort values"], correctOptionIndex: 1, note: "A seed controls repeatability.", explanation: "Using the same seed recreates the same pseudo-random sequence." },
+    ],
+    assignment: { title: "Smart Farm Array Creation Toolkit", brief: "Create a short program demonstrating the main array factories in a realistic farm-data setup.", deliverables: ["Create a 3 × 4 zero-filled sensor buffer", "Create a 3 × 3 default-temperature grid with full()", "Generate measurement hours with arange()", "Generate calibration points with linspace()", "Create a 4 × 4 identity matrix", "Simulate temperature, moisture, and categorical statuses", "Set and explain a random seed", "Demonstrate float dtype and explain float-to-int data loss"] },
+    summarySection: { title: "You can now manufacture the right array", body: "You created arrays from known values, constants, numerical rules, identity structure, and reproducible simulations while choosing functions by purpose rather than memorization.", items: ["array() converts existing data", "zeros(), ones(), and full() create predictable defaults", "empty() is uninitialized", "arange() uses a step; linspace() uses a value count", "eye() creates an identity matrix", "random functions and seed support repeatable simulation"] },
+    keyTakeaways: ["Choose the factory that communicates the array's purpose", "Do not assume empty() contains zeros", "arange usually excludes stop; linspace includes both endpoints by default", "Use a seed when results must be reproducible", "Specify dtype only when its conversion behavior is acceptable"],
+    whatsNext: { title: "Lesson 6.3 · Array Attributes & Data Types", body: "Next, inspect what an array contains and how it is structured with ndim, shape, size, dtype, itemsize, and astype()." },
+    developmentPack: numpyArrayCreationDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-1", moduleId: "module-6", order: 1, title: "6.1 Introduction to NumPy", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-2", moduleId: "module-6", order: 2, title: "6.2 Creating NumPy Arrays", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-2", moduleId: "module-6", order: 2, title: "6.2 Creating NumPy Arrays", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },

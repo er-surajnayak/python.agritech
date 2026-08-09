@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 11, "one published lesson and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 12, "two published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1777,4 +1777,29 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
   assert.match(workerSource, /loadPackagesFromImports\(data\.code\)/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.1 — NumPy introduction/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-introduction-pack/);
+});
+
+test("Lesson 6.2 publishes the NumPy array creation toolbox", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayCreationLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayCreationLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Creating NumPy Arrays: Building Smart Farm Data Structures"/);
+  assert.match(moduleSource, /id: "module-6-lesson-2"[\s\S]*developmentPack: numpyArrayCreationDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-2"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-array-creation"/);
+  for (const functionName of ["np.array", "np.zeros", "np.ones", "np.full", "np.empty", "np.arange", "np.linspace", "np.eye", "np.random.rand", "np.random.randint", "np.random.uniform", "np.random.choice"]) assert.match(packSource, new RegExp(functionName.replaceAll(".", "\\.")));
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-array-creation"/);
+  assert.match(rendererSource, /<NumpyArrayFactory/);
+  assert.match(rendererSource, /<RandomSensorSimulator/);
+  assert.match(blocksSource, /export function NumpyArrayFactory/);
+  assert.match(blocksSource, /np\.random\.seed\(\$\{seed\}\)/);
+  assert.match(blocksSource, /label=\{kind === "arange" \? "Step" : "Number of values"\}/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.2 — NumPy array creation/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-creation-pack/);
 });

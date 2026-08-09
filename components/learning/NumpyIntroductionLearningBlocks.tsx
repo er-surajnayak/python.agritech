@@ -9,7 +9,7 @@ function formatNumber(value: number) {
   return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(3)));
 }
 
-function ArrayGrid({ values, name = "array" }: { values: number[][]; name?: string }) {
+export function ArrayGrid({ values, name = "array" }: { values: number[][]; name?: string }) {
   const [selected, setSelected] = useState<[number, number]>([0, 0]);
   const isOneDimensional = values.length === 1;
   return (

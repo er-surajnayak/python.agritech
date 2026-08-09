@@ -4,6 +4,7 @@ import { oopMethodsAndClassVarsDevelopmentPack } from "@/content/development-pac
 import { oopEncapsulationDevelopmentPack } from "@/content/development-packs/lesson-5-4";
 import { oopInheritanceDevelopmentPack } from "@/content/development-packs/lesson-5-5";
 import { oopPolymorphismDevelopmentPack } from "@/content/development-packs/lesson-5-6";
+import { oopAbstractionDevelopmentPack } from "@/content/development-packs/lesson-5-7";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -1383,6 +1384,219 @@ for sensor in sensors:
     },
     developmentPack: oopPolymorphismDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-7",
+    moduleId: "module-5",
+    number: "5.7",
+    title: "Abstraction: Designing a Common Blueprint for Smart Farm Sensors",
+    summary:
+      "Turn the shared read() behaviour from Lesson 5.6 into an enforceable Sensor contract. Learn abstraction, ABC, @abstractmethod, concrete subclasses, and the difference between simplifying an interface and protecting object data.",
+    durationMinutes: 180,
+    level: "Intermediate",
+    introduction: {
+      title: "From a shared convention to an enforced Sensor contract",
+      body: "Polymorphism showed that different sensors can respond to read(). The platform now needs to guarantee that every concrete Sensor subclass provides that essential operation before an object reaches the monitoring loop.",
+    },
+    objectives: [
+      "Explain abstraction using essential features and hidden implementation details",
+      "Describe why a common Sensor contract improves system reliability",
+      "Differentiate abstraction from encapsulation",
+      "Create abstract classes using Python's ABC",
+      "Declare required operations using @abstractmethod",
+      "Explain why incomplete abstract classes cannot normally be instantiated",
+      "Implement concrete subclasses that satisfy an abstract blueprint",
+      "Apply abstraction to Smart Farm sensors and machinery",
+    ],
+    whyThisMatters: {
+      title: "A shared method name is useful; an enforceable contract is safer",
+      body: "Large IoT platforms accept sensor implementations from many teams and vendors. Abstraction makes essential behaviours explicit and catches incomplete subclasses before they enter the controller workflow.",
+      items: [
+        "Every concrete sensor guarantees the operations the controller needs",
+        "Internal hardware and vendor complexity stays behind the interface",
+        "Incomplete implementations fail at object creation rather than deep inside processing",
+        "New sensor types can be added without redesigning the controller",
+      ],
+    },
+    industryMotivation: {
+      title: "Frameworks publish contracts and let implementations vary",
+      body: "Database drivers, machine-learning models, APIs, cloud services, and IoT SDKs expose stable operations while hiding complex implementations. Clients depend on predict(), execute(), read(), or send() rather than internal algorithms and protocols.",
+      items: [
+        "Machine-learning models expose predict() while hiding mathematical details",
+        "Database adapters expose common query operations across database engines",
+        "IoT platforms define device contracts for third-party manufacturers",
+        "Enterprise frameworks use abstract base classes as extension points",
+      ],
+      signal:
+        "Abstraction allows independent teams to implement components that remain compatible with one stable application workflow.",
+    },
+    concept: {
+      title: "What does this object promise to provide?",
+      body: "Abstraction exposes the essential features clients need and hides unnecessary implementation complexity. In Python, an abstract base class can formally require concrete subclasses to implement specific methods.",
+      items: [
+        "ABC creates an abstract base class",
+        "@abstractmethod marks a required operation",
+        "Abstract blueprints may contain common data and finished methods",
+        "Concrete subclasses implement every remaining abstract requirement",
+      ],
+    },
+    workflow: {
+      title: "From abstract contract to usable sensor",
+      description: "Follow how Python validates a concrete Sensor implementation before allowing object creation.",
+      steps: [
+        { title: "Define the contract", description: "Sensor inherits ABC and declares read() with @abstractmethod." },
+        { title: "Create a child class", description: "TemperatureSensor inherits common Sensor structure." },
+        { title: "Check requirements", description: "Python checks whether read() has a concrete implementation." },
+        { title: "Block or instantiate", description: "Missing requirements cause TypeError; complete children can be created." },
+        { title: "Use the stable interface", description: "The controller safely calls sensor.read() polymorphically." },
+      ],
+    },
+    agritechExample: {
+      title: "FarmMachine defines what every machine must do",
+      body: "An abstract FarmMachine can require start() and stop(), while Tractor, IrrigationPump, and Drone keep their unique mechanics. Abstraction defines the promise; inheritance shares the blueprint; polymorphism selects the behaviour.",
+    },
+    playground: {
+      title: "Build and Validate an Abstract Sensor Contract",
+      description:
+        "Run the complete contract, then remove RainfallSensor.read() to observe Python reject the incomplete class. Restore the implementation and verify that the polymorphic fleet runs again.",
+      starterCode: `from abc import ABC, abstractmethod
+
+class Sensor(ABC):
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+
+    @abstractmethod
+    def read(self):
+        pass
+
+    def show_id(self):
+        return f"Sensor ID: {self.sensor_id}"
+
+class TemperatureSensor(Sensor):
+    def read(self):
+        return "Temperature: 31°C"
+
+class MoistureSensor(Sensor):
+    def read(self):
+        return "Soil Moisture: 42%"
+
+class RainfallSensor(Sensor):
+    def read(self):
+        return "Rainfall: 12 mm"
+
+sensors = [
+    TemperatureSensor("T-101"),
+    MoistureSensor("M-202"),
+    RainfallSensor("R-303"),
+]
+
+for sensor in sensors:
+    print(sensor.show_id(), "|", sensor.read())`,
+      expectedOutcome:
+        "All three concrete sensors are created and read successfully. Removing RainfallSensor.read() causes TypeError because the abstract contract remains incomplete.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Abstract Crop display contract",
+        prompt: "Create an abstract Crop class requiring display(). Implement Rice, Wheat, and Corn concrete classes.",
+        guidance: "Import ABC and abstractmethod, inherit Crop from ABC, and implement display() in every child.",
+      },
+      {
+        level: "Medium",
+        title: "Complete Sensor contract",
+        prompt: "Create abstract Sensor requiring read(). Implement TemperatureSensor, MoistureSensor, and RainfallSensor and process them through one loop.",
+        guidance: "Instantiate only the concrete children. The Sensor blueprint itself remains incomplete by design.",
+      },
+      {
+        level: "Challenge",
+        title: "Two-method FarmMachine contract",
+        prompt: "Create abstract FarmMachine requiring start() and stop(). Implement Tractor, IrrigationPump, and Drone, then call both operations polymorphically.",
+        guidance: "A class remains abstract if even one required method is missing. Test this by temporarily omitting stop().",
+      },
+    ],
+    quiz: [
+      {
+        title: "ABC module",
+        question: "Which Python module provides ABC and abstractmethod?",
+        options: ["math", "abc", "sys", "os"],
+        correctOptionIndex: 1,
+        note: "Both tools come from Python's abc module.",
+        explanation: "Use from abc import ABC, abstractmethod to create enforceable abstract base classes.",
+      },
+      {
+        title: "Abstract decorator",
+        question: "Which decorator declares a method that concrete subclasses must implement?",
+        options: ["@abstract", "@method", "@abstractmethod", "@interface"],
+        correctOptionIndex: 2,
+        note: "The exact decorator name is @abstractmethod.",
+        explanation: "@abstractmethod records an unfinished requirement on the abstract class and its incomplete children.",
+      },
+      {
+        title: "Instantiation rule",
+        question: "Can a class with an unimplemented abstract method normally be instantiated?",
+        options: ["Yes, always", "Only inside a loop", "No", "Only with super()"],
+        correctOptionIndex: 2,
+        note: "Python raises TypeError for an incomplete abstract class.",
+        explanation: "The missing operation means the contract is incomplete, so Python blocks object creation.",
+      },
+      {
+        title: "Abstraction purpose",
+        question: "What is the primary purpose of abstraction in the Sensor system?",
+        options: ["Delete variables", "Expose essential behaviour and hide unnecessary complexity", "Replace inheritance", "Increase duplication"],
+        correctOptionIndex: 1,
+        note: "The controller sees the stable read() promise.",
+        explanation: "Abstraction lets clients depend on essential operations without knowing each implementation's internal mechanics.",
+      },
+      {
+        title: "Encapsulation comparison",
+        question: "Which question is most closely associated with abstraction?",
+        options: ["Who can change my private data?", "What does this object promise to provide?", "How many loops execute?", "Where is the global variable?"],
+        correctOptionIndex: 1,
+        note: "Abstraction focuses on the essential contract.",
+        explanation: "Encapsulation controls access to state; abstraction defines the essential interface clients can rely on.",
+      },
+    ],
+    assignment: {
+      title: "Third-Party Smart Sensor API Contract",
+      brief:
+        "Design an extensible sensor API that external hardware vendors can implement without exposing their internal calibration or network logic to the Smart Farm controller.",
+      deliverables: [
+        "Create abstract Sensor(ABC) with sensor_id, show_id(), and abstract read()",
+        "Add a second abstract method named health_check()",
+        "Implement TemperatureSensor, MoistureSensor, RainfallSensor, and NutrientSensor",
+        "Instantiate all concrete sensors and run read() plus health_check() through one loop",
+        "Demonstrate the TypeError from an incomplete vendor sensor missing health_check()",
+        "Explain why Sensor itself should not be instantiated",
+        "Compare abstraction and encapsulation using one Smart Farm example for each",
+        "Write five comments connecting abstraction, inheritance, and polymorphism",
+      ],
+    },
+    summarySection: {
+      title: "The Smart Farm now has an enforceable sensor blueprint",
+      body: "You transformed read() from a shared convention into an abstract contract, learned how ABC and @abstractmethod prevent incomplete object creation, and built concrete sensor and machine implementations behind stable interfaces.",
+      items: [
+        "Abstraction exposes essential behaviour and hides implementation details",
+        "ABC creates an abstract base class",
+        "@abstractmethod marks operations concrete children must implement",
+        "Abstract classes can also share state and finished methods",
+        "Incomplete abstract classes raise TypeError when instantiated",
+        "Abstraction formalizes the polymorphic interface introduced in Lesson 5.6",
+      ],
+    },
+    keyTakeaways: [
+      "Encapsulation asks who can access or change data; abstraction asks what an object promises",
+      "Use from abc import ABC, abstractmethod for enforceable Python contracts",
+      "Decorating read() with @abstractmethod requires concrete subclasses to implement it",
+      "An abstract class may contain constructors, attributes, and normal concrete methods",
+      "A child remains abstract until every abstract requirement has a concrete implementation",
+      "Abstraction, inheritance, and polymorphism work together to create extensible systems",
+    ],
+    whatsNext: {
+      title: "Lesson 5.8 · Magic Methods & Python's Special Methods",
+      body: "Our objects now have clear contracts. Next, special methods such as __str__(), __len__(), __eq__(), and __lt__() will make Farm and Sensor objects behave naturally with print(), len(), equality checks, and sorting.",
+    },
+    developmentPack: oopAbstractionDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -1445,9 +1659,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 7,
     title: "5.7 Abstraction — The Common Sensor Blueprint",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 180,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-8",

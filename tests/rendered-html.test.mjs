@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 16, "six published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 17, "seven published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1904,4 +1904,30 @@ test("Lesson 6.6 publishes mathematical, statistical, and axis tools", async () 
   assert.match(stylesSource, /Module 6 · Lesson 6\.6 — NumPy mathematical and statistical functions/);
   assert.match(stylesSource, /prefers-reduced-motion/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-math-statistics-pack/);
+});
+
+test("Lesson 6.7 publishes sorting, searching, and filtering tools", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-7.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyFilteringLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyFilteringLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Sorting, Searching & Filtering Arrays: Finding Important Farm Sensor Readings"/);
+  assert.match(moduleSource, /id: "module-6-lesson-7"[\s\S]*developmentPack: numpyFilteringDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-7"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-sorting-searching-filtering"/);
+  for (const concept of ["np.sort", "np.argsort", "np.where", "np.any", "np.all", "sensor_data[:, 0]", "sensor_data[:, 2]"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-sorting-searching-filtering"/);
+  assert.match(rendererSource, /<SortingVisualizer/);
+  assert.match(rendererSource, /<BooleanMaskVisualizer/);
+  assert.match(rendererSource, /<SmartFarmSensorFilter/);
+  assert.match(blocksSource, /export function SmartFarmSensorFilter/);
+  assert.match(blocksSource, /True keeps a reading; False removes it/);
+  assert.match(blocksSource, /Python's <code>and<\/code> and <code>or<\/code>/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.7 — NumPy sorting, searching, and filtering/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-filtering-pack/);
 });

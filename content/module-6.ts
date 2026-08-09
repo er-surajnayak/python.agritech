@@ -4,6 +4,7 @@ import { numpyArrayAttributesDevelopmentPack } from "@/content/development-packs
 import { numpyIndexingDevelopmentPack } from "@/content/development-packs/lesson-6-4";
 import { numpyOperationsDevelopmentPack } from "@/content/development-packs/lesson-6-5";
 import { numpyMathStatisticsDevelopmentPack } from "@/content/development-packs/lesson-6-6";
+import { numpyFilteringDevelopmentPack } from "@/content/development-packs/lesson-6-7";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -498,6 +499,80 @@ print("Feature maxima:", np.max(sensor_data, axis=0))`,
     whatsNext: { title: "Lesson 6.7 · Filtering, Sorting & Searching", body: "Next, use Boolean masks, where(), sort(), argsort(), unique(), and searching tools to locate the sensor readings that matter." },
     developmentPack: numpyMathStatisticsDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-7",
+    moduleId: "module-6",
+    number: "6.7",
+    title: "Sorting, Searching & Filtering Arrays: Finding Important Farm Sensor Readings",
+    summary: "Sort values, recover ranking indices, locate matches with where(), build Boolean masks, combine conditions, and filter complete Smart Farm sensor rows.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "Move from summary to action", body: "Averages describe the farm, but operations teams also need the exact fields, readings, and positions that cross a threshold or require intervention." },
+    objectives: ["Sort NumPy arrays in ascending and descending order", "Distinguish np.sort() from arr.sort()", "Find sorting indices with np.argsort()", "Locate condition matches with np.where()", "Build and apply Boolean masks", "Combine conditions using & and |", "Use parentheses around array comparisons", "Check conditions with np.any() and np.all()", "Create simple labels with np.where()", "Filter real Smart Farm sensor rows"],
+    whyThisMatters: { title: "Farm decisions depend on the exceptional readings", body: "Sorting ranks performance, searching identifies exact positions, and filtering keeps the rows that need irrigation, inspection, or an alert.", items: ["Rank fields by yield or moisture", "Locate threshold events", "Identify fields requiring irrigation", "Keep only records matching operational rules"] },
+    industryMotivation: { title: "Masks turn numerical conditions into data-selection pipelines", body: "IoT monitoring and machine-learning preparation use Boolean masks to select records, create labels, verify safety conditions, and isolate anomalies.", items: ["Alert systems locate sensors above a threshold", "Quality checks require all readings to pass", "Ranking exposes top and bottom performers", "Compound masks translate business rules into array selection"], signal: "The pattern condition → mask → selected rows is foundational for NumPy, Pandas, and machine learning." },
+    concept: { title: "Values, positions, and masks answer different questions", body: "sort returns ordered values, argsort returns their original positions, where returns matching indices, and Boolean indexing returns the matching data itself.", items: ["np.sort() → ordered copy", "np.argsort() → sorting positions", "np.where() → matching positions", "arr[mask] → matching values or rows", "np.any()/np.all() → one Boolean decision"] },
+    workflow: { title: "Filter Smart Farm data safely", description: "Translate an operational rule into an inspectable NumPy selection.", steps: [
+      { title: "Choose data", description: "Select the array or feature column to test." },
+      { title: "Build condition", description: "Compare values with one or more thresholds." },
+      { title: "Inspect mask", description: "Confirm which positions are True." },
+      { title: "Select", description: "Use the mask directly or recover indices with where()." },
+      { title: "Act", description: "Connect selected rows to irrigation, alerts, or inspection." },
+    ] },
+    agritechExample: { title: "Select fields needing irrigation", body: "A mask combining temperature > 32 and soil moisture < 30 selects complete field rows that are both hot and dry." },
+    playground: {
+      title: "Run a Smart Farm Search and Filter Pipeline",
+      description: "Execute sorting, argsort, where, Boolean filtering, compound conditions, and any/all checks in the browser NumPy runtime.",
+      starterCode: `import numpy as np
+
+moisture = np.array([42, 55, 38, 61, 47, 35, 58])
+sensor_data = np.array([
+    [28, 65, 40],
+    [35, 70, 25],
+    [31, 68, 38],
+    [39, 75, 20]
+])
+
+print("Sorted moisture:", np.sort(moisture))
+print("Descending:", np.sort(moisture)[::-1])
+print("Sorting indices:", np.argsort(moisture))
+print("Above 50:", moisture[moisture > 50])
+print("Above 50 indices:", np.where(moisture > 50)[0])
+
+mask = (sensor_data[:, 0] > 32) & (sensor_data[:, 2] < 30)
+print("Field mask:", mask)
+print("Hot and dry fields:", sensor_data[mask])
+print("Any critical moisture:", np.any(moisture < 40))`,
+      expectedOutcome: "The runner sorts seven moisture readings, returns sorting and threshold indices, selects the two hot-and-dry field rows, and confirms that at least one critical moisture reading exists.",
+    },
+    practice: [
+      { level: "Easy", title: "Sort five values", prompt: "Sort [50, 20, 40, 10, 30] in ascending and descending order.", guidance: "Use np.sort(), then reverse the sorted copy with [::-1]." },
+      { level: "Easy", title: "Filter above 30", prompt: "Select values greater than 30 from [10, 35, 20, 45, 30].", guidance: "Place the comparison mask inside square brackets." },
+      { level: "Medium", title: "Find exact positions", prompt: "Find indices equal to 20 in [10, 20, 10, 30, 20].", guidance: "Use np.where(values == 20)[0]." },
+      { level: "Medium", title: "Filter a closed range", prompt: "Keep values from 20 through 40 inclusive in [10, 20, 25, 35, 40, 50].", guidance: "Combine parenthesized comparisons with &." },
+      { level: "Medium", title: "Check for an alert", prompt: "Determine whether at least one value in [20, 40, 60, 120] exceeds 100.", guidance: "Pass the comparison to np.any()." },
+      { level: "Medium", title: "Verify all positive", prompt: "Determine whether every value in [10, 20, 5, 30] is positive.", guidance: "Use np.all(values > 0)." },
+      { level: "Challenge", title: "Explain argsort", prompt: "For [42, 55, 38, 61, 47], pair the argsort output with the original positions.", guidance: "Follow values from lowest to highest without changing their original indices." },
+      { level: "Challenge", title: "Filter hot and dry fields", prompt: "Select sensor rows where temperature > 32 and moisture < 30.", guidance: "Build each column condition separately, wrap both in parentheses, then combine with &." },
+    ],
+    quiz: [
+      { title: "Sorted copy", question: "What does np.sort(arr) return?", options: ["A sorted copy", "Only indices", "The maximum", "A Boolean mask"], correctOptionIndex: 0, note: "The original remains unchanged.", explanation: "np.sort() returns sorted values in a new array." },
+      { title: "In-place sort", question: "What does arr.sort() do?", options: ["Returns indices", "Sorts the original array", "Always sorts descending", "Creates a mask"], correctOptionIndex: 1, note: "The array itself changes.", explanation: "The ndarray sort method operates in-place." },
+      { title: "Sorting positions", question: "What does np.argsort(arr) return?", options: ["Sorted values", "Indices that produce sorted order", "Only the minimum index", "True and False"], correctOptionIndex: 1, note: "argsort preserves positional information.", explanation: "It returns original indices ordered by their values." },
+      { title: "Where", question: "What does np.where(arr > 30)[0] return?", options: ["Values above 30", "Indices where the condition is True", "One Boolean", "A sorted array"], correctOptionIndex: 1, note: "where finds positions.", explanation: "Indexing the where tuple with [0] returns matching indices for a 1D array." },
+      { title: "Mask", question: "What does arr[arr > 30] return?", options: ["Indices", "Matching values", "The original array unchanged only", "A scalar"], correctOptionIndex: 1, note: "True positions are kept.", explanation: "Boolean indexing selects values whose mask is True." },
+      { title: "AND", question: "Which operator combines two element-wise NumPy conditions that must both be true?", options: ["and", "&", "|", "&&"], correctOptionIndex: 1, note: "Parenthesize both comparisons.", explanation: "& performs element-wise logical AND." },
+      { title: "OR", question: "Which operator keeps values satisfying either array condition?", options: ["or", "&", "|", "||"], correctOptionIndex: 2, note: "Use NumPy's element-wise operator.", explanation: "| performs element-wise logical OR." },
+      { title: "Any prediction", question: "What is np.any([10, 20, 30] > 50) conceptually?", options: ["True", "False", "[False, False, False] only", "50"], correctOptionIndex: 1, note: "No value passes.", explanation: "np.any() returns False when the complete condition mask is False." },
+      { title: "All prediction", question: "What does np.all(np.array([10, 20, 30]) > 5) return?", options: ["True", "False", "[10, 20, 30]", "5"], correctOptionIndex: 0, note: "Every value passes.", explanation: "All mask positions are True." },
+      { title: "Row filter", question: "What does sensor_data[sensor_data[:, 0] > 32] select?", options: ["Column 32", "Complete rows whose temperature exceeds 32", "Only temperature values", "The first 32 rows"], correctOptionIndex: 1, note: "The mask length matches the number of rows.", explanation: "The column comparison creates one Boolean per row, then selects complete rows." },
+    ],
+    assignment: { title: "Smart Farm Alert Filter", brief: "Build a compact NumPy program that ranks readings, locates threshold positions, and selects field rows using single and compound conditions.", deliverables: ["Ascending and descending sort", "argsort ranking indices", "One exact-value where search", "One simple Boolean filter", "One & range condition", "One | condition", "One any and one all check", "One multi-column sensor row filter"] },
+    summarySection: { title: "You can now locate the readings behind a farm decision", body: "You sorted values, preserved ranking positions, found matching indices, built Boolean masks, combined conditions, and selected complete records.", items: ["np.sort returns values", "np.argsort returns sorting indices", "np.where finds matching positions", "True keeps and False removes", "& means both; | means either", "np.any asks at least one; np.all asks every one"] },
+    keyTakeaways: ["Choose values or positions intentionally", "Use [::-1] for a descending sorted copy", "Inspect a mask before selecting rows", "Use & and | instead of Python and/or for arrays", "Parenthesize every comparison in a compound condition", "The reusable pattern is condition → mask → filtered data"],
+    whatsNext: { title: "Lesson 6.8 · Combining & Splitting Arrays", body: "Next, assemble and separate Smart Farm datasets with concatenate, stack, split, vsplit, and hsplit." },
+    developmentPack: numpyFilteringDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
@@ -507,7 +582,7 @@ export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining & Splitting Arrays", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-9", moduleId: "module-6", order: 9, title: "6.9 Random Numbers & Practical NumPy", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-10", moduleId: "module-6", order: 10, title: "6.10 Smart Farm Numerical Analysis", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },

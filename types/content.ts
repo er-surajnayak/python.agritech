@@ -2127,6 +2127,20 @@ export interface NumpyMathStatisticsDevelopmentPack {
   debugChallenges: DebugChallengeContent[];
 }
 
+export interface NumpyFilteringDevelopmentPack {
+  kind: "numpy-sorting-searching-filtering";
+  prerequisite: string;
+  storyHook: string;
+  sorting: { values: number[]; ascending: number[]; descending: number[]; indices: number[]; copyCode: string; inPlaceCode: string };
+  where: { values: number[]; condition: string; mask: boolean[]; indices: number[]; filtered: number[]; replacementCode: string; replacement: number[] };
+  conditions: Array<{ id: "and" | "or"; code: string; values: number[]; mask: boolean[]; result: number[]; meaning: string }>;
+  anyAll: Array<{ function: "np.any" | "np.all"; code: string; result: boolean; meaning: string }>;
+  irrigation: { values: number[]; condition: string; mask: boolean[]; filtered: number[]; indices: number[] };
+  sensorFilter: { matrix: number[][]; columns: string[]; filters: Array<{ id: "temperature" | "moisture" | "and" | "or"; label: string; code: string; mask: boolean[]; rows: number[][] }> };
+  quickReference: Array<{ name: string; purpose: string; example: string }>;
+  debugChallenges: DebugChallengeContent[];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface LessonDocument {
@@ -2151,7 +2165,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack | NumpyFilteringDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

@@ -3,6 +3,7 @@ import { oopConstructorsDevelopmentPack } from "@/content/development-packs/less
 import { oopMethodsAndClassVarsDevelopmentPack } from "@/content/development-packs/lesson-5-3";
 import { oopEncapsulationDevelopmentPack } from "@/content/development-packs/lesson-5-4";
 import { oopInheritanceDevelopmentPack } from "@/content/development-packs/lesson-5-5";
+import { oopPolymorphismDevelopmentPack } from "@/content/development-packs/lesson-5-6";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -1184,6 +1185,204 @@ moist.display()`,
     },
     developmentPack: oopInheritanceDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-6",
+    moduleId: "module-5",
+    number: "5.6",
+    title: "Polymorphism: One Interface, Different Behaviors",
+    summary:
+      "Give different Smart Farm objects the same read() instruction and watch each object respond through its own implementation. Learn inheritance-based polymorphism, method dispatch, loops, and Python duck typing.",
+    durationMinutes: 150,
+    level: "Intermediate",
+    introduction: {
+      title: "One sensor command that scales with the farm",
+      body: "Lesson 5.5 gave us a Sensor hierarchy. Now the dashboard must process mixed sensor objects without knowing every concrete type. Polymorphism lets the dashboard depend on one stable behaviour — read() — while each object supplies the right response.",
+    },
+    objectives: [
+      "Explain polymorphism as one interface with different behaviours",
+      "Connect method overriding to inheritance-based polymorphism",
+      "Use the same method name across different Smart Farm classes",
+      "Process polymorphic objects through one list and for loop",
+      "Explain method dispatch in beginner-friendly terms",
+      "Use duck typing with unrelated classes that share expected behaviour",
+      "Differentiate inheritance polymorphism from duck typing",
+      "Explain how polymorphism improves extensibility and reduces coupling",
+    ],
+    whyThisMatters: {
+      title: "Controllers should not need rewrites for every new device",
+      body: "When a new RainfallSensor joins the fleet, the monitoring loop should continue to call read() without adding a new branch. This makes systems easier to extend and keeps controller logic independent from device-specific implementations.",
+      items: [
+        "New sensor classes can join an existing monitoring loop",
+        "Common interfaces remove type-specific branching",
+        "Each class keeps responsibility for its own behaviour",
+        "Loose coupling makes testing and maintenance simpler",
+      ],
+    },
+    industryMotivation: {
+      title: "The same idea powers IoT, ML, and payment platforms",
+      body: "Production systems routinely call the same method on interchangeable implementations: sensors expose read(), machine-learning models expose predict(), and payment providers expose pay(). The workflow stays stable while implementations evolve.",
+      items: [
+        "IoT gateways process different sensor vendors through common operations",
+        "scikit-learn estimators share fit() and predict() interfaces",
+        "Payment adapters share pay() while handling providers differently",
+        "Data pipelines share process() across specialized stages",
+      ],
+      signal:
+        "Polymorphic interfaces let teams add capabilities without rewriting the controller that coordinates them.",
+    },
+    concept: {
+      title: "Same method call; implementation selected by the object",
+      body: "Polymorphism means many forms. When sensor.read() runs, Python looks at the current object and dispatches the call to that object's read() implementation. With duck typing, a shared parent is optional — compatible behaviour is what matters.",
+      items: [
+        "Method overriding supplies specialized child behaviour",
+        "A common method name creates a stable interface",
+        "The actual object determines which implementation executes",
+        "Duck typing accepts unrelated objects with compatible methods",
+      ],
+    },
+    workflow: {
+      title: "The polymorphic dispatch flow",
+      description:
+        "Trace one iteration of the dashboard's sensor loop from a common call to a specialized output.",
+      steps: [
+        { title: "Select current object", description: "The loop retrieves the next sensor object from the collection." },
+        { title: "Send common instruction", description: "The controller calls sensor.read() without a type check." },
+        { title: "Resolve implementation", description: "Python finds read() on the actual object's class." },
+        { title: "Execute specialized behaviour", description: "Temperature, moisture, humidity, or rainfall output is produced." },
+        { title: "Continue unchanged", description: "The same loop advances to the next compatible object." },
+      ],
+    },
+    agritechExample: {
+      title: "A Smart Farm controller that welcomes new sensors",
+      body: "TemperatureSensor, MoistureSensor, and RainSensor each return a different value from read(). The controller only iterates and prints sensor.read(). A fourth sensor can be added without modifying the controller logic.",
+    },
+    playground: {
+      title: "Build a Polymorphic Smart Farm Sensor Fleet",
+      description:
+        "Run the common read() loop, then add a RainfallSensor class and instance. The existing controller loop remains unchanged.",
+      starterCode: `class Sensor:
+    def read(self):
+        return "Generic sensor reading"
+
+class TemperatureSensor(Sensor):
+    def read(self):
+        return "Temperature: 31°C"
+
+class MoistureSensor(Sensor):
+    def read(self):
+        return "Soil Moisture: 42%"
+
+class HumiditySensor(Sensor):
+    def read(self):
+        return "Humidity: 68%"
+
+# Add RainfallSensor here. Give it read() -> "Rainfall: 12 mm"
+
+sensors = [
+    TemperatureSensor(),
+    MoistureSensor(),
+    HumiditySensor(),
+]
+
+for sensor in sensors:
+    print(sensor.read())`,
+      expectedOutcome:
+        "The loop prints a specialized reading for every compatible object. After RainfallSensor is added to the list, the loop itself still requires no changes.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Two sensors, one read() interface",
+        prompt: "Create TemperatureSensor and MoistureSensor classes. Give both a read() method and call each method once.",
+        guidance: "Keep the method name identical. Change only each class's output.",
+      },
+      {
+        level: "Medium",
+        title: "Read a mixed sensor fleet",
+        prompt: "Create temperature, moisture, humidity, and rainfall sensor objects. Put them in one list and call read() through a for loop.",
+        guidance: "The loop body should contain only one device operation: sensor.read().",
+      },
+      {
+        level: "Challenge",
+        title: "Start every farm machine",
+        prompt: "Create Tractor, IrrigationPump, Drone, and FertilizerMachine. Each must implement start(). Add the new fertilizer machine without changing the controller loop.",
+        guidance: "Depend on the shared start() behaviour. The classes do not have to share a parent for this duck-typing exercise.",
+      },
+    ],
+    quiz: [
+      {
+        title: "Meaning of polymorphism",
+        question: "What does polymorphism describe in this sensor system?",
+        options: ["One class only", "One interface with many behaviours", "Many variables", "Many files"],
+        correctOptionIndex: 1,
+        note: "Poly means many and morph means forms.",
+        explanation: "The same read() interface takes different behavioural forms depending on the receiving object.",
+      },
+      {
+        title: "Overriding",
+        question: "Which concept lets TemperatureSensor provide its own read() implementation inherited from Sensor?",
+        options: ["Encapsulation", "Method overriding", "Composition", "Recursion"],
+        correctOptionIndex: 1,
+        note: "The child replaces the inherited implementation.",
+        explanation: "Method overriding supplies class-specific behaviour under the same method name.",
+      },
+      {
+        title: "Loop behaviour",
+        question: "Why can for sensor in sensors: sensor.read() process different sensor classes?",
+        options: ["Because of polymorphism", "Because all values become strings", "Because loops remove classes", "Because read() is built into Python"],
+        correctOptionIndex: 0,
+        note: "Every compatible object responds to the same instruction.",
+        explanation: "Python dispatches read() to the implementation supplied by each current object.",
+      },
+      {
+        title: "Duck typing",
+        question: "Does Python duck typing require objects to inherit from the same parent class?",
+        options: ["Always", "Only inside loops", "No", "Only for sensors"],
+        correctOptionIndex: 2,
+        note: "Compatible behaviour can be enough.",
+        explanation: "Unrelated classes can participate when each provides the method the caller expects.",
+      },
+    ],
+    assignment: {
+      title: "Extensible Smart Farm Device Controller",
+      brief:
+        "Build a controller that operates a mixed collection of sensors and farm machines through stable interfaces rather than class-specific branches.",
+      deliverables: [
+        "Create base Sensor with read() and child TemperatureSensor, MoistureSensor, HumiditySensor, and RainfallSensor overrides",
+        "Place all sensor objects in one list and call read() from one loop",
+        "Create unrelated WeatherStation and Drone classes that also implement read()",
+        "Add both unrelated objects to a second duck-typed device loop",
+        "Create Tractor, IrrigationPump, and FertilizerMachine classes sharing start() behaviour",
+        "Add FertilizerMachine without changing the existing start controller loop",
+        "Demonstrate and explain the AttributeError produced by one incompatible object without read()",
+        "Write five comments explaining interface, overriding, dispatch, duck typing, and extensibility",
+      ],
+    },
+    summarySection: {
+      title: "One interface, different behaviours mastered",
+      body: "You used one read() instruction across different sensor objects, traced method dispatch, processed mixed objects through a loop, and extended the idea to duck typing without inheritance.",
+      items: [
+        "Polymorphism means many behavioural forms behind one interface",
+        "Method overriding enables inheritance-based polymorphism",
+        "The current object determines which method implementation executes",
+        "Duck typing depends on expected behaviour rather than a shared parent",
+        "Common interfaces make controllers easier to extend",
+      ],
+    },
+    keyTakeaways: [
+      "Use the same method name when different objects represent the same operation",
+      "sensor.read() dispatches to the current object's implementation",
+      "A polymorphic loop does not need a type-specific if/elif chain",
+      "Duck typing asks what an object can do, not only what class it is",
+      "Every duck-typed object must still satisfy the method contract expected by the caller",
+      "Polymorphism reduces coupling and supports extension without controller rewrites",
+    ],
+    whatsNext: {
+      title: "Lesson 5.7 · Abstraction — The Common Sensor Blueprint",
+      body: "Polymorphism lets many objects respond to read(), but it does not guarantee that every sensor implements the required operations. Next, abstraction uses ABC and @abstractmethod to define and enforce the common Sensor contract while hiding implementation details.",
+    },
+    developmentPack: oopPolymorphismDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -1238,8 +1437,8 @@ export const moduleFiveLessonSummaries = [
     order: 6,
     title: "5.6 Polymorphism — Different Sensor Behaviours",
     estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-7",

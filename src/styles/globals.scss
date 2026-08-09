@@ -7219,3 +7219,294 @@ button, a { -webkit-tap-highlight-color: transparent; }
     }
   }
 }
+
+/* Module 5 · Lesson 5.6 — Polymorphism */
+.oop-lesson-5-6-pack {
+  .lesson-card-kicker {
+    margin: 0 0 0.35rem;
+    color: var(--cds-text-helper);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .oop-poly-section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+
+    svg { flex: 0 0 auto; color: var(--oop-class); }
+    h2 { margin: 0; }
+  }
+
+  .oop-poly-word-parts,
+  .oop-poly-analogy-grid,
+  .oop-poly-industry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .oop-poly-word-parts .cds--tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-01);
+
+    strong { color: var(--oop-class); font-size: 1.1rem; }
+    span { color: var(--cds-text-secondary); }
+    &.is-result { border-color: var(--cds-support-success); }
+  }
+
+  .oop-poly-analogy-grid .cds--tile {
+    min-width: 0;
+    background: var(--cds-layer-01);
+    border-left: 3px solid var(--oop-method);
+    h3 { margin: 0.75rem 0 0.35rem; }
+    p { margin: 0; color: var(--cds-text-secondary); }
+  }
+
+  .oop-poly-code-section {
+    .cds--snippet { margin-top: 1.25rem; max-width: 100%; }
+  }
+
+  .oop-poly-console {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-left: 3px solid var(--cds-support-success);
+    background: var(--cds-layer-01);
+
+    > span {
+      color: var(--cds-text-helper);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    pre {
+      margin: 0.5rem 0 0;
+      overflow-x: auto;
+      color: var(--cds-text-primary);
+      font-family: var(--cds-code-01-font-family, monospace);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+  }
+
+  .oop-poly-interface-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .oop-poly-interface-panel {
+    min-width: 0;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-01);
+    h3 { margin: 0.75rem 0; font-size: 1rem; }
+    code { display: block; margin-top: 0.45rem; overflow-wrap: anywhere; }
+    &.is-specific { border-top: 3px solid var(--cds-support-error); }
+    &.is-common { border-top: 3px solid var(--cds-support-success); }
+  }
+
+  .oop-poly-interface-arrow { color: var(--cds-text-helper); }
+
+  .oop-poly-call {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 26rem;
+    margin: 1.5rem auto 0;
+    padding: 1rem;
+    border: 1px solid var(--oop-class);
+    background: color-mix(in srgb, var(--oop-class) 10%, var(--cds-layer-01));
+    span { color: var(--cds-text-secondary); font-size: 0.8rem; }
+    code { color: var(--cds-text-primary); font-weight: 700; }
+  }
+
+  .oop-poly-connector {
+    width: 1px;
+    height: 2rem;
+    margin: 0 auto;
+    background: var(--oop-class);
+  }
+
+  .oop-poly-sensor-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 0.75rem;
+
+    &::before {
+      position: absolute;
+      top: -1rem;
+      right: 8%;
+      left: 8%;
+      height: 1px;
+      background: var(--cds-border-strong-01);
+      content: "";
+    }
+  }
+
+  .oop-poly-sensor {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-01);
+    color: var(--cds-text-primary);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+
+    span, strong, code { display: block; }
+    strong { margin: 0.4rem 0 0.65rem; overflow-wrap: anywhere; }
+    code { color: var(--oop-method); }
+    &:hover { border-color: var(--oop-class); }
+    &.is-active {
+      border-color: var(--oop-class);
+      background: color-mix(in srgb, var(--oop-class) 12%, var(--cds-layer-01));
+      transform: translateY(-2px);
+    }
+  }
+
+  .oop-poly-object-label {
+    color: var(--cds-text-helper);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+  }
+
+  .oop-poly-output {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-left: 3px solid var(--cds-support-success);
+    background: var(--cds-layer-01);
+    span { color: var(--cds-text-secondary); font-size: 0.8rem; }
+    strong, code { overflow-wrap: anywhere; }
+    code { color: var(--cds-support-success); }
+  }
+
+  .oop-poly-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .oop-poly-extension-note {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    background: color-mix(in srgb, var(--cds-support-success) 8%, var(--cds-layer-01));
+    svg { flex: 0 0 auto; color: var(--cds-support-success); }
+    p { margin: 0; }
+  }
+
+  .oop-duck-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+  }
+
+  .oop-duck-flow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1.3fr);
+    align-items: center;
+    gap: 0.75rem;
+
+    > svg { color: var(--cds-text-helper); }
+  }
+
+  .oop-duck-object,
+  .oop-duck-contract,
+  .oop-duck-result {
+    display: flex;
+    min-width: 0;
+    min-height: 7rem;
+    padding: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-01);
+
+    span { color: var(--cds-text-helper); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; }
+    strong { overflow-wrap: anywhere; }
+    small { color: var(--cds-text-secondary); }
+    &.is-valid { border-color: var(--cds-support-success); }
+    &.is-invalid { border-color: var(--cds-support-error); }
+  }
+
+  .oop-duck-rules {
+    display: grid;
+    gap: 0.55rem;
+    margin: 1.25rem 0 0;
+    padding-left: 1.25rem;
+    color: var(--cds-text-secondary);
+  }
+
+  .oop-poly-table {
+    margin-top: 1.25rem;
+    border: 1px solid var(--cds-border-subtle-01);
+  }
+
+  .oop-poly-table-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid var(--cds-border-subtle-01);
+    &:last-child { border-bottom: 0; }
+    > * { min-width: 0; padding: 0.85rem 1rem; overflow-wrap: anywhere; }
+    > * + * { border-left: 1px solid var(--cds-border-subtle-01); }
+    &.is-heading { background: var(--cds-layer-02); }
+  }
+
+  .oop-poly-industry-card {
+    min-width: 0;
+    border-top: 3px solid var(--oop-method);
+    background: var(--cds-layer-01);
+    span, code { display: block; }
+    span { color: var(--cds-text-secondary); font-size: 0.8rem; }
+    code { margin: 0.6rem 0 0.9rem; color: var(--oop-method); font-size: 1.15rem; font-weight: 700; }
+    ul { margin: 0; padding-left: 1.1rem; color: var(--cds-text-secondary); }
+  }
+}
+
+@media (max-width: 48rem) {
+  .oop-lesson-5-6-pack {
+    .oop-poly-word-parts,
+    .oop-poly-analogy-grid,
+    .oop-poly-industry-grid { grid-template-columns: 1fr; }
+
+    .oop-poly-interface-grid,
+    .oop-duck-flow { grid-template-columns: 1fr; }
+
+    .oop-poly-interface-arrow,
+    .oop-duck-flow > svg { margin: 0 auto; transform: rotate(90deg); }
+  }
+}
+
+@media (max-width: 35rem) {
+  .oop-lesson-5-6-pack {
+    .oop-poly-output { grid-template-columns: 1fr; }
+    .oop-poly-actions { flex-direction: column; }
+    .oop-poly-actions .cds--btn { width: 100%; max-width: none; }
+    .oop-poly-table { overflow-x: auto; }
+    .oop-poly-table-row { min-width: 34rem; }
+    .oop-poly-call { align-items: flex-start; flex-direction: column; }
+  }
+}

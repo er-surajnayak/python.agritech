@@ -12,6 +12,7 @@ import { moduleTwoLessonSummaries } from "@/content/module-2";
 import { moduleThreeLessonSummaries } from "@/content/module-3";
 import { moduleFourLessonSummaries } from "@/content/module-4";
 import { moduleFiveLessonSummaries } from "@/content/module-5";
+import { moduleSixLessonSummaries } from "@/content/module-6";
 
 interface ModuleSeed {
   title: string;
@@ -140,6 +141,8 @@ export const agritechCourse: CourseDefinition = {
                 ? moduleFourLessonSummaries
                 : moduleIndex === 5
                   ? moduleFiveLessonSummaries
+                  : moduleIndex === 6
+                    ? moduleSixLessonSummaries
           : Array.from({ length: 3 }, (_, lessonIndex) => ({
             id: `${moduleId}-lesson-${lessonIndex + 1}`,
             moduleId,

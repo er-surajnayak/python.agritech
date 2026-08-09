@@ -1747,3 +1747,34 @@ test("Module 5 publishes Lesson 5.5 (Inheritance) adhering to OOP_STYLE_GUIDE.md
   assert.match(stylesSource, /\.oop-code-savings/);
 });
 
+test("Module 6 begins with a compact, data-driven NumPy introduction", async () => {
+  const [moduleSource, packSource, registrySource, frameworkSource, rendererRegistrySource, rendererSource, blocksSource, workerSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-1.ts", projectRoot), "utf8"),
+    readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
+    readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyIntroductionLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyIntroductionLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/python.worker.ts", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
+  assert.match(moduleSource, /np\.mean\(temperature\)/);
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 11, "one published lesson and ten navigation summaries should exist");
+  assert.match(packSource, /kind: "numpy-introduction"/);
+  assert.match(packSource, /np\.arange\(0, 10, 2\)/);
+  assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
+  assert.match(registrySource, /\.\.\.moduleSixLessons/);
+  assert.match(frameworkSource, /moduleIndex === 6\s*\? moduleSixLessonSummaries/);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-introduction"/);
+  assert.match(rendererSource, /<NumpyPlaygroundSupplement/);
+  assert.match(rendererSource, /<DimensionExplorer/);
+  assert.match(rendererSource, /<AttributeExplorer/);
+  assert.match(blocksSource, /export function NumpyPlaygroundSupplement/);
+  assert.match(blocksSource, /aria-label=\{`Index/);
+  assert.match(workerSource, /loadPackagesFromImports\(data\.code\)/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.1 — NumPy introduction/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-introduction-pack/);
+});

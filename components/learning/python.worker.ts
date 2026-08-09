@@ -68,6 +68,7 @@ workerScope.onmessage = async ({ data }: MessageEvent<RunRequest>) => {
     const globals = runtime.toPy({});
 
     try {
+      await runtime.loadPackagesFromImports(data.code);
       let code = data.code;
       if (data.trace) {
         globals.set("__di_user_code", data.code);

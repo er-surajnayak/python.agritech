@@ -2,6 +2,7 @@ import { numpyIntroductionDevelopmentPack } from "@/content/development-packs/le
 import { numpyArrayCreationDevelopmentPack } from "@/content/development-packs/lesson-6-2";
 import { numpyArrayAttributesDevelopmentPack } from "@/content/development-packs/lesson-6-3";
 import { numpyIndexingDevelopmentPack } from "@/content/development-packs/lesson-6-4";
+import { numpyOperationsDevelopmentPack } from "@/content/development-packs/lesson-6-5";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -354,6 +355,79 @@ print("Transposed shape:", sensor_data.T.shape)`,
     whatsNext: { title: "Lesson 6.5 · Array Operations & Broadcasting", body: "Next, perform scalar and element-wise arithmetic, comparisons, and practical broadcasting across Smart Farm sensor arrays." },
     developmentPack: numpyIndexingDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-5",
+    moduleId: "module-6",
+    number: "6.5",
+    title: "Array Operations & Broadcasting: Fast Calculations on Smart Farm Data",
+    summary: "Apply vectorized arithmetic and comparisons to complete sensor arrays, then use broadcasting to combine compatible shapes without writing explicit element-by-element loops.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "Calculate across every reading at once", body: "The Smart Farm already stores and selects numerical data. Now each reading needs calibration, unit conversion, comparison, and feature-specific adjustment at production scale." },
+    objectives: ["Perform element-wise addition, subtraction, multiplication, and division", "Apply power, modulo, and scalar operations", "Compare arrays and interpret Boolean results", "Count True values in a Boolean array", "Explain vectorized operations", "Broadcast a scalar and 1D array across a matrix", "Check basic shape compatibility from right to left", "Distinguish element-wise * from matrix multiplication @", "Apply calibration calculations to Smart Farm sensor data"],
+    whyThisMatters: { title: "Sensor calculations should describe intent, not iteration", body: "NumPy lets engineers express a whole-array transformation in one readable statement. The same expression can calibrate a full batch, convert units, or test every threshold.", items: ["Calibrate complete telemetry batches", "Convert sensor units consistently", "Compare every reading with a threshold", "Apply per-feature offsets across all fields"] },
+    industryMotivation: { title: "Vectorization and broadcasting power numerical pipelines", body: "Data science, machine learning, image processing, and IoT analytics rely on concise array expressions that operate across many values and compatible shapes.", items: ["Feature scaling applies one factor per column", "Sensor calibration adds one offset per channel", "Model pipelines transform entire batches", "Boolean arrays count or locate threshold events"], signal: "Broadcasting makes reusable calculations possible without manually expanding smaller arrays." },
+    concept: { title: "One expression, many coordinated calculations", body: "Element-wise operations pair corresponding values. Scalar operations reuse one value. Broadcasting conceptually expands a compatible smaller shape without creating manual copies.", items: ["Array + array → corresponding elements", "Array + scalar → scalar applied everywhere", "Comparison → Boolean array", "Matrix + compatible vector → broadcast across an axis"] },
+    workflow: { title: "Calculate with shapes in mind", description: "Move from a farm question to a safe vectorized expression.", steps: [
+      { title: "Inspect", description: "Confirm the arrays and their shapes." },
+      { title: "Choose", description: "Select arithmetic, comparison, or matrix multiplication intentionally." },
+      { title: "Align", description: "For different shapes, compare dimensions from right to left." },
+      { title: "Calculate", description: "Run the vectorized or broadcast expression." },
+      { title: "Interpret", description: "Connect every result column and Boolean value to the farm data." },
+    ] },
+    agritechExample: { title: "Calibrate three sensor features in one expression", body: "Adding [1, -2, 3] to a field-by-feature matrix adjusts temperature, humidity, and soil moisture for every field while preserving the matrix shape." },
+    playground: {
+      title: "Run a Smart Farm Calibration Pipeline",
+      description: "Execute scalar arithmetic, Celsius conversion, comparisons, and row-vector broadcasting in the browser NumPy runtime.",
+      starterCode: `import numpy as np
+
+sensor_data = np.array([
+    [28, 65, 40],
+    [30, 70, 42],
+    [31, 68, 38],
+    [29, 72, 41]
+])
+
+offset = np.array([1, -2, 3])
+calibrated = sensor_data + offset
+
+temperature_c = np.array([20, 25, 30, 35])
+temperature_f = (temperature_c * 9/5) + 32
+alerts = sensor_data[:, 0] > 30
+
+print("Calibrated:", calibrated)
+print("Fahrenheit:", temperature_f)
+print("Temperature alerts:", alerts)
+print("Alert count:", alerts.sum())`,
+      expectedOutcome: "The matrix receives one offset per feature column, four temperatures convert to Fahrenheit, and the Boolean alert array reports one reading above 30°C.",
+    },
+    practice: [
+      { level: "Easy", title: "Scalar calibration", prompt: "Add 5 to every value in [28, 30, 32, 29].", guidance: "Create an ndarray, then use array + 5." },
+      { level: "Easy", title: "Scale a batch", prompt: "Multiply [2, 4, 6] by 10.", guidance: "A scalar is broadcast to every element." },
+      { level: "Medium", title: "Compare actual and baseline", prompt: "Subtract [28, 30, 38] from [30, 35, 40].", guidance: "Equal shapes operate element by element." },
+      { level: "Medium", title: "Convert units", prompt: "Convert [20, 25, 30, 35] from Celsius to Fahrenheit.", guidance: "Apply (C * 9/5) + 32 to the complete array." },
+      { level: "Medium", title: "Build a threshold array", prompt: "Find which values in [25, 31, 28, 35, 40] exceed 30.", guidance: "The comparison returns one Boolean per value." },
+      { level: "Challenge", title: "Broadcast feature offsets", prompt: "Add [1, 2, 3] to each row of a 3 × 3 matrix and explain why it works.", guidance: "Compare shapes (3, 3) and (3,) from the right." },
+      { level: "Challenge", title: "Check shape compatibility", prompt: "Decide whether (4, 3) works with (3,) and with (4,).", guidance: "The rightmost dimensions must be equal or one must be 1." },
+    ],
+    quiz: [
+      { title: "Element-wise", question: "What does element-wise addition do?", options: ["Adds array sizes", "Adds corresponding elements", "Joins arrays", "Adds only the first values"], correctOptionIndex: 1, note: "Positions align.", explanation: "Each element is added to the value at the same position." },
+      { title: "Scalar", question: "What happens in arr + 5?", options: ["Only index 5 changes", "5 is appended", "5 applies to every element", "The shape changes"], correctOptionIndex: 2, note: "The scalar broadcasts.", explanation: "NumPy applies the scalar to every array element." },
+      { title: "Vectorization", question: "What is vectorization here?", options: ["Drawing vectors", "Using a whole-array expression instead of an explicit per-element loop", "Changing dtype", "Sorting values"], correctOptionIndex: 1, note: "Describe the operation once.", explanation: "NumPy performs the numerical operation across the array." },
+      { title: "Multiplication", question: "What does * mean for NumPy arrays?", options: ["Matrix multiplication", "Element-wise multiplication", "Exponentiation", "Concatenation"], correctOptionIndex: 1, note: "Use @ for matrix multiplication.", explanation: "* multiplies corresponding elements." },
+      { title: "Matrix operator", question: "Which operator requests matrix multiplication?", options: ["*", "**", "@", "%"], correctOptionIndex: 2, note: "Keep it distinct from element-wise multiplication.", explanation: "@ is the matrix multiplication operator." },
+      { title: "Comparison", question: "What does temperature > 30 return?", options: ["One number", "A Boolean array", "A sorted array", "A Python error"], correctOptionIndex: 1, note: "One answer per element.", explanation: "Every reading is compared with 30." },
+      { title: "Broadcasting", question: "What is broadcasting?", options: ["Printing an array", "Applying a compatible smaller shape across a larger array", "Sending data online", "Changing all values to strings"], correctOptionIndex: 1, note: "Shapes must be compatible.", explanation: "NumPy conceptually expands compatible dimensions for the operation." },
+      { title: "Compatibility", question: "Which basic rule makes two aligned dimensions compatible?", options: ["They must both be even", "They are equal or one is 1", "Their sum is 10", "They must be prime"], correctOptionIndex: 1, note: "Compare from the right.", explanation: "Equal dimensions or a dimension of 1 can broadcast." },
+      { title: "Compatible shapes", question: "Are (3, 4) and (4,) compatible?", options: ["Yes", "No", "Only for strings", "Only after flattening"], correctOptionIndex: 0, note: "Align the final 4s.", explanation: "The rightmost dimensions are both 4." },
+      { title: "Incompatible shapes", question: "Why are (3, 4) and (3,) incompatible?", options: ["Two dimensions cannot mix with one", "4 and 3 differ and neither is 1", "The first 3 repeats", "All 1D arrays fail"], correctOptionIndex: 1, note: "Compare rightmost dimensions.", explanation: "The aligned 4 and 3 cannot broadcast." },
+    ],
+    assignment: { title: "Smart Farm Vectorized Calibration", brief: "Build a compact NumPy program that calibrates, converts, and checks a sensor matrix without explicit element-by-element loops.", deliverables: ["One scalar operation", "One array-to-array operation", "Celsius-to-Fahrenheit conversion", "One Boolean threshold array and True count", "One row-vector broadcast", "One column-vector broadcast", "A short explanation of shape compatibility", "A demonstration of * versus @"] },
+    summarySection: { title: "You can now calculate across complete numerical datasets", body: "You replaced explicit per-value loops with element-wise expressions, Boolean comparisons, and practical broadcasting across compatible shapes.", items: ["Arithmetic is element-wise by default", "Scalars apply to every element", "Comparisons create Boolean arrays", "Broadcasting compares shapes from right to left", "Equal dimensions or a dimension of 1 are compatible", "* and @ mean different kinds of multiplication"] },
+    keyTakeaways: ["Use vectorized expressions for clear numerical intent", "Check shapes before combining arrays", "Interpret Boolean results one position at a time", "Use broadcasting for per-feature or per-row adjustments", "Remember: * is element-wise and @ is matrix multiplication", "Leave deeper statistics and filtering for the next lessons"],
+    whatsNext: { title: "Lesson 6.6 · Mathematical & Statistical Functions", body: "Next, summarize Smart Farm datasets with sum, mean, median, standard deviation, variance, minima, maxima, and position-aware functions." },
+    developmentPack: numpyOperationsDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
@@ -361,7 +435,7 @@ export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-2", moduleId: "module-6", order: 2, title: "6.2 Creating NumPy Arrays", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining & Splitting Arrays", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },

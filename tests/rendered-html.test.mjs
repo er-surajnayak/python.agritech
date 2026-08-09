@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 14, "four published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 15, "five published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1852,4 +1852,30 @@ test("Lesson 6.4 publishes indexing, slicing, and reshaping tools", async () => 
   assert.match(blocksSource, /role="gridcell"/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.4 — NumPy indexing, slicing, and reshaping/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-indexing-pack/);
+});
+
+test("Lesson 6.5 publishes vectorized operations and broadcasting tools", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-5.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyOperationsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyOperationsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Array Operations & Broadcasting: Fast Calculations on Smart Farm Data"/);
+  assert.match(moduleSource, /id: "module-6-lesson-5"[\s\S]*developmentPack: numpyOperationsDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-5"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-operations-broadcasting"/);
+  for (const concept of ["temperature + 2", "temperature > 30", "(3, 4)", "a * b", "a @ b"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-operations-broadcasting"/);
+  assert.match(rendererSource, /<ArrayCalculator/);
+  assert.match(rendererSource, /<BroadcastingVisualizer/);
+  assert.match(rendererSource, /<BroadcastingCompatibilityChecker/);
+  assert.match(blocksSource, /export function ArrayCalculator/);
+  assert.match(blocksSource, /Compare shapes from the rightmost dimension/);
+  assert.match(blocksSource, /different and neither is 1/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.5 — NumPy array operations and broadcasting/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-operations-pack/);
 });

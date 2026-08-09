@@ -1984,7 +1984,7 @@ test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () =>
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });
 
-test("Module 7 begins with a labeled Pandas Series lesson and eight-lesson roadmap", async () => {
+test("Module 7 begins with two published Pandas lessons and an eight-lesson roadmap", async () => {
   const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
     readFile(new URL("content/development-packs/lesson-7-1.ts", projectRoot), "utf8"),
@@ -1995,7 +1995,7 @@ test("Module 7 begins with a labeled Pandas Series lesson and eight-lesson roadm
     readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 9, "one published lesson and eight navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 10, "two published lessons and eight navigation summaries should exist");
   assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2011,4 +2011,29 @@ test("Module 7 begins with a labeled Pandas Series lesson and eight-lesson roadm
   assert.match(blocksSource, /Position-based/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.1 — Pandas introduction and Series/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-series-pack/);
+});
+
+test("Module 7.2 teaches DataFrames, inspection, columns, and real-data loading", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasDataFrameLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasDataFrameLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "Pandas DataFrames & Loading Real Data"/);
+  assert.match(moduleSource, /id: "module-7-lesson-2"[\s\S]*developmentPack: pandasDataFrameDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-2"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-dataframes-loading"/);
+  for (const concept of ["pd.DataFrame", "pd.read_csv", "pd.read_excel", "df.head", "df.info", "df.describe", "df.drop", "df.set_index", "to_csv"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-dataframes-loading"/);
+  assert.match(rendererSource, /<FarmDataFrameExplorer/);
+  assert.match(rendererSource, /<CsvLoadingSimulation/);
+  assert.match(rendererSource, /<DatasetLoadingWorkflow/);
+  assert.match(blocksSource, /export function DataFrameCreationExplorer/);
+  assert.match(blocksSource, /One labeled column/);
+  assert.match(blocksSource, /Load CSV/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.2 — Pandas DataFrames and loading real data/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-dataframe-pack/);
 });

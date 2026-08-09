@@ -14,6 +14,7 @@ import { moduleFourLessonSummaries } from "@/content/module-4";
 import { moduleFiveLessonSummaries } from "@/content/module-5";
 import { moduleSixLessonSummaries } from "@/content/module-6";
 import { moduleSevenLessonSummaries } from "@/content/module-7";
+import { moduleEightLessonSummaries } from "@/content/module-8";
 
 interface ModuleSeed {
   title: string;
@@ -99,11 +100,11 @@ const moduleSeeds: ModuleSeed[] = [
     icon: "pandas",
   },
   {
-    title: "Data Visualization with Matplotlib",
-    description: "Visual communication patterns for presenting data clearly and responsibly.",
-    estimatedDuration: "6 hours",
+    title: "Data Visualization with Matplotlib & Plotly",
+    description: "Static and interactive visual communication with Matplotlib, Plotly, and practical Smart Farm datasets.",
+    estimatedDuration: "28 hours",
     difficulty: "Advanced",
-    learningObjectives: ["Recognise the Matplotlib visualization workflow", "Select a clear visual communication structure"],
+    learningObjectives: ["Build clear static charts with Matplotlib", "Create interactive charts with Plotly", "Choose an appropriate visualization tool and chart form", "Build a Smart Farm visualization dashboard"],
     prerequisites: ["Module 7 · Data Analysis with Pandas"],
     icon: "visualization",
   },
@@ -146,6 +147,8 @@ export const agritechCourse: CourseDefinition = {
                     ? moduleSixLessonSummaries
                     : moduleIndex === 7
                       ? moduleSevenLessonSummaries
+                      : moduleIndex === 8
+                        ? moduleEightLessonSummaries
           : Array.from({ length: 3 }, (_, lessonIndex) => ({
             id: `${moduleId}-lesson-${lessonIndex + 1}`,
             moduleId,

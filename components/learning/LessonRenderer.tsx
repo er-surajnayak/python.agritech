@@ -77,6 +77,7 @@ import { PandasCleaningLessonRenderer } from "@/components/learning/PandasCleani
 import { PandasTransformationLessonRenderer } from "@/components/learning/PandasTransformationLessonRenderer";
 import { PandasGroupByLessonRenderer } from "@/components/learning/PandasGroupByLessonRenderer";
 import { PandasCombiningLessonRenderer } from "@/components/learning/PandasCombiningLessonRenderer";
+import { MatplotlibBasicsLessonRenderer } from "@/components/learning/MatplotlibBasicsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -301,6 +302,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "pandas-combining-reshaping") {
     return <PandasCombiningLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "matplotlib-introduction-basics") {
+    return <MatplotlibBasicsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

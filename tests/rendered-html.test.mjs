@@ -75,7 +75,7 @@ test("course framework defines all modules and reusable progress rules", async (
     "Object-Oriented Programming",
     "Scientific Computing with NumPy",
     "Data Analysis with Pandas",
-    "Data Visualization with Matplotlib",
+    "Data Visualization with Matplotlib & Plotly",
     "Agritech Data Science Project",
   ];
 
@@ -2163,4 +2163,37 @@ test("Module 7.7 teaches key-based integration and analytical reshaping", async 
   assert.match(blocksSource, /Move between long observations and readable summaries/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.7 — Combining and reshaping data/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-combining-pack/);
+});
+
+test("Module 8 begins with Matplotlib foundations and a ten-lesson visualization roadmap", async () => {
+  const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource, moduleSevenSource] = await Promise.all([
+    readFile(new URL("content/module-8.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-8-1.ts", projectRoot), "utf8"),
+    readFile(new URL("content/course-framework.ts", projectRoot), "utf8"),
+    readFile(new URL("content/lessons.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibBasicsLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibBasicsLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+  ]);
+  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 11, "one published lesson and ten navigation summaries should exist");
+  assert.match(moduleSource, /title: "Introduction to Data Visualization \+ Matplotlib Basics"/);
+  assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*developmentPack: matplotlibBasicsDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*isPlaceholder: false/);
+  assert.match(moduleSevenSource, /id: "module-7-lesson-8"[\s\S]*isPlaceholder: true/);
+  assert.match(packSource, /kind: "matplotlib-introduction-basics"/);
+  for (const concept of ["matplotlib.pyplot", "plt.plot", "plt.show", "plt.title", "plt.xlabel", "plt.ylabel", "plt.grid", "plt.legend", "plt.savefig", "plt.close", "plt.subplots", "ax.plot", "ax.set_title"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(frameworkSource, /title: "Data Visualization with Matplotlib & Plotly"/);
+  assert.match(frameworkSource, /moduleIndex === 8\s*\? moduleEightLessonSummaries/);
+  assert.match(lessonsSource, /\.\.\.moduleEightLessons/);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "matplotlib-introduction-basics"/);
+  assert.match(rendererSource, /<AgritechTrendExplorer/);
+  assert.match(rendererSource, /<CodeToChartExplorer/);
+  assert.match(rendererSource, /<FigureAxesConcept/);
+  assert.match(blocksSource, /Charts turn measurements into patterns we can inspect/);
+  assert.match(blocksSource, /A Figure contains one or more Axes/);
+  assert.match(blocksSource, /Because °C and % are different units/);
+  assert.match(stylesSource, /Module 8 · Lesson 8\.1 — Matplotlib basics/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-basics-pack/);
 });

@@ -5,6 +5,7 @@ import { oopEncapsulationDevelopmentPack } from "@/content/development-packs/les
 import { oopInheritanceDevelopmentPack } from "@/content/development-packs/lesson-5-5";
 import { oopPolymorphismDevelopmentPack } from "@/content/development-packs/lesson-5-6";
 import { oopAbstractionDevelopmentPack } from "@/content/development-packs/lesson-5-7";
+import { oopMagicMethodsDevelopmentPack } from "@/content/development-packs/lesson-5-8";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleFiveLessons: LessonDocument[] = [
@@ -1597,6 +1598,211 @@ for sensor in sensors:
     },
     developmentPack: oopAbstractionDevelopmentPack,
   },
+  {
+    id: "module-5-lesson-8",
+    moduleId: "module-5",
+    number: "5.8",
+    title: "Magic Methods: Making Objects Behave Like Python Objects",
+    summary:
+      "Teach Smart Farm objects to work naturally with print(), len(), ==, and <. Learn how Python automatically invokes __init__(), __str__(), __len__(), __eq__(), and __lt__() through familiar syntax.",
+    durationMinutes: 180,
+    level: "Intermediate",
+    introduction: {
+      title: "Making the Sensor API feel like Python",
+      body: "Our classes now have reliable contracts, but using them still feels awkward. A Sensor prints as a memory address, a Farm has no meaningful len(), and separate Sensor objects cannot compare their domain identity. Special methods connect these objects to Python's built-in language operations.",
+    },
+    objectives: [
+      "Explain magic methods and the term dunder",
+      "Describe how Python automatically invokes special methods",
+      "Explain that __init__() initializes an already-created object",
+      "Implement __str__() for human-readable object output",
+      "Implement __len__() to define a meaningful object length",
+      "Implement __eq__() for domain equality",
+      "Implement __lt__() for domain ordering",
+      "Apply special-method return contracts correctly",
+    ],
+    whyThisMatters: {
+      title: "Natural syntax makes domain objects easier to understand",
+      body: "Python users already understand print(), len(), equality, and ordering. Magic methods let Smart Farm classes join those familiar protocols, reducing utility-function clutter and creating APIs that feel native to the language.",
+      items: [
+        "Readable object output improves logs and dashboards",
+        "len(farm) communicates intent more clearly than a custom counting helper",
+        "Domain equality can compare sensor IDs rather than memory locations",
+        "Ordering makes low-battery sorting and prioritization natural",
+      ],
+    },
+    industryMotivation: {
+      title: "Professional Python libraries feel natural because of protocols",
+      body: "DataFrames, tensors, paths, dates, ORM models, and framework objects integrate with Python syntax through special methods. Well-designed domain classes do the same without forcing callers to memorize many utility functions.",
+      items: [
+        "Path objects define readable string representations",
+        "Collections define len() and comparison behaviours",
+        "ORM records define identity and readable diagnostics",
+        "Scientific types customize arithmetic and ordering protocols",
+      ],
+      signal:
+        "Magic methods are the protocol hooks that make custom classes participate naturally in the Python language.",
+    },
+    concept: {
+      title: "Normal operation in; special method behind the scenes",
+      body: "A magic method begins and ends with double underscores. Python looks for the matching hook when familiar syntax is used, then relies on the class implementation and its required return type.",
+      items: [
+        "print(sensor) uses the object's string protocol",
+        "len(farm) uses the object's length protocol",
+        "sensor1 == sensor2 uses equality comparison",
+        "sensor1 < sensor2 uses ordering comparison",
+      ],
+    },
+    workflow: {
+      title: "The automatic special-method flow",
+      description: "Trace how ordinary Python syntax reaches a custom class implementation.",
+      steps: [
+        { title: "Write normal syntax", description: "The caller uses print(sensor), len(farm), or sensor1 == sensor2." },
+        { title: "Resolve the protocol", description: "Python identifies __str__(), __len__(), or __eq__()." },
+        { title: "Invoke the class method", description: "The matching method runs with self and, when needed, other." },
+        { title: "Validate the result", description: "Python expects the protocol's required return type." },
+        { title: "Complete the operation", description: "The custom object behaves like a natural Python value." },
+      ],
+    },
+    agritechExample: {
+      title: "Readable, countable, and comparable farm objects",
+      body: "A Sensor can print its ID and battery, a Farm can report its number of sensors through len(), and two sensors can compare physical identity or battery priority through concise Python operators.",
+    },
+    playground: {
+      title: "Build a Python-Native Smart Farm Model",
+      description:
+        "Run the complete example, then modify __str__(), add another Farm sensor, and compare different IDs and battery values. Observe how familiar operations route to your class methods.",
+      starterCode: `class Sensor:
+    def __init__(self, sensor_id, location, battery):
+        self.sensor_id = sensor_id
+        self.location = location
+        self.battery = battery
+
+    def __str__(self):
+        return f"Sensor {self.sensor_id} - {self.location} | Battery: {self.battery}%"
+
+    def __eq__(self, other):
+        return self.sensor_id == other.sensor_id
+
+    def __lt__(self, other):
+        return self.battery < other.battery
+
+class Farm:
+    def __init__(self, name):
+        self.name = name
+        self.sensors = []
+
+    def add_sensor(self, sensor):
+        self.sensors.append(sensor)
+
+    def __len__(self):
+        return len(self.sensors)
+
+sensor1 = Sensor(101, "Field A", 40)
+sensor2 = Sensor(102, "Field B", 80)
+farm = Farm("Green Valley")
+farm.add_sensor(sensor1)
+farm.add_sensor(sensor2)
+
+print(sensor1)
+print("Sensors registered:", len(farm))
+print("Same sensor:", sensor1 == sensor2)
+print("Sensor 1 has lower battery:", sensor1 < sensor2)`,
+      expectedOutcome:
+        "Sensor 101 prints readably, len(farm) returns 2, equality returns False for different IDs, and less-than returns True because 40% is below 80%.",
+    },
+    practice: [
+      {
+        level: "Easy",
+        title: "Readable Crop objects",
+        prompt: "Create Crop with name and field, then implement __str__() so print(crop) displays Crop: Rice | Field: A1.",
+        guidance: "Return the formatted string from __str__(). Do not call print() inside the method.",
+      },
+      {
+        level: "Medium",
+        title: "Count crops in a Farm",
+        prompt: "Create Farm with a crops list and implement __len__() so len(farm) returns the number of registered crops.",
+        guidance: "Return len(self.crops), which is already a non-negative integer.",
+      },
+      {
+        level: "Challenge",
+        title: "Compare Sensor identity and battery",
+        prompt: "Implement __eq__() using sensor_id and __lt__() using battery. Test equal IDs and sort a list of sensors by battery.",
+        guidance: "Both methods accept other. Equality and ordering should each use one consistent domain rule.",
+      },
+    ],
+    quiz: [
+      {
+        title: "Dunder meaning", question: "What does the term dunder refer to?",
+        options: ["Duplicate inheritance", "Double underscore", "Dynamic constructor", "Data underflow"], correctOptionIndex: 1,
+        note: "Dunder is shorthand for double underscore.", explanation: "Special method names such as __str__ have double underscores before and after the name.",
+      },
+      {
+        title: "Readable output", question: "Which method controls the human-readable result used by print(obj)?",
+        options: ["__len__()", "__str__()", "__eq__()", "__lt__()"], correctOptionIndex: 1,
+        note: "print() requests the string representation.", explanation: "__str__() returns the human-readable string representation of an object.",
+      },
+      {
+        title: "Length protocol", question: "Which method defines len(farm)?",
+        options: ["__size__()", "__count__()", "__len__()", "__str__()"], correctOptionIndex: 2,
+        note: "The length protocol uses __len__().", explanation: "Python calls __len__() and expects a non-negative integer result.",
+      },
+      {
+        title: "Equality protocol", question: "Which method handles sensor1 == sensor2?",
+        options: ["__eq__()", "__same__()", "__lt__()", "__compare__()"], correctOptionIndex: 0,
+        note: "eq is short for equality.", explanation: "__eq__() receives self and other and defines meaningful domain equality.",
+      },
+      {
+        title: "Return contract", question: "What should __str__() do?",
+        options: ["Print and return None", "Return a string", "Return an integer", "Modify the object"], correctOptionIndex: 1,
+        note: "Python needs the returned string.", explanation: "Printing inside __str__() leaves Python without the string result required by the protocol.",
+      },
+      {
+        title: "Ordering protocol", question: "Which method can define the < operation between Sensor objects?",
+        options: ["__gt__()", "__lt__()", "__eq__()", "__add__()"], correctOptionIndex: 1,
+        note: "lt means less than.", explanation: "__lt__() defines whether self is less than other according to a consistent domain rule.",
+      },
+    ],
+    assignment: {
+      title: "Python-Native Smart Farm Object Model",
+      brief:
+        "Enhance Smart Farm domain classes so they integrate naturally with Python printing, length, equality, and ordering operations.",
+      deliverables: [
+        "Create Sensor with sensor_id, location, sensor_type, and battery",
+        "Implement __str__() with a farmer-friendly one-line status",
+        "Implement __eq__() so matching sensor IDs are equal",
+        "Implement __lt__() so sensors order by battery percentage",
+        "Create Farm with a sensor collection and __len__()",
+        "Print three sensors, count them with len(farm), and compare two IDs",
+        "Sort at least four sensors and explain why __lt__() enables the operation",
+        "Demonstrate and fix one incorrect __str__() or __len__() return type",
+      ],
+    },
+    summarySection: {
+      title: "Smart Farm objects now speak Python",
+      body: "You connected custom classes to familiar Python operations through precise special-method protocols, producing readable sensor output, meaningful Farm length, domain equality, and battery ordering.",
+      items: [
+        "Magic and dunder methods are special Python protocol hooks",
+        "Python automatically invokes them for matching syntax",
+        "__init__() initializes an object after creation",
+        "__str__() must return a string and __len__() a non-negative integer",
+        "__eq__() defines equality and __lt__() defines less-than ordering",
+      ],
+    },
+    keyTakeaways: [
+      "Use __str__() to make logs, dashboards, and print(obj) readable",
+      "Use __len__() only when the object has a clear, meaningful size",
+      "Use __eq__() to define domain equality rather than relying on object identity",
+      "Use __lt__() to establish one consistent ordering rule",
+      "Special methods should return the exact types required by their protocols",
+      "Implement protocol methods selectively; do not add dunder methods without a clear domain meaning",
+    ],
+    whatsNext: {
+      title: "Lesson 5.9 · Composition & Aggregation — HAS-A Relationships",
+      body: "Inheritance models IS-A relationships such as TemperatureSensor IS-A Sensor. Next, composition and aggregation model ownership: a Farm HAS sensors, crops, a weather station, and an irrigation system.",
+    },
+    developmentPack: oopMagicMethodsDevelopmentPack,
+  },
 ];
 
 export const moduleFiveLessonSummaries = [
@@ -1668,9 +1874,9 @@ export const moduleFiveLessonSummaries = [
     moduleId: "module-5",
     order: 8,
     title: "5.8 Magic Methods & Readable Reports",
-    estimatedMinutes: 150,
-    status: "not-started" as const,
-    isPlaceholder: true,
+    estimatedMinutes: 180,
+    status: "in-progress" as const,
+    isPlaceholder: false,
   },
   {
     id: "module-5-lesson-9",

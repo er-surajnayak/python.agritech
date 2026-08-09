@@ -1,6 +1,7 @@
 import { pandasSeriesDevelopmentPack } from "@/content/development-packs/lesson-7-1";
 import { pandasDataFrameDevelopmentPack } from "@/content/development-packs/lesson-7-2";
 import { pandasSelectionDevelopmentPack } from "@/content/development-packs/lesson-7-3";
+import { pandasCleaningDevelopmentPack } from "@/content/development-packs/lesson-7-4";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSevenLessons: LessonDocument[] = [{
@@ -228,13 +229,95 @@ print(df.query("Yield > @min_yield")[["Field_ID", "Yield"]])`,
   keyTakeaways: ["Use loc when labels carry meaning", "Use iloc when position is the requirement", "Parenthesize every Series comparison", "Use & and | outside query strings", "Use and and or inside query strings", "isin is clearer for membership", "between is clearer for inclusive ranges", "df.loc[condition, columns] produces focused analytical answers"],
   whatsNext: { title: "Lesson 7.4 · Cleaning & Preparing Data", body: "Next, detect and repair missing values, remove duplicates, convert data types, standardize labels, and prepare inconsistent farm data for reliable analysis." },
   developmentPack: pandasSelectionDevelopmentPack,
+}, {
+  id: "module-7-lesson-4", moduleId: "module-7", number: "7.4", title: "Data Cleaning & Missing Data", durationMinutes: 165, level: "Intermediate",
+  summary: "Profile messy farm data, make context-aware decisions about missing values and duplicates, standardize names and text, repair types, and verify the cleaned result.",
+  introduction: { title: "A valid DataFrame can still contain unreliable data", body: "Real sensor exports contain missing readings, repeated uploads, numeric values stored as text, inconsistent labels, and mistakes. Cleaning makes those quality problems visible and handles them intentionally." },
+  objectives: ["Explain why real-world farm data needs cleaning", "Detect missing cells with isna and isnull", "Count missing values by column and in total", "Locate incomplete rows and affected columns", "Remove missing data with dropna and subset rules", "Fill values with constants, mean, median, forward fill, or backward fill", "Explain why no filling strategy is universally correct", "Detect and remove duplicate records", "Define duplicate identity with subset and keep", "Rename columns consistently", "Inspect and convert dtypes", "Use pd.to_numeric with errors='coerce'", "Standardize basic text with str methods", "Correct known values with replace", "Follow and verify a basic cleaning workflow"],
+  whyThisMatters: { title: "A clean-looking result can still be wrong", body: "Replacing every missing reading with zero or deleting every incomplete row may execute without errors while changing the meaning of the farm dataset. Cleaning is a domain decision supported by Pandas tools.", items: ["Missing temperature does not mean 0°C", "Repeated IDs require an identity rule", "Invalid numeric tokens affect calculations", "Crop labels must be standardized before counting"] },
+  industryMotivation: { title: "Data quality is part of analysis, not a preliminary chore", body: "Production teams profile inputs, document cleaning rules, preserve raw data, and verify outputs because every downstream dashboard and model inherits these decisions.", items: ["Connectivity gaps create missing sensor readings", "Retries can duplicate uploads", "CSV imports can infer wrong types", "Manual entry introduces text variants"], signal: "Profile → decide → transform → verify is safer than applying a universal cleaning recipe." },
+  concept: { title: "Cleaning separates evidence from decisions", body: "Detection methods report what is wrong. Transformation methods change the data. The engineer must connect both with the reason for missingness, the feature meaning, and the analytical goal.", items: ["isna detects", "dropna removes", "fillna estimates or substitutes", "duplicated identifies repetition", "to_numeric exposes invalid tokens", "verification confirms the rule"] },
+  workflow: { title: "A basic cleaning workflow", description: "Understand the raw table before applying and verifying changes.", steps: [
+    { title: "Profile", description: "Inspect shape, labels, types, and sample rows." }, { title: "Detect", description: "Count missing cells and duplicates." },
+    { title: "Decide", description: "Use domain context to choose rules." }, { title: "Standardize", description: "Normalize names, text, and types." },
+    { title: "Handle", description: "Drop, fill, coerce, or deduplicate intentionally." }, { title: "Verify", description: "Recount quality indicators and inspect results." },
+  ] },
+  agritechExample: { title: "Repair a farm-monitoring export", body: "The lesson profiles five missing cells, one duplicate Field 105 upload, and inconsistent Rice labels. Each operation displays both its effect and the reasoning required before adopting it." },
+  playground: {
+    title: "Run a Context-Aware Cleaning Pipeline",
+    description: "Detect quality problems, remove a repeated upload, standardize crop text, convert numeric data safely, fill selected sensor gaps, rename columns, and verify the result.",
+    starterCode: `import pandas as pd
+import numpy as np
+
+data = {
+    "Field_ID": [101, 102, 103, 104, 105, 105],
+    "Temperature": [28, 32, np.nan, 29, 38, 38],
+    "Humidity": [65, np.nan, 72, 68, 75, 75],
+    "Soil_Moisture": [42, 35, 28, np.nan, 22, 22],
+    "Yield": ["520", "480", "410", "560", "unknown", "unknown"],
+    "Crop_Type": [" Rice ", "rice", "Wheat", "wheat", "RICE", "RICE"]
+}
+
+df = pd.DataFrame(data)
+print("Missing by column:")
+print(df.isna().sum())
+print("Duplicate rows:", df.duplicated().sum())
+
+clean = df.drop_duplicates(subset=["Field_ID"], keep="first").copy()
+clean["Yield"] = pd.to_numeric(clean["Yield"], errors="coerce")
+clean["Crop_Type"] = clean["Crop_Type"].str.strip().str.lower()
+clean["Temperature"] = clean["Temperature"].fillna(clean["Temperature"].mean())
+clean["Humidity"] = clean["Humidity"].ffill()
+clean["Soil_Moisture"] = clean["Soil_Moisture"].fillna(clean["Soil_Moisture"].median())
+clean["Yield"] = clean["Yield"].fillna(clean["Yield"].median())
+clean = clean.rename(columns={"Soil_Moisture": "soil_moisture", "Crop_Type": "crop_type"})
+
+print("\\nCleaned dataset:")
+print(clean)
+print("\\nRemaining missing:", clean.isna().sum().sum())
+print("Remaining duplicate IDs:", clean.duplicated(subset=["Field_ID"]).sum())
+print("Data types:")
+print(clean.dtypes)`,
+    expectedOutcome: "The runner finds missing values and one duplicate, converts 'unknown' to NaN, standardizes crop labels, applies column-specific fills, keeps one record per Field ID, and verifies zero remaining missing cells and duplicate IDs.",
+  },
+  practice: [
+    { level: "Easy", title: "Missing mask", prompt: "Display the Boolean missing-value matrix.", guidance: "Use isna(); isnull() is equivalent." },
+    { level: "Easy", title: "Missing counts", prompt: "Count missing values per column and in total.", guidance: "Chain sum once, then twice." },
+    { level: "Easy", title: "Duplicate count", prompt: "Count duplicate rows.", guidance: "Call duplicated(), then sum()." },
+    { level: "Medium", title: "Drop selectively", prompt: "Remove only rows whose Yield is missing.", guidance: "Use dropna with subset=[...]." },
+    { level: "Medium", title: "Temperature estimate", prompt: "Fill missing Temperature with its observed mean.", guidance: "Assign the filled Series back to the column." },
+    { level: "Medium", title: "Median yield", prompt: "Fill missing Yield with the median and explain why median may be useful.", guidance: "Consider sensitivity to extreme values." },
+    { level: "Medium", title: "Sequential humidity", prompt: "Compare ffill and bfill for the humidity gap.", guidance: "One uses the previous valid value; the other uses the next." },
+    { level: "Medium", title: "Identifier duplicates", prompt: "Keep the first record for each Field_ID.", guidance: "Use subset and keep explicitly." },
+    { level: "Medium", title: "Rename features", prompt: "Rename Soil_Moisture and Crop_Type to snake_case.", guidance: "Pass a columns mapping to rename()." },
+    { level: "Challenge", title: "Messy numeric text", prompt: "Convert Yield containing 'unknown' into numeric data with inspectable gaps.", guidance: "Use pd.to_numeric(errors='coerce')." },
+    { level: "Challenge", title: "Crop labels", prompt: "Standardize ' Rice ', 'rice', and 'RICE'.", guidance: "Chain str.strip() and str.lower()." },
+    { level: "Challenge", title: "Verified pipeline", prompt: "Build and justify a cleaning pipeline, then verify missing counts, duplicates, and dtypes.", guidance: "Keep rules column-specific and check the result." },
+  ],
+  quiz: [
+    { title: "Alias", question: "How are isna() and isnull() related?", options: ["They are aliases", "isnull only works on Series", "isna removes rows", "They return counts directly"], correctOptionIndex: 0, note: "Teach isna primarily.", explanation: "Both produce the same missing-value mask." },
+    { title: "Count", question: "What does df.isna().sum() return?", options: ["Missing count per column", "One total only", "Duplicate rows", "Cleaned data"], correctOptionIndex: 0, note: "sum operates down rows by default.", explanation: "Each column receives its own count." },
+    { title: "Rows", question: "What does df.isna().any(axis=1) identify?", options: ["Rows with at least one missing cell", "Only empty columns", "Duplicate indexes", "Numeric types"], correctOptionIndex: 0, note: "axis=1 checks across columns.", explanation: "any becomes True for an incomplete row." },
+    { title: "dropna", question: "Why use subset=['Yield']?", options: ["Drop rows only when Yield is missing", "Rename Yield", "Fill every value", "Convert Yield to text"], correctOptionIndex: 0, note: "Target the important feature.", explanation: "subset limits the missing-value rule." },
+    { title: "Fill", question: "Is mean filling always the correct choice?", options: ["No, context determines the strategy", "Yes, for every column", "Only for text", "It removes duplicates"], correctOptionIndex: 0, note: "Cleaning is a decision.", explanation: "Missingness, feature meaning, and analytical goals matter." },
+    { title: "Sequential", question: "What does ffill() use?", options: ["Previous valid value", "Next valid value", "Column mean", "Zero"], correctOptionIndex: 0, note: "Forward carries the past value.", explanation: "ffill propagates the previous observation." },
+    { title: "Duplicates", question: "Which method detects duplicate records?", options: ["duplicated()", "dropna()", "isna()", "astype()"], correctOptionIndex: 0, note: "Detection before removal.", explanation: "duplicated returns a Boolean Series." },
+    { title: "Identity", question: "Why specify subset=['Field_ID'] when deduplicating?", options: ["Define the identity rule", "Fill Field_ID", "Sort the table", "Rename the index"], correctOptionIndex: 0, note: "State what counts as repeated.", explanation: "subset selects the columns used to compare records." },
+    { title: "Coerce", question: "What does errors='coerce' do in to_numeric()?", options: ["Invalid values become NaN", "Invalid values become zero", "Rows are deleted", "Columns are renamed"], correctOptionIndex: 0, note: "Expose the problem.", explanation: "Coercion produces missing values for invalid tokens." },
+    { title: "Text", question: "What does str.strip() remove?", options: ["Leading and trailing whitespace", "Duplicate rows", "Numeric decimals", "Missing columns"], correctOptionIndex: 0, note: "Clean surrounding spaces.", explanation: "strip standardizes text boundaries." },
+  ],
+  assignment: { title: "Messy Farm Dataset Audit", brief: "Profile, clean, justify, and verify a deliberately inconsistent farm export.", deliverables: ["Raw-data profile", "Missing count per column and total", "Incomplete-row inspection", "Duplicate identity rule", "One drop decision", "Two justified fill strategies", "Numeric coercion", "Column renaming", "Text standardization", "Known-value replacement", "Before/after comparison", "Verification report"] },
+  summarySection: { title: "You can now prepare messy farm data for trustworthy analysis", body: "You separated detection from transformation, applied column-specific missing-value strategies, defined duplicate identity, standardized schema and text, converted data safely, and verified the result.", items: ["isna and isnull detect missingness", "dropna can target subsets", "fill strategies require context", "ffill and bfill suit sequential data", "duplicates require an identity rule", "to_numeric can expose invalid tokens", "text and column names need standards", "verification is part of cleaning"] },
+  keyTakeaways: ["Preserve raw data before cleaning", "Profile before modifying", "Do not equate missing with zero", "Choose drop or fill rules per feature", "Document what defines a duplicate", "Coercion reveals invalid numeric text as NaN", "Standardize crop labels before analysis", "Re-run quality checks after every cleaning pipeline"],
+  whatsNext: { title: "Lesson 7.5 · Transformation & Feature Engineering", body: "Next, derive useful farm features, map and replace values, apply functions, sort records, and transform a clean dataset for analysis." },
+  developmentPack: pandasCleaningDevelopmentPack,
 }];
 
 export const moduleSevenLessonSummaries = [
   { id: "module-7-lesson-1", moduleId: "module-7", order: 1, title: "7.1 Pandas Introduction & Series", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-2", moduleId: "module-7", order: 2, title: "7.2 Pandas DataFrames & Loading Real Data", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-3", moduleId: "module-7", order: 3, title: "7.3 Selecting, Filtering & Querying DataFrames", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Cleaning & Preparing Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Data Cleaning & Missing Data", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Transformation & Feature Engineering", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Analysis", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-7", moduleId: "module-7", order: 7, title: "7.7 Combining & Reshaping Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },

@@ -6,6 +6,7 @@ import { numpyOperationsDevelopmentPack } from "@/content/development-packs/less
 import { numpyMathStatisticsDevelopmentPack } from "@/content/development-packs/lesson-6-6";
 import { numpyFilteringDevelopmentPack } from "@/content/development-packs/lesson-6-7";
 import { numpyArrayManagementDevelopmentPack } from "@/content/development-packs/lesson-6-8";
+import { numpyDataAnalysisDevelopmentPack } from "@/content/development-packs/lesson-6-9";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -649,8 +650,93 @@ print("Copy protected original:", safe_original)`,
     assignment: { title: "Smart Farm Dataset Manager", brief: "Build a compact workflow that combines daily feeds, constructs sensor columns, divides a batch, and demonstrates safe working-copy behavior.", deliverables: ["One concatenate operation", "One axis-based 2D concatenation", "vstack and hstack comparison", "stack with reported shape", "Equal and unequal split", "A three-column sensor matrix", "A view mutation demonstration", "A protected copy demonstration"] },
     summarySection: { title: "You can now manage array shape and ownership", body: "You joined datasets along existing and new axes, divided arrays into equal or flexible sections, created feature columns, and protected original data with explicit copies.", items: ["concatenate extends an axis", "vstack adds rows", "hstack places data side by side", "stack creates a new axis", "split requires equal sections", "array_split allows unequal sections", "views share data", "copies are independent"] },
     keyTakeaways: ["Choose combine operations by desired result shape", "Use axis=0 for rows and axis=1 for columns in 2D concatenation", "Use stack when a new dimension carries meaning", "Choose array_split when equal division is impossible", "Treat a basic slice as connected to its source", "Call .copy() when a working subset must be independent"],
-    whatsNext: { title: "Lesson 6.9 · Random Numbers & Practical NumPy", body: "Next, generate reproducible sensor simulations with NumPy random tools and apply the full array workflow to practical farm data." },
+    whatsNext: { title: "Lesson 6.9 · NumPy for Data Analysis", body: "Next, apply the complete NumPy toolbox to one realistic Smart Farm dataset and turn numerical operations into field-level decisions." },
     developmentPack: numpyArrayManagementDevelopmentPack,
+  },
+  {
+    id: "module-6-lesson-9",
+    moduleId: "module-6",
+    number: "6.9",
+    title: "NumPy for Data Analysis: Smart Farm Dataset",
+    summary: "Combine selection, statistics, filtering, ranking, transformations, and derived metrics in one realistic Smart Farm analysis workflow.",
+    durationMinutes: 165,
+    level: "Applied",
+    introduction: { title: "Use the toolbox as one workflow", body: "This application lesson brings Lessons 6.1–6.8 together around one six-field dataset. Every operation answers a real farm question while preserving complete, aligned records." },
+    objectives: ["Combine multiple NumPy concepts into one workflow", "Inspect a 2D agricultural dataset", "Select complete rows and feature columns", "Calculate feature statistics with the correct axis", "Find extreme records with argmax and argmin", "Filter records with simple and compound conditions", "Rank complete rows with argsort", "Create status labels with np.where()", "Apply min-max normalization", "Build and interpret a derived metric"],
+    whyThisMatters: { title: "A useful analysis connects operations to decisions", body: "A mean is valuable when it describes farm conditions; an index is valuable when it identifies a field; a mask is valuable when it triggers irrigation.", items: ["Summarize sensor features", "Locate the best and weakest fields", "Identify irrigation needs", "Rank complete field records", "Create repeatable transformations"] },
+    industryMotivation: { title: "This is the foundation of a numerical data pipeline", body: "Before DataFrames or machine-learning models, analysts must understand how rows, feature columns, masks, indices, and vectorized transformations stay aligned.", items: ["Telemetry tables become numerical matrices", "Feature statistics validate incoming data", "Masks translate operating rules into selections", "argsort ranks records without separating their features"], signal: "The workflow select → analyze → filter → rank → decide transfers directly to Pandas and machine-learning preparation." },
+    concept: { title: "Keep complete records aligned", body: "Feature columns answer numerical questions, while row indices reconnect every result to its Field ID and remaining sensor values.", items: ["Columns represent features", "Rows represent fields", "axis=0 summarizes features", "masks select records", "argsort preserves record alignment", "argmax returns a position, not an ID"] },
+    workflow: { title: "The NumPy farm-analysis pipeline", description: "Turn a 2D numerical table into an explainable decision.", steps: [
+      { title: "Inspect", description: "Confirm shape, dimensions, size, and feature meaning." },
+      { title: "Select", description: "Extract the columns needed for the question." },
+      { title: "Analyze", description: "Calculate statistics and extreme positions." },
+      { title: "Filter", description: "Build masks for irrigation and alert rules." },
+      { title: "Rank", description: "Use argsort indices on complete rows." },
+      { title: "Interpret", description: "Translate results into field-level decisions." },
+    ] },
+    agritechExample: { title: "From yield maximum to Field 104", body: "argmax returns row position 3 for the yield column. Using that position on the complete dataset reveals Field 104, its sensor conditions, and yield 560." },
+    playground: {
+      title: "Run the Complete Smart Farm Analysis",
+      description: "Execute column selection, statistics, filtering, ranking, status creation, normalization, and a derived efficiency metric.",
+      starterCode: `import numpy as np
+
+farm_data = np.array([
+    [101, 28, 65, 42, 520],
+    [102, 32, 70, 35, 480],
+    [103, 35, 72, 28, 410],
+    [104, 29, 68, 48, 560],
+    [105, 38, 75, 22, 390],
+    [106, 31, 66, 40, 510]
+])
+
+temperature = farm_data[:, 1]
+moisture = farm_data[:, 3]
+yield_data = farm_data[:, 4]
+
+print("Shape:", farm_data.shape)
+print("Feature averages:", np.round(np.mean(farm_data[:, 1:], axis=0), 2))
+best_index = np.argmax(yield_data)
+print("Highest yield field:", farm_data[best_index, 0])
+print("Irrigation fields:", farm_data[moisture < 30, 0])
+
+ranked_indices = np.argsort(yield_data)[::-1]
+print("Top 3 fields:", farm_data[ranked_indices[:3], 0])
+print("Status:", np.where(moisture < 30, "Irrigation Required", "Normal"))
+
+normalized_temperature = (temperature - temperature.min()) / (temperature.max() - temperature.min())
+efficiency = yield_data / moisture
+print("Normalized temperature:", np.round(normalized_temperature, 2))
+print("Best efficiency field:", farm_data[np.argmax(efficiency), 0])`,
+      expectedOutcome: "The runner reports shape (6, 5), feature averages, Field 104 as highest yield, Fields 103 and 105 for irrigation, the top three fields, status labels, normalized temperatures, and Field 105 as the highest yield-to-moisture ratio.",
+    },
+    practice: [
+      { level: "Easy", title: "Average temperature", prompt: "Select the temperature column and calculate its mean.", guidance: "Use farm_data[:, 1], then np.mean()." },
+      { level: "Easy", title: "Maximum yield", prompt: "Find the largest crop yield.", guidance: "Select column 4 before calling np.max()." },
+      { level: "Medium", title: "Identify the best field", prompt: "Return the Field ID with the maximum yield.", guidance: "Use argmax for the row position, then retrieve column 0." },
+      { level: "Medium", title: "Irrigation selection", prompt: "Return Field IDs whose soil moisture is below 30.", guidance: "Build a mask from column 3 and select column 0." },
+      { level: "Medium", title: "Hot and dry", prompt: "Select rows where temperature > 30 and moisture < 35.", guidance: "Parenthesize both comparisons and combine with &." },
+      { level: "Challenge", title: "Rank every field", prompt: "Order complete rows from highest to lowest yield.", guidance: "Reverse argsort indices, then apply them to farm_data." },
+      { level: "Challenge", title: "Top three", prompt: "Return only the top three field records by yield.", guidance: "Slice the descending indices before row selection." },
+      { level: "Challenge", title: "Irrigation status", prompt: "Create Normal/Irrigation Required labels using np.where().", guidance: "Use the moisture mask as the condition." },
+      { level: "Challenge", title: "Efficiency leader", prompt: "Calculate yield divided by moisture and identify the Field ID with the highest ratio.", guidance: "The ratio is vectorized; argmax locates its winning row." },
+    ],
+    quiz: [
+      { title: "Shape", question: "What is farm_data.shape?", options: ["(6, 5)", "(5, 6)", "(30,)", "2"], correctOptionIndex: 0, note: "Six field rows, five columns.", explanation: "Shape lists the size of both axes." },
+      { title: "Temperature column", question: "Which expression selects every temperature?", options: ["farm_data[:, 1]", "farm_data[1, :]", "farm_data[:, 0]", "farm_data[1]"], correctOptionIndex: 0, note: "All rows, column 1.", explanation: "The colon keeps every row." },
+      { title: "Feature means", question: "What does axis=0 return for farm_data[:, 1:]?", options: ["One result per feature", "One result per field", "Only one scalar", "A sorted table"], correctOptionIndex: 0, note: "Calculate down the rows.", explanation: "Four selected columns produce four means." },
+      { title: "Highest position", question: "What does np.argmax(yield_data) return?", options: ["Row position 3", "Field ID 104", "Yield 560", "Column 4"], correctOptionIndex: 0, note: "argmax returns a position.", explanation: "Index that position into farm_data to retrieve the record or ID." },
+      { title: "Irrigation fields", question: "Which fields have moisture below 30?", options: ["103 and 105", "101 and 104", "102 and 106", "Only 105"], correctOptionIndex: 0, note: "Their moisture readings are 28 and 22.", explanation: "The mask keeps Fields 103 and 105." },
+      { title: "Compound filter", question: "Which operator combines two element-wise conditions that must both pass?", options: ["&", "and", "|", "&&"], correctOptionIndex: 0, note: "Parenthesize both comparisons.", explanation: "& performs element-wise AND." },
+      { title: "Ranking", question: "Why apply argsort indices to farm_data?", options: ["To reorder complete aligned rows", "To calculate a mean", "To change dtype", "To split columns"], correctOptionIndex: 0, note: "Keep the whole record together.", explanation: "The indices derived from yield reorder every feature in the same row." },
+      { title: "Descending", question: "What makes ascending argsort indices highest-first?", options: ["[::-1]", "axis=1", ".copy()", "np.mean()"], correctOptionIndex: 0, note: "Reverse the order.", explanation: "[::-1] reverses the ascending indices." },
+      { title: "Status", question: "Which function creates two labels from a moisture condition?", options: ["np.where()", "np.argmax()", "np.stack()", "np.std()"], correctOptionIndex: 0, note: "Condition, true label, false label.", explanation: "Three-argument np.where performs conditional selection." },
+      { title: "Normalization", question: "What range does this min-max example produce?", options: ["0 to 1", "-1 to 1", "0 to 100", "Original units"], correctOptionIndex: 0, note: "Subtract minimum, divide by range.", explanation: "The minimum maps to 0 and maximum to 1." },
+    ],
+    assignment: { title: "Smart Farm NumPy Analysis Report", brief: "Create an end-to-end analysis that explains every numerical result as a field-level decision.", deliverables: ["Dataset shape report", "Four feature averages", "Highest and lowest yield fields", "Irrigation Field IDs", "One compound filter", "Descending yield ranking", "Top three records", "Status labels with where", "Normalized temperature", "Derived efficiency metric"] },
+    summarySection: { title: "You can now build a compact NumPy analysis pipeline", body: "You inspected one farm matrix, selected features, summarized columns, found important records, filtered conditions, ranked complete rows, and created transformed and derived features.", items: ["shape explains table structure", "column selection isolates features", "axis=0 summarizes columns", "argmax/argmin locate records", "masks select fields", "argsort ranks aligned rows", "where creates status labels", "vectorization creates new metrics"] },
+    keyTakeaways: ["Begin every analysis by understanding rows and columns", "Keep Field IDs connected to row positions", "Use axis according to the question", "Inspect masks before acting on them", "Apply argsort indices to complete rows", "Translate every numerical output into a farm decision"],
+    whatsNext: { title: "Lesson 6.10 · Smart Farm Numerical Analysis Project", body: "Next, independently design and explain a complete NumPy solution from raw farm requirements to validated results." },
+    developmentPack: numpyDataAnalysisDevelopmentPack,
   },
 ];
 
@@ -663,6 +749,6 @@ export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining, Splitting, Copying & Views", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-9", moduleId: "module-6", order: 9, title: "6.9 Random Numbers & Practical NumPy", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-9", moduleId: "module-6", order: 9, title: "6.9 NumPy for Data Analysis", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-10", moduleId: "module-6", order: 10, title: "6.10 Smart Farm Numerical Analysis", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
 ];

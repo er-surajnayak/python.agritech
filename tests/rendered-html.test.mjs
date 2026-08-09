@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 18, "eight published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 19, "nine published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1957,4 +1957,29 @@ test("Lesson 6.8 publishes combining, splitting, copying, and view tools", async
   assert.match(blocksSource, /Independent data/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.8 — NumPy combining, splitting, copying, and views/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-management-pack/);
+});
+
+test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-9.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyDataAnalysisLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyDataAnalysisLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "NumPy for Data Analysis: Smart Farm Dataset"/);
+  assert.match(moduleSource, /id: "module-6-lesson-9"[\s\S]*developmentPack: numpyDataAnalysisDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-9"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-data-analysis-capstone"/);
+  for (const concept of ["np.mean", "np.argmax", "np.argmin", "np.argsort", "np.where", "farm_data[:, 4]", "Yield ÷ Moisture"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-data-analysis-capstone"/);
+  assert.match(rendererSource, /<SmartFarmAnalyzer/);
+  assert.match(rendererSource, /<SmartFarmDataFilter/);
+  assert.match(rendererSource, /<FarmRanking/);
+  assert.match(blocksSource, /export function SmartFarmDataset/);
+  assert.match(blocksSource, /Complete records ranked by yield/);
+  assert.match(blocksSource, /Matching Field IDs/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.9 — NumPy data-analysis capstone/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });

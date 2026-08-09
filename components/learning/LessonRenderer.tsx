@@ -69,6 +69,7 @@ import { NumpyOperationsLessonRenderer } from "@/components/learning/NumpyOperat
 import { NumpyMathStatisticsLessonRenderer } from "@/components/learning/NumpyMathStatisticsLessonRenderer";
 import { NumpyFilteringLessonRenderer } from "@/components/learning/NumpyFilteringLessonRenderer";
 import { NumpyArrayManagementLessonRenderer } from "@/components/learning/NumpyArrayManagementLessonRenderer";
+import { NumpyDataAnalysisLessonRenderer } from "@/components/learning/NumpyDataAnalysisLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -269,6 +270,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "numpy-combining-splitting-views") {
     return <NumpyArrayManagementLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "numpy-data-analysis-capstone") {
+    return <NumpyDataAnalysisLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

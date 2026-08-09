@@ -66,6 +66,7 @@ import { NumpyArrayCreationLessonRenderer } from "@/components/learning/NumpyArr
 import { NumpyArrayAttributesLessonRenderer } from "@/components/learning/NumpyArrayAttributesLessonRenderer";
 import { NumpyIndexingLessonRenderer } from "@/components/learning/NumpyIndexingLessonRenderer";
 import { NumpyOperationsLessonRenderer } from "@/components/learning/NumpyOperationsLessonRenderer";
+import { NumpyMathStatisticsLessonRenderer } from "@/components/learning/NumpyMathStatisticsLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -257,6 +258,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "numpy-operations-broadcasting") {
     return <NumpyOperationsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "numpy-math-statistics") {
+    return <NumpyMathStatisticsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

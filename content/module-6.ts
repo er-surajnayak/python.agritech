@@ -3,6 +3,7 @@ import { numpyArrayCreationDevelopmentPack } from "@/content/development-packs/l
 import { numpyArrayAttributesDevelopmentPack } from "@/content/development-packs/lesson-6-3";
 import { numpyIndexingDevelopmentPack } from "@/content/development-packs/lesson-6-4";
 import { numpyOperationsDevelopmentPack } from "@/content/development-packs/lesson-6-5";
+import { numpyMathStatisticsDevelopmentPack } from "@/content/development-packs/lesson-6-6";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -428,6 +429,75 @@ print("Alert count:", alerts.sum())`,
     whatsNext: { title: "Lesson 6.6 · Mathematical & Statistical Functions", body: "Next, summarize Smart Farm datasets with sum, mean, median, standard deviation, variance, minima, maxima, and position-aware functions." },
     developmentPack: numpyOperationsDevelopmentPack,
   },
+  {
+    id: "module-6-lesson-6",
+    moduleId: "module-6",
+    number: "6.6",
+    title: "Mathematical & Statistical Functions: Analyzing Farm Sensor Data",
+    summary: "Summarize sensor arrays, locate extreme readings, measure variation, apply element-wise mathematical functions, and calculate meaningful results along rows or columns with axis.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "From calculations to evidence", body: "The Smart Farm can now transform arrays quickly. The next task is to summarize what those readings say about typical conditions, extremes, consistency, and individual sensor features." },
+    objectives: ["Use NumPy mathematical and statistical functions", "Calculate sum, mean, median, minimum, and maximum", "Distinguish extreme values from their positions", "Calculate variance and standard deviation", "Apply sqrt(), abs(), round(), power(), exp(), and log()", "Recognize sin() and cos() as scientific functions", "Explain the axis parameter", "Calculate one result per column with axis=0", "Calculate one result per row with axis=1", "Analyze real Smart Farm sensor datasets"],
+    whyThisMatters: { title: "A dataset becomes useful when it answers a question", body: "Farm decisions need summaries: typical moisture, hottest day, variability, per-feature averages, and the magnitude of calibration errors.", items: ["Measure typical field conditions", "Locate extreme readings", "Detect unstable sensors through spread", "Summarize each sensor feature independently"] },
+    industryMotivation: { title: "Statistical summaries are the first layer of data quality", body: "IoT and machine-learning pipelines inspect central tendency, extremes, spread, and feature-wise aggregates before reporting or model training.", items: ["Monitoring systems compare current values with historical averages", "Quality checks locate minimum and maximum positions", "Standard deviation identifies unstable channels", "Axis-aware reductions summarize batches by feature or record"], signal: "Correct axis selection determines whether a result describes each sensor feature or each farm record." },
+    concept: { title: "Reduce many values into meaningful summaries", body: "Statistical functions reduce an array to summaries, while mathematical functions transform elements. The axis parameter chooses which dimension a reduction collapses.", items: ["Value functions → min and max", "Position functions → argmin and argmax", "Spread functions → variance and standard deviation", "axis=0 → one result per column", "axis=1 → one result per row"] },
+    workflow: { title: "Analyze sensor data deliberately", description: "Choose the question, function, and axis before interpreting the answer.", steps: [
+      { title: "Inspect", description: "Confirm values, shape, and feature meanings." },
+      { title: "Question", description: "Choose total, typical value, extreme, position, or spread." },
+      { title: "Function", description: "Select the NumPy function that answers that question." },
+      { title: "Axis", description: "For multidimensional data, choose all values, columns, or rows." },
+      { title: "Interpret", description: "Label each result with its field or sensor meaning." },
+    ] },
+    agritechExample: { title: "Summarize every sensor feature", body: "With columns representing temperature, humidity, and soil moisture, axis=0 returns one result for each feature across all fields." },
+    playground: {
+      title: "Run a Smart Farm Statistical Analysis",
+      description: "Calculate central tendency, extremes, spread, positions, and feature-wise summaries using the browser NumPy runtime.",
+      starterCode: `import numpy as np
+
+temperature = np.array([28, 30, 31, 29, 32, 35, 27])
+sensor_data = np.array([
+    [28, 65, 40],
+    [30, 70, 42],
+    [31, 68, 38],
+    [29, 72, 41]
+])
+
+print("Temperature mean:", np.round(np.mean(temperature), 2))
+print("Temperature range:", np.max(temperature) - np.min(temperature))
+print("Hottest index:", np.argmax(temperature))
+print("Temperature std:", np.round(np.std(temperature), 2))
+print("Feature means:", np.mean(sensor_data, axis=0))
+print("Feature maxima:", np.max(sensor_data, axis=0))`,
+      expectedOutcome: "The runner reports mean 30.29, range 8, hottest index 5, standard deviation 2.49, and one mean and maximum for each sensor column.",
+    },
+    practice: [
+      { level: "Easy", title: "Basic summary", prompt: "For [10, 20, 30, 40, 50], find sum, mean, minimum, and maximum.", guidance: "Use the four matching np functions." },
+      { level: "Easy", title: "Middle and spread", prompt: "For [10, 12, 14, 16, 18], calculate median, variance, and standard deviation.", guidance: "Use median(), var(), and std()." },
+      { level: "Medium", title: "Locate temperature extremes", prompt: "For [28, 31, 35, 29, 38, 30], find highest, lowest, argmax, and argmin.", guidance: "Separate extreme values from their index positions." },
+      { level: "Medium", title: "Measure error magnitude", prompt: "Apply np.abs() to [-10, -5, 0, 5, 10].", guidance: "Absolute value removes direction but preserves magnitude." },
+      { level: "Medium", title: "Feature summaries", prompt: "For the 4 × 3 sensor matrix, calculate mean, maximum, and minimum for each column.", guidance: "Use axis=0." },
+      { level: "Challenge", title: "Compare row and column questions", prompt: "Calculate mean with axis=0 and axis=1, then explain what every output value represents.", guidance: "Axis 0 yields one result per feature; axis 1 yields one result per field row." },
+      { level: "Challenge", title: "Integrated farm report", prompt: "Report average temperature, humidity, moisture, hottest row, and standard deviation for each sensor feature.", guidance: "Combine column selection, argmax, mean, and std with the correct axes." },
+    ],
+    quiz: [
+      { title: "Total", question: "Which function calculates a total?", options: ["np.mean()", "np.sum()", "np.std()", "np.argmax()"], correctOptionIndex: 1, note: "Sum combines every selected value.", explanation: "np.sum() returns the total." },
+      { title: "Average", question: "What does np.mean() calculate?", options: ["Middle sorted value", "Average", "Maximum", "Position"], correctOptionIndex: 1, note: "Sum divided by count.", explanation: "The mean is the arithmetic average." },
+      { title: "Median", question: "What is the median of [38, 41, 42, 44, 45, 47, 50]?", options: ["42", "44", "45", "50"], correctOptionIndex: 1, note: "Choose the middle sorted value.", explanation: "44 is the fourth value among seven sorted values." },
+      { title: "Value or position", question: "Which function returns the index of the maximum?", options: ["np.max()", "np.argmax()", "np.argmin()", "np.position()"], correctOptionIndex: 1, note: "The arg prefix returns a position.", explanation: "np.argmax() returns the maximum value's index." },
+      { title: "Spread", question: "Which function returns standard deviation?", options: ["np.var()", "np.std()", "np.abs()", "np.range()"], correctOptionIndex: 1, note: "Standard deviation is the square root of variance.", explanation: "np.std() measures spread in the original unit." },
+      { title: "Variance", question: "What does a larger variance generally indicate?", options: ["Values are more spread out", "The mean is zero", "The array is sorted", "There are fewer values"], correctOptionIndex: 0, note: "Variance measures spread around the mean.", explanation: "Larger variance means greater dispersion." },
+      { title: "Absolute value", question: "What is np.abs([-2, 3, -5])?", options: ["[-2, 3, -5]", "[2, 3, 5]", "[0, 3, 0]", "[2, -3, 5]"], correctOptionIndex: 1, note: "Direction is removed.", explanation: "Absolute values are non-negative magnitudes." },
+      { title: "Square root", question: "What is np.sqrt([4, 9, 16])?", options: ["[2, 3, 4]", "[8, 18, 32]", "[16, 81, 256]", "[4, 9, 16]"], correctOptionIndex: 0, note: "The function acts element-wise.", explanation: "Each result squared recreates the input value." },
+      { title: "Axis zero", question: "What does axis=0 produce for a 4 × 3 matrix?", options: ["One result per row", "One result per column", "One result total", "A transposed matrix"], correctOptionIndex: 1, note: "Reduce down rows.", explanation: "Three columns produce three results." },
+      { title: "Axis one", question: "What does axis=1 produce for a 4 × 3 matrix?", options: ["Three results", "Four results, one per row", "Twelve results", "One result"], correctOptionIndex: 1, note: "Reduce across columns.", explanation: "Four rows produce four results." },
+    ],
+    assignment: { title: "Smart Farm Statistical Report", brief: "Build a compact analysis that summarizes a multi-sensor array and explains every result in farm terms.", deliverables: ["Sum, mean, and median of one reading series", "Minimum and maximum values", "Argmin and argmax positions", "Variance and standard deviation", "Two mathematical transformations", "Feature summaries with axis=0", "Record summaries with axis=1", "Plain-language interpretation of the outputs"] },
+    summarySection: { title: "You can now summarize arrays with the correct question and axis", body: "You calculated central tendency, extremes, positions, spread, mathematical transformations, and row- or column-wise summaries without manual loops.", items: ["sum, mean, and median summarize values", "min/max return values; argmin/argmax return positions", "variance and standard deviation describe spread", "mathematical functions work element-wise", "axis=0 gives one result per column", "axis=1 gives one result per row"] },
+    keyTakeaways: ["Choose a function based on the question", "Do not confuse extreme values with their indices", "Standard deviation is easier to interpret than variance because it uses the original unit", "Use axis=0 for feature-wise summaries", "Use axis=1 for record-wise summaries", "Always attach meaning to each output position"],
+    whatsNext: { title: "Lesson 6.7 · Filtering, Sorting & Searching", body: "Next, use Boolean masks, where(), sort(), argsort(), unique(), and searching tools to locate the sensor readings that matter." },
+    developmentPack: numpyMathStatisticsDevelopmentPack,
+  },
 ];
 
 export const moduleSixLessonSummaries = [
@@ -436,7 +506,7 @@ export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-3", moduleId: "module-6", order: 3, title: "6.3 Array Attributes & Data Types", estimatedMinutes: 120, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-4", moduleId: "module-6", order: 4, title: "6.4 Indexing, Slicing & Reshaping", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining & Splitting Arrays", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-9", moduleId: "module-6", order: 9, title: "6.9 Random Numbers & Practical NumPy", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },

@@ -1,0 +1,18 @@
+import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
+import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
+import { FarmFeatureEngineeringLab, FeaturePipeline, PandasTransformationQuickReference, TransformationBuilder, TransformationDefinition, TransformationMethodExplorer } from "@/components/learning/PandasTransformationLearningBlocks";
+import { CodePlayground } from "@/components/learning/CodePlayground";
+import { LessonHero } from "@/components/learning/LessonHero";
+import { IndustryInsightCard, KeyTakeawaysCard, LearningObjectivesCard, PracticeCard, QuizCard, SummaryCard, WhatsNextCard } from "@/components/learning/LearningBlocks";
+import { DebugChallengeCollection } from "@/components/learning/ProblemSolvingLearningBlocks";
+import type { LessonDocument } from "@/types/content";
+import type { CourseLesson, CourseModule } from "@/types/course";
+
+const outline = [["objectives", "Objectives"], ["transformation-definition", "Core distinction"], ["feature-lab", "Feature lab"], ["transformation-builder", "Builder"], ["method-explorer", "Methods"], ["feature-pipeline", "Pipeline"], ["playground", "Code runner"], ["practice", "Practice"], ["debug-challenge", "Debug"], ["quiz", "Quiz"], ["quick-reference", "Quick reference"], ["summary", "Summary"], ["whats-next", "What's next"]] as const;
+
+export function PandasTransformationLessonRenderer({ lesson, courseLesson, module, previous, next }: { lesson: LessonDocument; courseLesson: CourseLesson; module: CourseModule; previous: CourseLesson | null; next: CourseLesson | null }) {
+  const pack = lesson.developmentPack;
+  if (!pack || pack.kind !== "pandas-transformation-feature-engineering") return null;
+  return <article className="published-lesson pandas-series-pack pandas-transformation-pack"><CourseBreadcrumb module={module} lesson={courseLesson} /><LessonHero eyebrow={`Module ${module.index} · Lesson ${lesson.number}`} title={lesson.title} summary={lesson.summary} icon={module.icon} level={lesson.level} durationMinutes={lesson.durationMinutes} prerequisite={pack.prerequisite} /><div className="published-lesson-layout"><div className="published-lesson-flow"><LearningObjectivesCard id="objectives" objectives={lesson.objectives} /><section className="lesson-card"><p className="lesson-section-label">From trustworthy data to useful signals</p><h2>A clean table is the starting point</h2><p>{pack.storyHook}</p><div className="pandas-story-flow"><span>Clean data</span><span>Transform</span><span>Engineer</span><span>Validate</span></div></section><TransformationDefinition storyHook={pack.storyHook} /><FarmFeatureEngineeringLab dataset={pack.dataset} operations={pack.operations} /><TransformationBuilder /><TransformationMethodExplorer examples={pack.methodExamples} /><FeaturePipeline steps={pack.pipeline} /><IndustryInsightCard id="industry-insight" section={lesson.industryMotivation} /><CodePlayground id="playground" content={lesson.playground} className="pandas-playground" /><PracticeCard id="practice" tasks={lesson.practice} /><DebugChallengeCollection challenges={pack.debugChallenges} /><QuizCard id="quiz" quiz={lesson.quiz} /><PandasTransformationQuickReference rows={pack.quickReference} /><SummaryCard id="summary" section={lesson.summarySection} /><KeyTakeawaysCard id="key-takeaways" items={lesson.keyTakeaways} /><WhatsNextCard id="whats-next" section={lesson.whatsNext} /></div><aside className="lesson-outline published-lesson-outline" aria-label="On this page"><p>On this page</p>{outline.map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}</aside></div><PreviousNextNavigation previous={previous} next={next} /></article>;
+}
+

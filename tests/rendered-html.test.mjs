@@ -1984,7 +1984,7 @@ test("Lesson 6.9 publishes an integrated Smart Farm NumPy analysis", async () =>
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-data-analysis-pack/);
 });
 
-test("Module 7 begins with four published Pandas lessons and an eight-lesson roadmap", async () => {
+test("Module 7 begins with five published Pandas lessons and an eight-lesson roadmap", async () => {
   const [moduleSource, packSource, frameworkSource, lessonsSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
     readFile(new URL("content/development-packs/lesson-7-1.ts", projectRoot), "utf8"),
@@ -1995,7 +1995,7 @@ test("Module 7 begins with four published Pandas lessons and an eight-lesson roa
     readFile(new URL("components/learning/PandasSeriesLearningBlocks.tsx", projectRoot), "utf8"),
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 12, "four published lessons and eight navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-7-lesson-/g) ?? []).length, 13, "five published lessons and eight navigation summaries should exist");
   assert.match(moduleSource, /title: "Pandas Introduction & Series"/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*developmentPack: pandasSeriesDevelopmentPack/);
   assert.match(moduleSource, /id: "module-7-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2086,4 +2086,29 @@ test("Module 7.4 teaches context-aware missing-data and cleaning workflows", asy
   assert.match(blocksSource, /Correct syntax does not guarantee a correct data decision/);
   assert.match(stylesSource, /Module 7 · Lesson 7\.4 — Data cleaning and missing data/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-cleaning-pack/);
+});
+
+test("Module 7.5 teaches transformation and explainable feature engineering", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-7-5.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasTransformationLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/PandasTransformationLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /title: "Data Transformation & Feature Engineering"/);
+  assert.match(moduleSource, /id: "module-7-lesson-5"[\s\S]*developmentPack: pandasTransformationDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-7-lesson-5"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "pandas-transformation-feature-engineering"/);
+  for (const concept of ["np.where", "np.select", ".map", ".apply", "axis=1", ".replace", ".astype", ".str.upper", "sort_values", "reset_index", "Risk_Score"]) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "pandas-transformation-feature-engineering"/);
+  assert.match(rendererSource, /<FarmFeatureEngineeringLab/);
+  assert.match(rendererSource, /<TransformationBuilder/);
+  assert.match(rendererSource, /<TransformationMethodExplorer/);
+  assert.match(blocksSource, /Change the representation—or create new information/);
+  assert.match(blocksSource, /Start from a question, not from a clever formula/);
+  assert.match(blocksSource, /A generated expression is only useful/);
+  assert.match(stylesSource, /Module 7 · Lesson 7\.5 — Data transformation and feature engineering/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.pandas-transformation-pack/);
 });

@@ -74,6 +74,7 @@ import { PandasSeriesLessonRenderer } from "@/components/learning/PandasSeriesLe
 import { PandasDataFrameLessonRenderer } from "@/components/learning/PandasDataFrameLessonRenderer";
 import { PandasSelectionLessonRenderer } from "@/components/learning/PandasSelectionLessonRenderer";
 import { PandasCleaningLessonRenderer } from "@/components/learning/PandasCleaningLessonRenderer";
+import { PandasTransformationLessonRenderer } from "@/components/learning/PandasTransformationLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -289,6 +290,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "pandas-cleaning-missing-data") {
     return <PandasCleaningLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "pandas-transformation-feature-engineering") {
+    return <PandasTransformationLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

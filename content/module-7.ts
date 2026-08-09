@@ -2,6 +2,7 @@ import { pandasSeriesDevelopmentPack } from "@/content/development-packs/lesson-
 import { pandasDataFrameDevelopmentPack } from "@/content/development-packs/lesson-7-2";
 import { pandasSelectionDevelopmentPack } from "@/content/development-packs/lesson-7-3";
 import { pandasCleaningDevelopmentPack } from "@/content/development-packs/lesson-7-4";
+import { pandasTransformationDevelopmentPack } from "@/content/development-packs/lesson-7-5";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSevenLessons: LessonDocument[] = [{
@@ -311,6 +312,104 @@ print(clean.dtypes)`,
   keyTakeaways: ["Preserve raw data before cleaning", "Profile before modifying", "Do not equate missing with zero", "Choose drop or fill rules per feature", "Document what defines a duplicate", "Coercion reveals invalid numeric text as NaN", "Standardize crop labels before analysis", "Re-run quality checks after every cleaning pipeline"],
   whatsNext: { title: "Lesson 7.5 · Transformation & Feature Engineering", body: "Next, derive useful farm features, map and replace values, apply functions, sort records, and transform a clean dataset for analysis." },
   developmentPack: pandasCleaningDevelopmentPack,
+}, {
+  id: "module-7-lesson-5", moduleId: "module-7", number: "7.5", title: "Data Transformation & Feature Engineering", durationMinutes: 165, level: "Intermediate",
+  summary: "Transform clean farm data with vectorized expressions, map and apply rules, create explainable derived features, then sort and validate the analytical result.",
+  introduction: { title: "Clean data becomes useful information", body: "Transformation changes the representation of existing data. Feature engineering creates meaningful new variables from existing measurements so analysts and future models can answer better farm questions." },
+  objectives: ["Distinguish cleaning, transformation, and feature engineering", "Create derived columns with vectorized operations", "Build ratio and difference features", "Create conditional features with np.where", "Create multi-category features with np.select", "Transform Series values with map", "Use apply with custom functions and readable lambdas", "Use apply(axis=1) for row-aware rules", "Replace values and convert simple data types", "Apply basic string transformations", "Sort by one or several columns and reset the index", "Create and validate an explainable farm risk score"],
+  whyThisMatters: { title: "Raw measurements rarely answer the final question", body: "Temperature, moisture, and yield are valuable inputs. Derived units, categories, gaps, ratios, and risk indicators turn those inputs into information a farm team can interpret consistently.", items: ["Convert units without loops", "Express irrigation thresholds clearly", "Rank fields while preserving complete rows", "Prepare explainable features for later analysis and ML"] },
+  industryMotivation: { title: "Feature definitions become part of the data product", body: "Production analysts document formulas, units, category coverage, thresholds, and validation checks because an engineered column can influence dashboards, alerts, and model behavior.", items: ["A threshold needs agronomic justification", "map dictionaries need complete category coverage", "Ratios need compatible units and safe denominators", "Features should remain explainable to decision makers"], signal: "Choose the farm question → define the feature → validate the result is safer than engineering columns simply because the syntax is available." },
+  concept: { title: "Prefer the clearest expression of the rule", body: "Vectorized arithmetic is ideal for column formulas, map for known value-to-value mappings, np.where or np.select for categories, and apply for custom logic that cannot be stated more clearly with direct Pandas operations.", items: ["Vectorized columns", "map for Series values", "apply for custom logic", "axis=1 for row context", "sort_values for ranking", "reset_index for clean positions"] },
+  workflow: { title: "An explainable feature workflow", description: "Turn a clean dataset and a real question into a validated signal.", steps: [
+    { title: "Question", description: "State the farm decision the feature supports." }, { title: "Formula", description: "Define units, thresholds, and categories." },
+    { title: "Transform", description: "Use the clearest vectorized or custom method." }, { title: "Inspect", description: "Compare the new values with their inputs." },
+    { title: "Validate", description: "Check edge cases and category coverage." }, { title: "Interpret", description: "Sort or summarize without losing record alignment." },
+  ] },
+  agritechExample: { title: "Build a transparent field risk indicator", body: "One point marks temperature above 34°C and one marks soil moisture below 30. Their sum produces an explainable 0–2 score, which maps to Low, Moderate, and High risk." },
+  playground: {
+    title: "Run a Smart Farm Feature Pipeline",
+    description: "Create vectorized, conditional, mapped, applied, and row-aware features, then rank the complete farm records by risk and yield.",
+    starterCode: `import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "Field_ID": [101, 102, 103, 104, 105, 106],
+    "Temperature": [28, 32, 35, 29, 38, 31],
+    "Humidity": [65, 70, 72, 68, 75, 66],
+    "Soil_Moisture": [42, 35, 28, 48, 22, 40],
+    "Yield": [520, 480, 410, 560, 390, 510],
+    "Crop": ["Rice", "Wheat", "Rice", "Maize", "Rice", "Wheat"]
+})
+
+df["Temperature_F"] = df["Temperature"] * 9/5 + 32
+df["Yield_per_Moisture"] = (df["Yield"] / df["Soil_Moisture"]).round(2)
+df["Moisture_Gap"] = 40 - df["Soil_Moisture"]
+df["Irrigation_Need"] = np.where(df["Soil_Moisture"] < 30, "Required", "Not Required")
+
+conditions = [
+    df["Soil_Moisture"] < 25,
+    df["Soil_Moisture"].between(25, 35),
+    df["Soil_Moisture"] > 35
+]
+df["Moisture_Status"] = np.select(conditions, ["Critical", "Low", "Adequate"], default="Unknown")
+df["Crop_Code"] = df["Crop"].map({"Rice": "R", "Wheat": "W", "Maize": "M"})
+
+def classify_yield(value):
+    if value >= 500:
+        return "High"
+    if value >= 450:
+        return "Medium"
+    return "Low"
+
+df["Yield_Category"] = df["Yield"].apply(classify_yield)
+df["Risk_Score"] = (
+    (df["Temperature"] > 34).astype(int)
+    + (df["Soil_Moisture"] < 30).astype(int)
+)
+df["Risk_Level"] = df["Risk_Score"].map({0: "Low", 1: "Moderate", 2: "High"})
+
+ranked = df.sort_values(
+    by=["Risk_Score", "Yield"],
+    ascending=[False, False]
+).reset_index(drop=True)
+
+print(ranked[[
+    "Field_ID", "Temperature_F", "Moisture_Status",
+    "Irrigation_Need", "Yield_Category", "Risk_Score", "Risk_Level"
+]])`,
+    expectedOutcome: "The runner creates unit, ratio, gap, condition, category, mapping, and risk features, then ranks Fields 103 and 105 as High risk while preserving every complete farm record.",
+  },
+  practice: [
+    { level: "Easy", title: "Convert units", prompt: "Create Temperature_F from the Celsius column.", guidance: "Use the vectorized 9/5 + 32 formula." },
+    { level: "Easy", title: "Rank yields", prompt: "Sort fields from highest to lowest Yield.", guidance: "Use sort_values with ascending=False." },
+    { level: "Medium", title: "Efficiency ratio", prompt: "Create Yield_per_Moisture and explain its units.", guidance: "Divide the two Series directly and validate the denominator." },
+    { level: "Medium", title: "Irrigation label", prompt: "Use np.where to mark moisture below 30 as Required.", guidance: "Provide condition, true label, and false label." },
+    { level: "Medium", title: "Moisture categories", prompt: "Use np.select to create Critical, Low, and Adequate categories.", guidance: "Order the conditions intentionally because first match wins." },
+    { level: "Medium", title: "Crop codes", prompt: "Map Rice, Wheat, and Maize to R, W, and M.", guidance: "Validate that every crop appears in the mapping." },
+    { level: "Medium", title: "Yield classifier", prompt: "Use apply with a function to return High, Medium, or Low.", guidance: "Write and test the function before applying it." },
+    { level: "Challenge", title: "Row-wise urgency", prompt: "Use apply(axis=1) to mark hot and dry fields Urgent.", guidance: "The function needs both Temperature and Soil_Moisture from one row." },
+    { level: "Challenge", title: "Risk feature", prompt: "Create Risk_Score from two Boolean conditions, then map Risk_Level.", guidance: "Convert each Boolean Series to int before adding." },
+    { level: "Challenge", title: "Multi-column ranking", prompt: "Sort risk descending and Yield descending, then reset the index.", guidance: "Pass two labels and two ascending flags." },
+    { level: "Challenge", title: "Method decision", prompt: "Choose map, apply, np.where, or vectorized arithmetic for four proposed rules and justify each choice.", guidance: "Prefer the simplest clear expression." },
+    { level: "Challenge", title: "Validated pipeline", prompt: "Build, inspect, validate, and rank the complete farm risk pipeline.", guidance: "Check units, thresholds, missing mappings, and resulting categories." },
+  ],
+  quiz: [
+    { title: "Distinction", question: "What best describes feature engineering?", options: ["Creating useful variables from existing data", "Only removing duplicates", "Loading a CSV", "Selecting one row"], correctOptionIndex: 0, note: "Create information.", explanation: "Feature engineering derives meaningful analytical signals." },
+    { title: "Vectorization", question: "Why can df['Temperature'] * 9/5 + 32 avoid a loop?", options: ["Pandas applies the operation across the Series", "It changes one row only", "It loads NumPy automatically", "It sorts first"], correctOptionIndex: 0, note: "Column-wide arithmetic.", explanation: "Pandas operations are vectorized." },
+    { title: "where", question: "What does np.where(condition, yes, no) create?", options: ["A two-way conditional result", "Only sorted indexes", "Duplicate rows", "A groupby"], correctOptionIndex: 0, note: "True or false branch.", explanation: "Each row receives the matching choice." },
+    { title: "select", question: "When is np.select useful?", options: ["Several ordered conditions and choices", "Reading Excel", "Dropping nulls only", "Renaming one column only"], correctOptionIndex: 0, note: "Multi-category rules.", explanation: "np.select handles several conditional branches." },
+    { title: "map", question: "What happens when a dictionary map has no matching key?", options: ["The result is NaN", "The original value is guaranteed", "The row is deleted", "Pandas raises every time"], correctOptionIndex: 0, note: "Validate coverage.", explanation: "Unmapped values become missing." },
+    { title: "apply", question: "Which tool applies a custom classify_yield function to each Yield value?", options: ["Series.apply()", "DataFrame.shape", "read_csv()", "dropna()"], correctOptionIndex: 0, note: "Custom value logic.", explanation: "Series.apply calls the function for each value." },
+    { title: "axis", question: "What does df.apply(function, axis=1) pass to the function?", options: ["Each row", "Each filename", "Only the index", "The whole project"], correctOptionIndex: 0, note: "Across columns per record.", explanation: "axis=1 performs row-wise apply." },
+    { title: "Risk", question: "What Risk_Score results when both conditions are True?", options: ["2", "1", "0", "NaN"], correctOptionIndex: 0, note: "True converts to 1.", explanation: "Two true integer conditions add to 2." },
+    { title: "Sort", question: "What does ascending=[True, False] mean for two sort columns?", options: ["First ascending, second descending", "Both ascending", "Both descending", "Reset the index"], correctOptionIndex: 0, note: "Flags align with labels.", explanation: "Each column receives its corresponding direction." },
+    { title: "Reset", question: "Why use reset_index(drop=True) after sorting?", options: ["Create clean positions without keeping the old index", "Delete all columns", "Convert types", "Fill missing values"], correctOptionIndex: 0, note: "drop discards old labels.", explanation: "The sorted result receives a fresh RangeIndex." },
+  ],
+  assignment: { title: "Explainable Farm Feature Pipeline", brief: "Transform the cleaned farm table into a documented, validated, and ranked decision dataset.", deliverables: ["Celsius-to-Fahrenheit feature", "Ratio and difference features", "np.where binary category", "np.select multi-category feature", "map dictionary with coverage check", "custom apply function", "one row-wise rule", "string and dtype transformation", "Risk_Score and Risk_Level", "multi-column sort", "reset index", "validation explanation"] },
+  summarySection: { title: "You can now turn clean columns into useful farm signals", body: "You used vectorized formulas, conditional functions, mappings, custom functions, row-wise rules, type and text transformations, sorting, and index resetting to build explainable features.", items: ["Transformation changes representation", "Feature engineering creates information", "Vectorization is concise and efficient", "map handles value mappings", "apply supports custom rules", "axis=1 supplies complete rows", "np.where and np.select create categories", "sort_values ranks complete records"] },
+  keyTakeaways: ["Clean before transforming", "Start with a farm question", "Prefer vectorized expressions when clear", "Validate map category coverage", "Use row-wise apply only when row context is needed", "Document thresholds and units", "Keep features explainable", "Inspect and validate engineered outputs before analysis or ML"],
+  whatsNext: { title: "Lesson 7.6 · GroupBy, Aggregation & Analysis", body: "Next, divide farm records into meaningful groups, calculate multiple summaries, count categories, and compare crops, regions, and sensor conditions." },
+  developmentPack: pandasTransformationDevelopmentPack,
 }];
 
 export const moduleSevenLessonSummaries = [
@@ -318,7 +417,7 @@ export const moduleSevenLessonSummaries = [
   { id: "module-7-lesson-2", moduleId: "module-7", order: 2, title: "7.2 Pandas DataFrames & Loading Real Data", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-3", moduleId: "module-7", order: 3, title: "7.3 Selecting, Filtering & Querying DataFrames", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-4", moduleId: "module-7", order: 4, title: "7.4 Data Cleaning & Missing Data", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Transformation & Feature Engineering", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-7-lesson-5", moduleId: "module-7", order: 5, title: "7.5 Data Transformation & Feature Engineering", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-7-lesson-6", moduleId: "module-7", order: 6, title: "7.6 GroupBy, Aggregation & Analysis", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-7", moduleId: "module-7", order: 7, title: "7.7 Combining & Reshaping Data", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-7-lesson-8", moduleId: "module-7", order: 8, title: "7.8 Real-World Pandas Project", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },

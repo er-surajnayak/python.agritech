@@ -68,6 +68,7 @@ import { NumpyIndexingLessonRenderer } from "@/components/learning/NumpyIndexing
 import { NumpyOperationsLessonRenderer } from "@/components/learning/NumpyOperationsLessonRenderer";
 import { NumpyMathStatisticsLessonRenderer } from "@/components/learning/NumpyMathStatisticsLessonRenderer";
 import { NumpyFilteringLessonRenderer } from "@/components/learning/NumpyFilteringLessonRenderer";
+import { NumpyArrayManagementLessonRenderer } from "@/components/learning/NumpyArrayManagementLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -265,6 +266,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "numpy-sorting-searching-filtering") {
     return <NumpyFilteringLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "numpy-combining-splitting-views") {
+    return <NumpyArrayManagementLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

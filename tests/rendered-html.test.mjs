@@ -1762,7 +1762,7 @@ test("Module 6 begins with a compact, data-driven NumPy introduction", async () 
 
   assert.match(moduleSource, /title: "Introduction to NumPy: Numerical Computing for Smart Agriculture"/);
   assert.match(moduleSource, /np\.mean\(temperature\)/);
-  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 17, "seven published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-6-lesson-/g) ?? []).length, 18, "eight published lessons and ten navigation summaries should exist");
   assert.match(packSource, /kind: "numpy-introduction"/);
   assert.match(packSource, /np\.arange\(0, 10, 2\)/);
   assert.match(packSource, /np\.linspace\(0, 10, 5\)/);
@@ -1930,4 +1930,31 @@ test("Lesson 6.7 publishes sorting, searching, and filtering tools", async () =>
   assert.match(blocksSource, /Python's <code>and<\/code> and <code>or<\/code>/);
   assert.match(stylesSource, /Module 6 · Lesson 6\.7 — NumPy sorting, searching, and filtering/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-filtering-pack/);
+});
+
+test("Lesson 6.8 publishes combining, splitting, copying, and view tools", async () => {
+  const [moduleSource, packSource, rendererRegistrySource, rendererSource, blocksSource, stylesSource] = await Promise.all([
+    readFile(new URL("content/module-6.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-6-8.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayManagementLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/NumpyArrayManagementLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+  ]);
+
+  assert.match(moduleSource, /title: "Combining, Splitting, Copying & Views: Managing Farm Sensor Data"/);
+  assert.match(moduleSource, /id: "module-6-lesson-8"[\s\S]*developmentPack: numpyArrayManagementDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-6-lesson-8"[\s\S]*isPlaceholder: false/);
+  assert.match(packSource, /kind: "numpy-combining-splitting-views"/);
+  for (const concept of ["np.concatenate", "np.vstack", "np.hstack", "np.stack", "np.split", "np.array_split", "np.column_stack", ".copy()"] ) assert.ok(packSource.includes(concept), `missing ${concept}`);
+  assert.match(rendererRegistrySource, /lesson\.developmentPack\?\.kind === "numpy-combining-splitting-views"/);
+  assert.match(rendererSource, /<ArrayCombiner/);
+  assert.match(rendererSource, /<ArraySplitter/);
+  assert.match(rendererSource, /<CopyViewDemonstrator/);
+  assert.match(blocksSource, /export function ArrayCombiner/);
+  assert.match(blocksSource, /Cannot split equally/);
+  assert.match(blocksSource, /Same underlying data/);
+  assert.match(blocksSource, /Independent data/);
+  assert.match(stylesSource, /Module 6 · Lesson 6\.8 — NumPy combining, splitting, copying, and views/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.numpy-array-management-pack/);
 });

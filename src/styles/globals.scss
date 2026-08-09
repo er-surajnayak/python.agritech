@@ -1951,6 +1951,40 @@
 @media (max-width: 48rem) { .numpy-filtering-pack { .numpy-filtering-flow, .numpy-any-all-grid, .numpy-filter-reference { grid-template-columns: repeat(2, minmax(0, 1fr)); } .numpy-sort-output { grid-template-columns: 1fr; p { grid-column: auto; } } } }
 @media (max-width: 35rem) { .numpy-filtering-pack { .numpy-filtering-flow, .numpy-sort-distinction, .numpy-where-result, .numpy-any-all-grid, .numpy-filter-reference { grid-template-columns: 1fr; } .numpy-sort-controls, .numpy-condition-tabs { display: grid; grid-template-columns: 1fr; button { width: 100%; } } .numpy-mask-pipeline > div { grid-template-columns: 1fr; } .numpy-replacement-note { grid-template-columns: 1fr; span { grid-column: auto; } } .numpy-filter-controls > div:first-child, .numpy-filter-controls > div:last-child { display: grid; grid-template-columns: 1fr; button { width: 100%; text-align: left; } } } }
 
+/* Module 6 · Lesson 6.8 — NumPy combining, splitting, copying, and views */
+.numpy-array-management-pack {
+  .numpy-management-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1.25rem; span { padding: 0.8rem; border-top: 3px solid var(--numpy-accent); background: var(--cds-layer-01); text-align: center; font-weight: 600; } }
+  .numpy-management-inputs, .numpy-column-stack-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 1rem; margin-top: 1.25rem; > span { color: var(--numpy-accent); font-size: 1.5rem; font-weight: 700; } }
+  .numpy-management-tabs, .numpy-concat-axis-tabs, .numpy-split-controls > div, .numpy-copy-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .numpy-management-tabs, .numpy-concat-axis-tabs, .numpy-copy-controls { margin: 1.25rem 0; }
+  .numpy-management-tabs button, .numpy-concat-axis-tabs button, .numpy-split-controls button, .numpy-copy-controls button { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 0.8rem; border: 1px solid var(--cds-border-subtle-01); background: var(--cds-layer-01); color: var(--cds-text-primary); cursor: pointer; &:hover, &.is-active { border-color: var(--numpy-accent); background: color-mix(in srgb, var(--numpy-accent) 12%, var(--cds-layer-01)); } }
+  .numpy-combiner-result { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 0.65fr); gap: 1rem; align-items: stretch; > div > span, .cds--tile > span { display: block; margin-bottom: 0.55rem; color: var(--cds-text-helper); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; } .cds--tile { min-width: 0; border-top: 3px solid var(--numpy-accent); background: var(--cds-layer-01); strong { display: block; font-size: 1.25rem; } p { color: var(--cds-text-secondary); } .cds--snippet { max-width: 100%; } } }
+  .numpy-combine-distinction { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; .cds--tile { display: flex; flex-direction: column; gap: 0.35rem; background: var(--cds-layer-01); strong { color: var(--numpy-accent); } span { color: var(--cds-text-secondary); } } }
+  .numpy-concat-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.35fr); align-items: center; gap: 1rem; > div { display: grid; gap: 0.8rem; min-width: 0; } > svg { color: var(--numpy-accent); } .cds--snippet { max-width: 100%; } }
+  .numpy-split-controls { display: grid; grid-template-columns: auto auto minmax(12rem, 1fr); align-items: end; gap: 1rem; margin: 1.25rem 0; }
+  .numpy-split-parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.75rem; margin: 1rem 0; .cds--tile { display: flex; min-width: 0; flex-direction: column; gap: 0.45rem; border-top: 3px solid var(--numpy-accent); background: var(--cds-layer-01); strong { overflow-wrap: anywhere; } } }
+  .numpy-split-error { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; border-left: 3px solid var(--cds-support-error); background: color-mix(in srgb, var(--cds-support-error) 7%, var(--cds-layer-01)); span { color: var(--cds-text-secondary); } }
+  .numpy-column-stack-layout { > div { display: grid; gap: 0.7rem; min-width: 0; } p { margin: 0; color: var(--cds-text-secondary); text-align: center; } }
+  .numpy-copy-status { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.9rem 1rem; border-left: 3px solid; background: var(--cds-layer-01); span { color: var(--cds-text-secondary); } &.is-view { border-color: var(--cds-support-warning); } &.is-copy { border-color: var(--cds-support-success); } }
+  .numpy-copy-layout { display: grid; grid-template-columns: minmax(0, 1fr) 5rem minmax(0, 0.8fr); align-items: center; gap: 1rem; margin: 1.25rem 0; > div { min-width: 0; } .cds--snippet { max-width: 100%; margin-top: 0.75rem; } }
+  .numpy-memory-link { position: relative; display: grid; place-items: center; height: 0.2rem; background: var(--cds-border-strong-01); span { padding: 0.35rem 0.5rem; background: var(--cds-layer-02); color: var(--cds-text-helper); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; } &.is-view { background: var(--cds-support-warning); } &.is-copy { background: transparent; border-top: 2px dashed var(--cds-support-success); } }
+  .numpy-copy-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .numpy-copy-explanation { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; background: var(--cds-layer-01); span { color: var(--cds-text-secondary); } }
+  .numpy-management-reference { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.25rem; .cds--tile { display: flex; min-width: 0; flex-direction: column; gap: 0.4rem; background: var(--cds-layer-01); code { color: var(--numpy-accent); overflow-wrap: anywhere; } span { color: var(--cds-text-secondary); overflow-wrap: anywhere; } } }
+}
+
+@media (max-width: 64rem) {
+  .numpy-array-management-pack { .numpy-combiner-result, .numpy-split-controls { grid-template-columns: 1fr; } }
+}
+
+@media (max-width: 48rem) {
+  .numpy-array-management-pack { .numpy-management-inputs, .numpy-column-stack-layout, .numpy-concat-layout, .numpy-copy-layout { grid-template-columns: 1fr; } .numpy-management-inputs > span, .numpy-column-stack-layout > span, .numpy-concat-layout > svg { justify-self: center; transform: rotate(90deg); } .numpy-memory-link { width: 0.2rem; height: 3rem; justify-self: center; } }
+}
+
+@media (max-width: 35rem) {
+  .numpy-array-management-pack { .numpy-management-flow, .numpy-combine-distinction, .numpy-management-reference { grid-template-columns: 1fr; } .numpy-management-tabs, .numpy-concat-axis-tabs, .numpy-copy-controls { flex-direction: column; } .numpy-management-tabs button, .numpy-concat-axis-tabs button, .numpy-copy-controls button { width: 100%; } }
+}
+
 /* Topic-wise assignment hub */
 .assignments-page { padding-top: clamp(3rem, 6vw, 6rem); padding-bottom: clamp(4rem, 8vw, 8rem); }
 .assignments-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(20rem, .8fr); gap: clamp(2rem, 6vw, 6rem); align-items: end; padding-bottom: 3rem; border-bottom: 1px solid var(--cds-border-subtle-01); }

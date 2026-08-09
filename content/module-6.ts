@@ -5,6 +5,7 @@ import { numpyIndexingDevelopmentPack } from "@/content/development-packs/lesson
 import { numpyOperationsDevelopmentPack } from "@/content/development-packs/lesson-6-5";
 import { numpyMathStatisticsDevelopmentPack } from "@/content/development-packs/lesson-6-6";
 import { numpyFilteringDevelopmentPack } from "@/content/development-packs/lesson-6-7";
+import { numpyArrayManagementDevelopmentPack } from "@/content/development-packs/lesson-6-8";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleSixLessons: LessonDocument[] = [
@@ -570,8 +571,86 @@ print("Any critical moisture:", np.any(moisture < 40))`,
     assignment: { title: "Smart Farm Alert Filter", brief: "Build a compact NumPy program that ranks readings, locates threshold positions, and selects field rows using single and compound conditions.", deliverables: ["Ascending and descending sort", "argsort ranking indices", "One exact-value where search", "One simple Boolean filter", "One & range condition", "One | condition", "One any and one all check", "One multi-column sensor row filter"] },
     summarySection: { title: "You can now locate the readings behind a farm decision", body: "You sorted values, preserved ranking positions, found matching indices, built Boolean masks, combined conditions, and selected complete records.", items: ["np.sort returns values", "np.argsort returns sorting indices", "np.where finds matching positions", "True keeps and False removes", "& means both; | means either", "np.any asks at least one; np.all asks every one"] },
     keyTakeaways: ["Choose values or positions intentionally", "Use [::-1] for a descending sorted copy", "Inspect a mask before selecting rows", "Use & and | instead of Python and/or for arrays", "Parenthesize every comparison in a compound condition", "The reusable pattern is condition → mask → filtered data"],
-    whatsNext: { title: "Lesson 6.8 · Combining & Splitting Arrays", body: "Next, assemble and separate Smart Farm datasets with concatenate, stack, split, vsplit, and hsplit." },
+    whatsNext: { title: "Lesson 6.8 · Combining, Splitting, Copying & Views", body: "Next, assemble and separate Smart Farm datasets, then learn when a selected array shares data and when to create an independent copy." },
     developmentPack: numpyFilteringDevelopmentPack,
+  },
+  {
+    id: "module-6-lesson-8",
+    moduleId: "module-6",
+    number: "6.8",
+    title: "Combining, Splitting, Copying & Views: Managing Farm Sensor Data",
+    summary: "Combine separate sensor feeds, split processing batches, construct feature columns, and choose deliberately between connected views and independent copies.",
+    durationMinutes: 135,
+    level: "Intermediate",
+    introduction: { title: "From one array to a data pipeline", body: "Smart Farm readings arrive by time, farm, and sensor type. Useful analysis requires joining those feeds, dividing batches, and selecting working data without accidental side effects." },
+    objectives: ["Combine arrays with np.concatenate()", "Add rows or columns using axis", "Use np.vstack() and np.hstack()", "Create a new axis with np.stack()", "Distinguish concatenate() from stack()", "Split arrays with np.split() and np.array_split()", "Build feature matrices with np.column_stack()", "Explain the difference between a copy and a view", "Create independent data with .copy()", "Apply array management to Smart Farm datasets"],
+    whyThisMatters: { title: "Operational data rarely arrives in one perfect array", body: "Engineers assemble separate telemetry feeds, distribute batches for processing, and create safe working subsets every day.", items: ["Combine morning and evening readings", "Merge data from several farms", "Split batches across processing stages", "Prevent exploratory edits from changing source data"] },
+    industryMotivation: { title: "Array ownership matters in data and ML workflows", body: "Concatenation and stacking shape model-ready datasets, while understanding views prevents hidden mutations during cleaning and feature engineering.", items: ["IoT gateways merge sensor batches", "ML features become dataset columns", "Parallel jobs receive array sections", "Copies protect validated source data"], signal: "Correct shapes and clear data ownership make numerical pipelines easier to trust." },
+    concept: { title: "Structure and ownership are separate decisions", body: "Combining and splitting decide how values are arranged. Copy and view behavior decides whether selected arrays share the same underlying data.", items: ["concatenate extends an axis", "stack creates a new axis", "split requires equal sections", "array_split allows unequal sections", "views share data", "copies are independent"] },
+    workflow: { title: "Manage a sensor dataset intentionally", description: "Choose the operation that matches both the desired shape and ownership.", steps: [
+      { title: "Inspect", description: "Check source shapes and what each axis represents." },
+      { title: "Combine", description: "Extend an axis or create a new one deliberately." },
+      { title: "Split", description: "Choose equal or flexible sections for the next stage." },
+      { title: "Select", description: "Take the exact working subset you need." },
+      { title: "Protect", description: "Call copy() when changes must not reach the source." },
+    ] },
+    agritechExample: { title: "Build one daily multi-sensor dataset", body: "Morning and evening temperatures can be concatenated into one timeline, while temperature, humidity, and moisture arrays can be column-stacked into a feature matrix." },
+    playground: {
+      title: "Run a Smart Farm Array Management Pipeline",
+      description: "Execute combine, split, column-stack, view, and copy behavior in the browser NumPy runtime.",
+      starterCode: `import numpy as np
+
+morning = np.array([28, 30, 31])
+evening = np.array([32, 29, 30])
+daily = np.concatenate((morning, evening))
+
+temperature = np.array([28, 30, 31])
+humidity = np.array([65, 70, 68])
+moisture = np.array([40, 42, 38])
+sensor_data = np.column_stack((temperature, humidity, moisture))
+
+original = np.array([10, 20, 30, 40])
+view = original[1:3]
+view[0] = 999
+
+safe_original = np.array([10, 20, 30, 40])
+independent = safe_original[1:3].copy()
+independent[0] = 999
+
+print("Daily:", daily)
+print("Daily mean:", np.mean(daily))
+print("Feature matrix:", sensor_data)
+print("View changed original:", original)
+print("Copy protected original:", safe_original)`,
+      expectedOutcome: "The runner creates a six-value daily array, a 3 × 3 feature matrix, shows a view changing its original, and confirms that an independent copy leaves its source unchanged.",
+    },
+    practice: [
+      { level: "Easy", title: "Concatenate readings", prompt: "Combine [1, 2, 3] and [4, 5, 6] into one 1D array.", guidance: "Pass both arrays as a tuple to np.concatenate()." },
+      { level: "Easy", title: "Stack rows", prompt: "Use vstack() to place [10, 20] above [30, 40].", guidance: "Each 1D input becomes one row." },
+      { level: "Medium", title: "Compare horizontal and vertical", prompt: "Apply hstack() and vstack() to two 1D arrays and explain their output shapes.", guidance: "One extends the 1D line; the other creates two rows." },
+      { level: "Medium", title: "Create a new axis", prompt: "Stack two shape-(3,) arrays and predict the default result shape.", guidance: "np.stack() creates a new leading axis by default." },
+      { level: "Medium", title: "Equal batches", prompt: "Split [10, 20, 30, 40, 50, 60] into three parts.", guidance: "Use np.split(data, 3)." },
+      { level: "Medium", title: "Unequal batches", prompt: "Divide five values into two permitted unequal parts.", guidance: "Use np.array_split(), not np.split()." },
+      { level: "Challenge", title: "Construct feature columns", prompt: "Column-stack temperature, humidity, and moisture into a 3 × 3 dataset.", guidance: "The three source arrays become three columns." },
+      { level: "Challenge", title: "Protect source readings", prompt: "Select values 1:3, modify the selection, and ensure the original remains unchanged.", guidance: "Call .copy() on the slice before modifying it." },
+    ],
+    quiz: [
+      { title: "Existing axis", question: "What does concatenate() do?", options: ["Extends an existing axis", "Always creates a new axis", "Only splits data", "Copies one scalar"], correctOptionIndex: 0, note: "It joins along an axis already present.", explanation: "concatenate extends a compatible existing dimension." },
+      { title: "Vertical stack", question: "What does vstack() emphasize?", options: ["Rows", "Sorting", "Copies", "Randomness"], correctOptionIndex: 0, note: "V means vertical.", explanation: "vstack places compatible arrays vertically." },
+      { title: "Horizontal stack", question: "What is np.hstack(([1,2], [3,4])) for 1D arrays?", options: ["[1,2,3,4]", "[[1,2],[3,4]]", "[4,6]", "An error"], correctOptionIndex: 0, note: "The values go side by side.", explanation: "hstack extends the one-dimensional axis." },
+      { title: "New axis", question: "Which function explicitly joins arrays along a new axis?", options: ["np.stack()", "np.sort()", "np.split()", "np.copyto()"], correctOptionIndex: 0, note: "This is the central stack distinction.", explanation: "np.stack creates a new dimension." },
+      { title: "Stack shape", question: "What is the default stack shape for two arrays of shape (3,)?", options: ["(6,)", "(2, 3)", "(3,)", "(3, 3)"], correctOptionIndex: 1, note: "A new leading dimension counts the inputs.", explanation: "Two length-three arrays become a 2 × 3 result." },
+      { title: "Equal split", question: "Which function requires equal division?", options: ["np.split()", "np.array_split()", "np.stack()", "np.column_stack()"], correctOptionIndex: 0, note: "Unequal data raises an error.", explanation: "np.split requires equal-sized sections." },
+      { title: "Flexible split", question: "Which function can divide five values into two unequal sections?", options: ["np.split()", "np.array_split()", "np.vstack()", "arr.copy()"], correctOptionIndex: 1, note: "It distributes the remainder to early sections.", explanation: "array_split allows unequal sizes." },
+      { title: "Feature matrix", question: "What does column_stack() do with three 1D feature arrays?", options: ["Creates three columns", "Sorts each array", "Creates one scalar", "Deletes duplicates"], correctOptionIndex: 0, note: "Each input becomes a feature.", explanation: "column_stack constructs a 2D matrix from 1D columns." },
+      { title: "View", question: "What can happen after modifying a basic slice view?", options: ["The original can change", "The original is always protected", "The array is sorted", "The dtype disappears"], correctOptionIndex: 0, note: "They may share underlying data.", explanation: "Basic slicing generally returns a view." },
+      { title: "Independent data", question: "Which expression protects the original from slice edits?", options: ["arr[1:3].copy()", "arr[1:3]", "arr.view", "np.split(arr, 1)"], correctOptionIndex: 0, note: "Request a copy explicitly.", explanation: ".copy() creates independent storage." },
+    ],
+    assignment: { title: "Smart Farm Dataset Manager", brief: "Build a compact workflow that combines daily feeds, constructs sensor columns, divides a batch, and demonstrates safe working-copy behavior.", deliverables: ["One concatenate operation", "One axis-based 2D concatenation", "vstack and hstack comparison", "stack with reported shape", "Equal and unequal split", "A three-column sensor matrix", "A view mutation demonstration", "A protected copy demonstration"] },
+    summarySection: { title: "You can now manage array shape and ownership", body: "You joined datasets along existing and new axes, divided arrays into equal or flexible sections, created feature columns, and protected original data with explicit copies.", items: ["concatenate extends an axis", "vstack adds rows", "hstack places data side by side", "stack creates a new axis", "split requires equal sections", "array_split allows unequal sections", "views share data", "copies are independent"] },
+    keyTakeaways: ["Choose combine operations by desired result shape", "Use axis=0 for rows and axis=1 for columns in 2D concatenation", "Use stack when a new dimension carries meaning", "Choose array_split when equal division is impossible", "Treat a basic slice as connected to its source", "Call .copy() when a working subset must be independent"],
+    whatsNext: { title: "Lesson 6.9 · Random Numbers & Practical NumPy", body: "Next, generate reproducible sensor simulations with NumPy random tools and apply the full array workflow to practical farm data." },
+    developmentPack: numpyArrayManagementDevelopmentPack,
   },
 ];
 
@@ -583,7 +662,7 @@ export const moduleSixLessonSummaries = [
   { id: "module-6-lesson-5", moduleId: "module-6", order: 5, title: "6.5 Array Operations & Broadcasting", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-6", moduleId: "module-6", order: 6, title: "6.6 Mathematical & Statistical Functions", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-7", moduleId: "module-6", order: 7, title: "6.7 Filtering, Sorting & Searching", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining & Splitting Arrays", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-6-lesson-8", moduleId: "module-6", order: 8, title: "6.8 Combining, Splitting, Copying & Views", estimatedMinutes: 135, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-6-lesson-9", moduleId: "module-6", order: 9, title: "6.9 Random Numbers & Practical NumPy", estimatedMinutes: 135, status: "not-started" as const, isPlaceholder: true },
   { id: "module-6-lesson-10", moduleId: "module-6", order: 10, title: "6.10 Smart Farm Numerical Analysis", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },
 ];

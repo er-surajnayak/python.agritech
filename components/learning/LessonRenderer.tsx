@@ -80,6 +80,7 @@ import { PandasCombiningLessonRenderer } from "@/components/learning/PandasCombi
 import { MatplotlibBasicsLessonRenderer } from "@/components/learning/MatplotlibBasicsLessonRenderer";
 import { MatplotlibChartTypesLessonRenderer } from "@/components/learning/MatplotlibChartTypesLessonRenderer";
 import { MatplotlibDistributionLessonRenderer } from "@/components/learning/MatplotlibDistributionLessonRenderer";
+import { MatplotlibCustomizationLessonRenderer } from "@/components/learning/MatplotlibCustomizationLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -313,6 +314,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "matplotlib-distribution-analysis") {
     return <MatplotlibDistributionLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "matplotlib-customization-subplots") {
+    return <MatplotlibCustomizationLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (

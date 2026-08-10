@@ -1,6 +1,7 @@
 import { matplotlibBasicsDevelopmentPack } from "@/content/development-packs/lesson-8-1";
 import { matplotlibChartTypesDevelopmentPack } from "@/content/development-packs/lesson-8-2";
 import { matplotlibDistributionDevelopmentPack } from "@/content/development-packs/lesson-8-3";
+import { matplotlibCustomizationDevelopmentPack } from "@/content/development-packs/lesson-8-4";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleEightLessons: LessonDocument[] = [{
@@ -232,13 +233,102 @@ print("Open figures:", plt.get_fignums())`,
   keyTakeaways: ["Distribution describes all readings together", "Bins are numerical intervals", "Bin choice affects appearance", "Histograms reveal shape", "Box plots reveal quartiles", "IQR resists extreme values", "Outliers are investigation prompts", "Compare groups with aligned boxes", "Use numerical data for histograms", "Preserve field context"],
   whatsNext: { title: "Lesson 8.4 · Customization, Labels, Legends, Subplots & Styling", body: "Next, improve chart communication with purposeful styling, annotations, legends, layouts, and multiple Axes." },
   developmentPack: matplotlibDistributionDevelopmentPack,
+}, {
+  id: "module-8-lesson-4", moduleId: "module-8", number: "8.4", title: "Customization, Labels, Legends, Subplots & Styling", durationMinutes: 170, level: "Intermediate",
+  summary: "Turn valid Matplotlib charts into clear analytical figures with purposeful titles, units, line styling, legends, scales, ticks, Figure/Axes structure, and Agritech subplot layouts.",
+  introduction: { title: "Clarity is the reason to customize", body: "A basic plot may contain the data, but a useful figure supplies the context and layout needed to interpret it. Styling is successful when it makes the analytical question easier to answer." },
+  objectives: ["Customize titles and axis labels", "Set figure size", "Control line color, markers, and style", "Use line width and alpha purposefully", "Add and position legends", "Customize readable grids", "Set axis limits and custom ticks", "Distinguish Figure from Axes", "Create 2 × 1 and 2 × 2 subplots", "Use tight_layout() and sharex", "Build a compact Agritech monitoring figure", "Avoid misleading or excessive styling"],
+  whyThisMatters: { title: "A chart must carry its own context", body: "Charts are often exported, shared, or presented away from the code that created them. Titles, variable names, units, legends, and honest scales preserve meaning when the surrounding explanation disappears.", items: ["Labels preserve variables and units", "Legends identify multiple series", "Limits frame the visible evidence", "Subplots coordinate related questions"] },
+  industryMotivation: { title: "Monitoring views combine evidence without mixing units", body: "A farm team may inspect temperature, moisture, rainfall, and yield together. Separate aligned Axes preserve each variable's unit while making time-based patterns easy to compare.", items: ["Share time axes across panels", "Keep each variable's own y scale", "Use restrained grids and emphasis", "Prevent overlapping titles and labels"], signal: "Question → clear labels → honest scale → purposeful styling → related Axes → readable decision support." },
+  concept: { title: "Figure contains one or more Axes", body: "The Figure is the entire canvas. Each Axes is an independent plotting area with its own chart, title, labels, ticks, limits, and legend. The object-oriented API makes this hierarchy explicit.", items: ["Figure: whole canvas", "Axes: one plot area", "axes[0]: first one-dimensional panel", "axes[row, column]: 2D panel", "sharex: aligned x scale", "tight_layout: spacing adjustment"] },
+  workflow: { title: "Customize from communication needs", description: "Improve meaning first, then emphasis and layout.", steps: [{ title: "Identify", description: "State what the reader must understand." }, { title: "Label", description: "Add a descriptive title, variable names, and units." }, { title: "Distinguish", description: "Use restrained markers, line styles, and a legend." }, { title: "Scale", description: "Choose honest limits and useful ticks." }, { title: "Layout", description: "Use separate Axes for related variables with different units." }, { title: "Review", description: "Remove clutter and correct overlap before sharing." }] },
+  agritechExample: { title: "A four-panel farm monitoring Figure", body: "Temperature, soil moisture, rainfall, and crop yield occupy separate Axes in a 2 × 2 Figure. Each keeps its own unit and chart form while the shared weekly context makes the system view coherent." },
+  playground: {
+    title: "Run a Complete Customized Agritech Figure",
+    description: "Create a styled line chart, a shared-x two-panel Figure, and a 2 × 2 monitoring Figure; inspect titles, labels, legends, limits, ticks, layout, and close every Figure.",
+    starterCode: `import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+days = [1, 2, 3, 4, 5, 6, 7]
+temperature = [25, 27, 28, 30, 32, 31, 29]
+moisture = [60, 57, 54, 52, 48, 45, 42]
+rainfall = [5, 0, 2, 0, 0, 1, 0]
+yield_data = [420, 435, 448, 462, 470, 468, 475]
+
+fig_line, ax = plt.subplots(figsize=(8, 5))
+ax.plot(days, temperature, color="green", marker="o",
+        linestyle="--", linewidth=2, alpha=0.8,
+        label="Temperature")
+ax.set_title("Weekly Farm Temperature")
+ax.set_xlabel("Day")
+ax.set_ylabel("Temperature (°C)")
+ax.set_xlim(1, 7)
+ax.set_ylim(20, 40)
+ax.set_xticks(days, ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"])
+ax.grid(True, linestyle="--", alpha=0.5)
+ax.legend(loc="upper left")
+
+fig_shared, shared = plt.subplots(2, 1, sharex=True, figsize=(8, 7))
+shared[0].plot(days, temperature, marker="o")
+shared[0].set_title("Temperature")
+shared[1].plot(days, moisture, marker="s")
+shared[1].set_title("Soil Moisture")
+fig_shared.tight_layout()
+
+fig_grid, axes = plt.subplots(2, 2, figsize=(10, 7))
+axes[0, 0].plot(days, temperature); axes[0, 0].set_title("Temperature")
+axes[0, 1].plot(days, moisture); axes[0, 1].set_title("Soil Moisture")
+axes[1, 0].bar(days, rainfall); axes[1, 0].set_title("Rainfall")
+axes[1, 1].plot(days, yield_data); axes[1, 1].set_title("Crop Yield")
+fig_grid.tight_layout()
+
+print("Figure size:", fig_line.get_size_inches().tolist())
+print("Line style / marker:", ax.lines[0].get_linestyle(), ax.lines[0].get_marker())
+print("Labels:", ax.get_xlabel(), "/", ax.get_ylabel())
+print("Legend location:", ax.legend_._loc)
+print("Limits:", ax.get_xlim(), ax.get_ylim())
+print("Shared x:", shared[0].get_shared_x_axes().joined(shared[0], shared[1]))
+print("Grid Axes:", len(fig_grid.axes))
+print("Panel titles:", [item.get_title() for item in fig_grid.axes])
+for fig in [fig_line, fig_shared, fig_grid]: plt.close(fig)
+print("Open figures:", plt.get_fignums())`,
+    expectedOutcome: "The runner confirms an 8 × 5 Figure, dashed circle-marked line, meaningful labels, upper-left legend, explicit limits, a shared x-axis, four titled monitoring Axes, and no open Figures.",
+  },
+  practice: [
+    { level: "Easy", title: "Add communication context", prompt: "Add a meaningful title, x label, y label with units, and restrained grid to temperature data.", guidance: "The result should make sense outside the notebook." },
+    { level: "Easy", title: "Line identity", prompt: "Add circle markers and a dashed line style.", guidance: "Use marker= and linestyle=." },
+    { level: "Medium", title: "Field comparison", prompt: "Compare two field trends with labels and a positioned legend.", guidance: "Each artist needs label= before legend()." },
+    { level: "Medium", title: "Honest limits", prompt: "Set transparent x and y ranges for the weekly temperature chart.", guidance: "Explain how the chosen range affects perception." },
+    { level: "Medium", title: "Two related panels", prompt: "Create temperature and soil-moisture subplots in two rows.", guidance: "Use axes[0], axes[1], and tight_layout()." },
+    { level: "Medium", title: "Four-panel monitoring", prompt: "Create a 2 × 2 Figure for temperature, moisture, rainfall, and yield.", guidance: "Use axes[row, column] and preserve units." },
+    { level: "Challenge", title: "Shared weekly axis", prompt: "Create multiple time-based panels with sharex=True.", guidance: "Label the x axis on the lower panel." },
+    { level: "Challenge", title: "Configurable farm chart", prompt: "Build controls for title, marker, line style, grid, and legend, then generate equivalent Matplotlib code.", guidance: "Keep the data unchanged while presentation options change." },
+  ],
+  quiz: [
+    { title: "Figure size", question: "What does figsize=(8, 5) describe?", options: ["Figure width and height in inches", "Eight lines and five points", "Axis limits", "Legend position"], correctOptionIndex: 0, note: "Canvas dimensions.", explanation: "Matplotlib figsize values are inches." },
+    { title: "Alpha", question: "What does alpha=0.7 control?", options: ["Transparency", "Line length", "Tick count", "Figure rows"], correctOptionIndex: 0, note: "0 is invisible; 1 is opaque.", explanation: "Alpha is useful when artists overlap." },
+    { title: "Legend", question: "Which combination displays a useful legend?", options: ["label= plus legend()", "title() plus grid()", "xlim() plus ylim()", "figure() plus close()"], correctOptionIndex: 0, note: "Name then display.", explanation: "Plotted labels become legend entries." },
+    { title: "Limits", question: "What is a risk of narrow y-axis limits?", options: ["They can exaggerate small differences", "They delete data", "They disable labels", "They create subplots"], correctOptionIndex: 0, note: "Scale affects perception.", explanation: "Limits should clarify rather than mislead." },
+    { title: "Ticks", question: "Which function can replace day numbers with weekday labels?", options: ["plt.xticks()", "plt.legend()", "plt.alpha()", "plt.tight_layout()"], correctOptionIndex: 0, note: "Position + label.", explanation: "xticks controls displayed x positions and text." },
+    { title: "Axes", question: "What owns set_title(), set_xlabel(), and plot()?", options: ["Axes", "Figure only", "Dataset", "Legend"], correctOptionIndex: 0, note: "One plotting area.", explanation: "Axes methods configure a particular panel." },
+    { title: "Subplots", question: "What does plt.subplots(2, 2) create?", options: ["A Figure with four Axes", "Two Figures", "One line with two styles", "A two-point chart"], correctOptionIndex: 0, note: "Rows × columns.", explanation: "The axes array has two rows and two columns." },
+    { title: "Index", question: "In a 2 × 2 layout, which reference selects the lower-left panel?", options: ["axes[1, 0]", "axes[0, 1]", "axes[2]", "fig[1, 0]"], correctOptionIndex: 0, note: "Row 1, column 0.", explanation: "Two-dimensional axes arrays use row then column." },
+    { title: "Shared axis", question: "Why use sharex=True for weekly farm panels?", options: ["Align the same day scale", "Merge different y units", "Add a legend automatically", "Increase alpha"], correctOptionIndex: 0, note: "Common time base.", explanation: "Temperature and moisture keep separate y scales while sharing days." },
+    { title: "Layout", question: "What problem does tight_layout() primarily address?", options: ["Overlapping subplot labels and titles", "Missing numerical data", "Incorrect chart choice", "Outlier deletion"], correctOptionIndex: 0, note: "Spacing adjustment.", explanation: "It adjusts panel spacing before display." },
+  ],
+  assignment: { title: "Smart Farm Monitoring Figure", brief: "Create a clean multi-panel Matplotlib Figure that communicates four related weekly farm variables without mixing their units.", deliverables: ["Purposeful figure size", "Four titled Axes", "Axis labels with units", "Appropriate line/bar marks", "Restrained marker and line styling", "Useful grids", "Shared x-axis where appropriate", "Honest limits", "tight_layout()", "Readable exported result"] },
+  summarySection: { title: "You can now design a clear multi-Axes Matplotlib Figure", body: "You used labels, units, line properties, legends, grids, limits, ticks, Figure/Axes structure, shared scales, and subplot layouts to improve communication rather than decorate the data.", items: ["Context before style", "Figure contains Axes", "Labels preserve meaning", "Legends identify artists", "Limits influence perception", "Subplots separate units", "tight_layout reduces overlap"] },
+  keyTakeaways: ["Customize to solve a reading problem", "Include descriptive titles and units", "Use color, marker, and style sparingly", "Legends require labels", "Keep grids visually quiet", "Disclose intentional limits", "Figure is the full canvas", "Axes is one plotting area", "Use subplots for related views", "Use sharex for aligned time", "Use tight_layout before display", "Remove styling that does not add meaning"],
+  whatsNext: { title: "Lesson 8.5 · Plotly Fundamentals + Interactive Charts", body: "Next, move from static Matplotlib figures to interactive Plotly charts with hover, zoom, pan, and browser-friendly exploration." },
+  developmentPack: matplotlibCustomizationDevelopmentPack,
 }];
 
 export const moduleEightLessonSummaries = [
   { id: "module-8-lesson-1", moduleId: "module-8", order: 1, title: "8.1 Introduction to Data Visualization + Matplotlib Basics", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-8-lesson-2", moduleId: "module-8", order: 2, title: "8.2 Line, Bar, Scatter & Area Charts", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-8-lesson-3", moduleId: "module-8", order: 3, title: "8.3 Histograms, Box Plots & Distribution Analysis", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-8-lesson-4", moduleId: "module-8", order: 4, title: "8.4 Customization, Labels, Legends, Subplots & Styling", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-8-lesson-4", moduleId: "module-8", order: 4, title: "8.4 Customization, Labels, Legends, Subplots & Styling", estimatedMinutes: 170, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-8-lesson-5", moduleId: "module-8", order: 5, title: "8.5 Plotly Fundamentals + Interactive Charts", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-8-lesson-6", moduleId: "module-8", order: 6, title: "8.6 Plotly Bar, Line, Scatter, Histogram & Box Charts", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-8-lesson-7", moduleId: "module-8", order: 7, title: "8.7 Interactive Agritech Dashboards & Advanced Plotly", estimatedMinutes: 180, status: "not-started" as const, isPlaceholder: true },

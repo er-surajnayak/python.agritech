@@ -2177,7 +2177,7 @@ test("Module 8 begins with Matplotlib foundations and a ten-lesson visualization
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 13, "three published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 14, "four published lessons and ten navigation summaries should exist");
   assert.match(moduleSource, /title: "Introduction to Data Visualization \+ Matplotlib Basics"/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*developmentPack: matplotlibBasicsDevelopmentPack/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2251,4 +2251,31 @@ test("Module 8.3 teaches histogram bins, box plots, IQR, and outlier investigati
   assert.match(chartSource, /boxplot-chart/);
   assert.match(stylesSource, /Module 8 · Lesson 8\.3 — Distribution analysis/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-distribution-pack/);
+});
+
+test("Module 8.4 teaches purposeful customization, Figure/Axes, and subplots", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, chartSource, stylesSource, moduleSevenSource] = await Promise.all([
+    readFile(new URL("content/module-8.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-8-4.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibCustomizationLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibCustomizationLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibCustomizationRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-8-lesson-4"[\s\S]*title: "Customization, Labels, Legends, Subplots & Styling"/);
+  assert.match(moduleSource, /id: "module-8-lesson-4"[\s\S]*developmentPack: matplotlibCustomizationDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-8-lesson-4"[\s\S]*isPlaceholder: false/);
+  assert.match(moduleSevenSource, /id: "module-7-lesson-8"[\s\S]*isPlaceholder: true/);
+  assert.match(packSource, /kind: "matplotlib-customization-subplots"/);
+  for (const concept of ["figsize", "linewidth", "alpha", "plt.subplots", "tight_layout", "sharex"]) assert.ok(packSource.includes(concept) || moduleSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "matplotlib-customization-subplots"/);
+  for (const component of ["FarmChartDesigner", "SubplotBuilder", "FixBadChart", "FigureAxesSubplots"]) assert.ok(rendererSource.includes(`<${component}`), `missing ${component}`);
+  assert.match(blocksSource, /Customization should answer a readability problem/);
+  assert.match(blocksSource, /Repair meaning before decoration/);
+  assert.match(chartSource, /subplot-figure/);
+  assert.match(chartSource, /style-legend/);
+  assert.match(stylesSource, /Module 8 · Lesson 8\.4 — Matplotlib customization and subplots/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-customization-pack/);
 });

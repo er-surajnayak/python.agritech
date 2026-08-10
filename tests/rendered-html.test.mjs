@@ -2177,7 +2177,7 @@ test("Module 8 begins with Matplotlib foundations and a ten-lesson visualization
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 12, "two published lessons and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 13, "three published lessons and ten navigation summaries should exist");
   assert.match(moduleSource, /title: "Introduction to Data Visualization \+ Matplotlib Basics"/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*developmentPack: matplotlibBasicsDevelopmentPack/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2224,4 +2224,31 @@ test("Module 8.2 teaches line, bar, scatter, and area chart selection", async ()
   assert.match(chartSource, /kind === "area"/);
   assert.match(stylesSource, /Module 8 · Lesson 8\.2 — Core Matplotlib chart types/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-chart-types-pack/);
+});
+
+test("Module 8.3 teaches histogram bins, box plots, IQR, and outlier investigation", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, chartSource, stylesSource, moduleSevenSource] = await Promise.all([
+    readFile(new URL("content/module-8.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-8-3.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibDistributionLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibDistributionLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibDistributionRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-8-lesson-3"[\s\S]*title: "Histograms, Box Plots & Distribution Analysis"/);
+  assert.match(moduleSource, /id: "module-8-lesson-3"[\s\S]*developmentPack: matplotlibDistributionDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-8-lesson-3"[\s\S]*isPlaceholder: false/);
+  assert.match(moduleSevenSource, /id: "module-7-lesson-8"[\s\S]*isPlaceholder: true/);
+  assert.match(packSource, /kind: "matplotlib-distribution-analysis"/);
+  for (const concept of ["plt.hist", "plt.boxplot", "IQR = Q3 - Q1", "Q1 - 1.5 * IQR", "Q3 + 1.5 * IQR"]) assert.ok(packSource.includes(concept) || moduleSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "matplotlib-distribution-analysis"/);
+  for (const component of ["DistributionExplorer", "OutlierDetective", "BinExplorer", "BoxPlotAnatomy"]) assert.ok(rendererSource.includes(`<${component}`), `missing ${component}`);
+  assert.match(blocksSource, /Potential outlier does not mean bad data/);
+  assert.match(blocksSource, /Bin choice changes the appearance/);
+  assert.match(chartSource, /histogram-chart/);
+  assert.match(chartSource, /boxplot-chart/);
+  assert.match(stylesSource, /Module 8 · Lesson 8\.3 — Distribution analysis/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-distribution-pack/);
 });

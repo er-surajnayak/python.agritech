@@ -1,5 +1,6 @@
 import { matplotlibBasicsDevelopmentPack } from "@/content/development-packs/lesson-8-1";
 import { matplotlibChartTypesDevelopmentPack } from "@/content/development-packs/lesson-8-2";
+import { matplotlibDistributionDevelopmentPack } from "@/content/development-packs/lesson-8-3";
 import type { LessonDocument } from "@/types/content";
 
 export const moduleEightLessons: LessonDocument[] = [{
@@ -156,12 +157,87 @@ print("Open figures:", plt.get_fignums())`,
   keyTakeaways: ["Choose from the question", "Use line for trends", "Use bar for categories", "Use barh for long labels", "Use scatter for paired numerical variables", "Use area to emphasize magnitude", "Keep x/y observations aligned", "Label groups and units", "Do not infer causation from scatter alone", "Advanced styling comes later"],
   whatsNext: { title: "Lesson 8.3 · Histograms, Box Plots & Distribution Analysis", body: "Next, move from individual trends and comparisons to distributions, spread, center, and potential outliers." },
   developmentPack: matplotlibChartTypesDevelopmentPack,
+}, {
+  id: "module-8-lesson-3", moduleId: "module-8", number: "8.3", title: "Histograms, Box Plots & Distribution Analysis", durationMinutes: 165, level: "Intermediate",
+  summary: "Analyze Smart Farm sensor distributions with histogram bins, box-plot quartiles, IQR fences, group comparisons, and context-aware investigation of unusual readings.",
+  introduction: { title: "A distribution describes all observations together", body: "Rather than reading values one at a time, distribution analysis reveals concentration, spread, shape, and observations separated from most of the data." },
+  objectives: ["Explain what a distribution represents", "Create histograms with plt.hist()", "Explain histogram frequency and bins", "Judge the effect of changing bin counts", "Interpret center, spread, shape, and unusual values", "Create box plots with plt.boxplot()", "Explain Q1, median, Q3, whiskers, and IQR", "Apply the 1.5 × IQR rule", "Compare distributions across fields", "Choose histogram versus box plot", "Investigate outliers without automatically deleting them"],
+  whyThisMatters: { title: "Sensor quality is a distribution question", body: "Thousands of readings can hide clusters, broad variation, skew, and rare extremes. Histograms and box plots turn those patterns into evidence for monitoring and investigation.", items: ["Find common ranges", "Measure typical spread", "Compare fields compactly", "Flag unusual readings responsibly"] },
+  industryMotivation: { title: "Rare farm observations may be warnings or real events", body: "A high moisture value could indicate rainfall, recent irrigation, an extreme field condition, sensor malfunction, or entry error. Distribution tools flag what deserves attention; domain investigation decides what it means.", items: ["Histogram: frequency and shape", "Box plot: robust summary", "IQR: middle-half spread", "Outlier: investigate before action"], signal: "Readings → distribution view → statistical flag → domain investigation → justified decision." },
+  concept: { title: "Histogram and box plot summarize different properties", body: "Histograms count readings inside numerical intervals. Box plots compress a distribution into quartiles, median, whiskers, and potential outliers.", items: ["Bins are numerical ranges", "Frequency counts observations", "Q1–Q3 contain the middle 50%", "IQR = Q3 − Q1", "Fences flag potential outliers", "Flags are not automatic errors"] },
+  workflow: { title: "Analyze a farm distribution", description: "Use both statistical structure and field context.", steps: [{ title: "Inspect", description: "Confirm the data is numerical and meaningful." }, { title: "Histogram", description: "Compare several reasonable bin counts." }, { title: "Box plot", description: "Inspect median, IQR, whiskers, and flags." }, { title: "Compare", description: "Examine center and spread across groups." }, { title: "Investigate", description: "Check operational causes for unusual readings." }, { title: "Report", description: "Describe evidence without labeling rarity as error." }] },
+  agritechExample: { title: "Soil moisture at 90%", body: "A box plot may place 90% beyond the upper IQR fence. That makes it statistically unusual, but only rainfall records, irrigation logs, field inspection, and sensor diagnostics can establish why." },
+  playground: {
+    title: "Run a Complete Distribution Analysis",
+    description: "Create histogram and box-plot Figures, calculate quartiles and IQR fences, identify potential outliers, compare three fields, and close every Figure.",
+    starterCode: `import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+temperature = [24, 25, 25, 26, 27, 27, 28, 28, 29, 30, 31, 32, 35, 36]
+moisture = [45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 90]
+field_a = [24, 25, 26, 27, 28, 29, 30]
+field_b = [27, 28, 29, 30, 31, 32, 33]
+field_c = [23, 24, 25, 26, 27, 28, 40]
+
+fig_hist, ax_hist = plt.subplots()
+counts, edges, _ = ax_hist.hist(temperature, bins=5)
+fig_box, ax_box = plt.subplots()
+ax_box.boxplot(moisture)
+fig_groups, ax_groups = plt.subplots()
+ax_groups.boxplot([field_a, field_b, field_c], tick_labels=["Field A", "Field B", "Field C"])
+
+q1, median, q3 = np.percentile(moisture, [25, 50, 75])
+iqr = q3 - q1
+lower = q1 - 1.5 * iqr
+upper = q3 + 1.5 * iqr
+outliers = [value for value in moisture if value < lower or value > upper]
+
+print("Histogram frequencies:", counts.astype(int).tolist())
+print("Bin edges:", np.round(edges, 1).tolist())
+print("Q1 / Median / Q3:", q1, median, q3)
+print("IQR:", iqr)
+print("Fences:", lower, upper)
+print("Potential outliers:", outliers)
+print("Group boxes:", len(ax_groups.artists) + len(ax_groups.lines) > 0)
+for fig in [fig_hist, fig_box, fig_groups]: plt.close(fig)
+print("Open figures:", plt.get_fignums())`,
+    expectedOutcome: "The runner prints five histogram frequencies, quartiles, an IQR of 5, fences from 41 to 61, identifies 90 as a potential outlier, confirms group box artists, and closes all Figures.",
+  },
+  practice: [
+    { level: "Easy", title: "Temperature histogram", prompt: "Create a labeled histogram for the temperature readings.", guidance: "Begin with five bins and label frequency." },
+    { level: "Easy", title: "Compare bins", prompt: "Render the same histogram with 5 and 10 bins.", guidance: "Describe what detail appears or disappears." },
+    { level: "Medium", title: "Moisture box plot", prompt: "Create a soil-moisture box plot and identify its median.", guidance: "A box plot summarizes rather than shows frequency shape." },
+    { level: "Medium", title: "Potential outlier", prompt: "Use the IQR rule to investigate 90 in the moisture dataset.", guidance: "Calculate Q1, Q3, IQR, and both fences." },
+    { level: "Medium", title: "Three fields", prompt: "Compare temperature distributions for Fields A, B, and C.", guidance: "Use one box per field and label each group." },
+    { level: "Medium", title: "Quartile language", prompt: "Explain Q1, median, Q3, and IQR in plain language.", guidance: "Connect each statistic to a proportion or spread." },
+    { level: "Challenge", title: "Manual IQR", prompt: "Calculate the IQR for a small sorted sensor dataset.", guidance: "Use Q3 − Q1, then calculate both 1.5 × IQR fences." },
+    { level: "Challenge", title: "Two-view analysis", prompt: "Analyze one sensor dataset with both a histogram and box plot, then write three evidence-based observations.", guidance: "Discuss shape, concentration, median/spread, and flags separately." },
+  ],
+  quiz: [
+    { title: "Distribution", question: "What does distribution analysis examine?", options: ["How all values are arranged and concentrated", "Only the largest value", "Only category names", "Image resolution"], correctOptionIndex: 0, note: "All observations together.", explanation: "Distribution includes center, spread, shape, and unusual values." },
+    { title: "Histogram", question: "What does a histogram's y-axis usually show?", options: ["Frequency", "Quartile name", "Crop label", "IQR fence"], correctOptionIndex: 0, note: "Count in each range.", explanation: "Bar height records how many observations fall in a bin." },
+    { title: "Bins", question: "What is a histogram bin?", options: ["A numerical interval", "A named crop", "An outlier deletion", "A legend"], correctOptionIndex: 0, note: "Range, not category.", explanation: "Bins group continuous values into intervals." },
+    { title: "Bin choice", question: "Why compare several bin counts?", options: ["The apparent shape can change", "Bins change the raw data", "More bins always prove accuracy", "Box plots require bins"], correctOptionIndex: 0, note: "Avoid over-interpretation.", explanation: "Too few oversimplify; too many can look noisy." },
+    { title: "Median", question: "What percentile is the median?", options: ["50th", "25th", "75th", "100th"], correctOptionIndex: 0, note: "Middle position.", explanation: "Half the ordered observations lie on either side." },
+    { title: "IQR", question: "How is IQR calculated?", options: ["Q3 − Q1", "Maximum − minimum", "Median ÷ 2", "Q1 + Q3"], correctOptionIndex: 0, note: "Middle-half spread.", explanation: "IQR spans the middle 50% of observations." },
+    { title: "Fence", question: "What is the common upper potential-outlier fence?", options: ["Q3 + 1.5 × IQR", "Q3 + IQR", "Median + Q1", "Maximum × 2"], correctOptionIndex: 0, note: "Statistical flag.", explanation: "Values beyond the fence may be displayed individually." },
+    { title: "Outlier", question: "What should happen first when a sensor value is flagged?", options: ["Investigate context", "Delete it", "Replace it with zero", "Ignore all data"], correctOptionIndex: 0, note: "Rarity is not invalidity.", explanation: "Check weather, irrigation, conditions, sensor health, and entry history." },
+    { title: "Comparison", question: "Which plot compactly compares several field distributions?", options: ["Side-by-side box plots", "One pie chart", "One line without labels", "A categorical histogram"], correctOptionIndex: 0, note: "Group summary.", explanation: "Boxes align medians, IQRs, whiskers, and flags across groups." },
+    { title: "Choice", question: "Which plot best reveals distribution shape?", options: ["Histogram", "Box plot only", "Bar chart of crops", "Area chart"], correctOptionIndex: 0, note: "Frequency pattern.", explanation: "A histogram shows concentration, gaps, and skew across ranges." },
+  ],
+  assignment: { title: "Smart Farm Distribution Report", brief: "Use a histogram and box plot to assess one sensor dataset and compare distributions across three fields.", deliverables: ["Histogram with justified bins", "Box plot", "Q1, median, Q3", "IQR and fences", "Potential-outlier list", "Three-field comparison", "Contextual investigation plan", "No automatic deletion", "Readable labels and units", "Three evidence-based observations"] },
+  summarySection: { title: "You can now inspect the shape and robust summary of farm distributions", body: "You used histogram bins to examine frequency and shape, box plots to compare center and spread, and IQR fences to identify observations requiring investigation.", items: ["Histogram: shape and frequency", "Box plot: compact summary", "IQR: middle 50% spread", "Fences: potential outlier flags", "Context decides meaning"] },
+  keyTakeaways: ["Distribution describes all readings together", "Bins are numerical intervals", "Bin choice affects appearance", "Histograms reveal shape", "Box plots reveal quartiles", "IQR resists extreme values", "Outliers are investigation prompts", "Compare groups with aligned boxes", "Use numerical data for histograms", "Preserve field context"],
+  whatsNext: { title: "Lesson 8.4 · Customization, Labels, Legends, Subplots & Styling", body: "Next, improve chart communication with purposeful styling, annotations, legends, layouts, and multiple Axes." },
+  developmentPack: matplotlibDistributionDevelopmentPack,
 }];
 
 export const moduleEightLessonSummaries = [
   { id: "module-8-lesson-1", moduleId: "module-8", order: 1, title: "8.1 Introduction to Data Visualization + Matplotlib Basics", estimatedMinutes: 150, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-8-lesson-2", moduleId: "module-8", order: 2, title: "8.2 Line, Bar, Scatter & Area Charts", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
-  { id: "module-8-lesson-3", moduleId: "module-8", order: 3, title: "8.3 Histograms, Box Plots & Distribution Analysis", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
+  { id: "module-8-lesson-3", moduleId: "module-8", order: 3, title: "8.3 Histograms, Box Plots & Distribution Analysis", estimatedMinutes: 165, status: "in-progress" as const, isPlaceholder: false },
   { id: "module-8-lesson-4", moduleId: "module-8", order: 4, title: "8.4 Customization, Labels, Legends, Subplots & Styling", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-8-lesson-5", moduleId: "module-8", order: 5, title: "8.5 Plotly Fundamentals + Interactive Charts", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },
   { id: "module-8-lesson-6", moduleId: "module-8", order: 6, title: "8.6 Plotly Bar, Line, Scatter, Histogram & Box Charts", estimatedMinutes: 165, status: "not-started" as const, isPlaceholder: true },

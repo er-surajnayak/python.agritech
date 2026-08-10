@@ -2303,6 +2303,18 @@ export interface MatplotlibChartTypesDevelopmentPack {
   debugChallenges: DebugChallengeContent[];
 }
 
+export interface MatplotlibDistributionDevelopmentPack {
+  kind: "matplotlib-distribution-analysis";
+  prerequisite: string;
+  storyHook: string;
+  datasets: Array<{ id: "temperature" | "moisture" | "rainfall" | "humidity"; label: string; values: number[]; unit: string; interpretation: string }>;
+  fieldGroups: Array<{ label: string; values: number[] }>;
+  outlierData: number[];
+  commonMistakes: Array<{ title: string; code: string; explanation: string }>;
+  quickReference: Array<{ task: string; code: string; meaning: string }>;
+  debugChallenges: DebugChallengeContent[];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface LessonDocument {
@@ -2327,7 +2339,7 @@ export interface LessonDocument {
   summarySection: LessonTextSection;
   keyTakeaways: string[];
   whatsNext: LessonTextSection;
-  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack | NumpyFilteringDevelopmentPack | NumpyArrayManagementDevelopmentPack | NumpyDataAnalysisDevelopmentPack | PandasSeriesDevelopmentPack | PandasDataFrameDevelopmentPack | PandasSelectionDevelopmentPack | PandasCleaningDevelopmentPack | PandasTransformationDevelopmentPack | PandasGroupByDevelopmentPack | PandasCombiningReshapingDevelopmentPack | MatplotlibBasicsDevelopmentPack | MatplotlibChartTypesDevelopmentPack;
+  developmentPack?: WelcomeLessonDevelopmentPack | WhyPythonDevelopmentPack | FirstProgramDevelopmentPack | VariableLessonDevelopmentPack | DataTypeLessonDevelopmentPack | UserInputLessonDevelopmentPack | TypeConversionLessonDevelopmentPack | OperatorLessonDevelopmentPack | ProblemSolvingLessonDevelopmentPack | CapstoneProjectLessonDevelopmentPack | DecisionMakingLessonDevelopmentPack | IfStatementLessonDevelopmentPack | IfElseLessonDevelopmentPack | IfElifElseLessonDevelopmentPack | NestedIfLessonDevelopmentPack | MatchCaseLessonDevelopmentPack | ForLoopLessonDevelopmentPack | WhileLoopLessonDevelopmentPack | LoopControlLessonDevelopmentPack | ControlFlowCapstoneDevelopmentPack | WhyFunctionsDevelopmentPack | FunctionDefinitionLessonDevelopmentPack | FunctionParametersLessonDevelopmentPack | ReturnValuesLessonDevelopmentPack | FunctionArgumentsLessonDevelopmentPack | VariableScopeLessonDevelopmentPack | LambdaFunctionsLessonDevelopmentPack | RecursionLessonDevelopmentPack | FunctionDesignLessonDevelopmentPack | FunctionCapstoneDevelopmentPack | WhyCollectionsDevelopmentPack | PythonListsDevelopmentPack | WorkingWithListsDevelopmentPack | TupleDevelopmentPack | SetsDevelopmentPack | DictionaryDevelopmentPack | CollectionOperationsDevelopmentPack | ListTuplePracticeDevelopmentPack | SetDictPracticeDevelopmentPack | OopWhyOopDevelopmentPack | OopConstructorsDevelopmentPack | OopMethodsAndClassVarsDevelopmentPack | OopEncapsulationDevelopmentPack | OopInheritanceDevelopmentPack | OopPolymorphismDevelopmentPack | OopAbstractionDevelopmentPack | OopMagicMethodsDevelopmentPack | NumpyIntroductionDevelopmentPack | NumpyArrayCreationDevelopmentPack | NumpyArrayAttributesDevelopmentPack | NumpyIndexingDevelopmentPack | NumpyOperationsDevelopmentPack | NumpyMathStatisticsDevelopmentPack | NumpyFilteringDevelopmentPack | NumpyArrayManagementDevelopmentPack | NumpyDataAnalysisDevelopmentPack | PandasSeriesDevelopmentPack | PandasDataFrameDevelopmentPack | PandasSelectionDevelopmentPack | PandasCleaningDevelopmentPack | PandasTransformationDevelopmentPack | PandasGroupByDevelopmentPack | PandasCombiningReshapingDevelopmentPack | MatplotlibBasicsDevelopmentPack | MatplotlibChartTypesDevelopmentPack | MatplotlibDistributionDevelopmentPack;
 }
 
 export interface PlaceholderPageContent {

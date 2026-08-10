@@ -2177,7 +2177,7 @@ test("Module 8 begins with Matplotlib foundations and a ten-lesson visualization
     readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
     readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
   ]);
-  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 11, "one published lesson and ten navigation summaries should exist");
+  assert.equal((moduleSource.match(/id: "module-8-lesson-/g) ?? []).length, 12, "two published lessons and ten navigation summaries should exist");
   assert.match(moduleSource, /title: "Introduction to Data Visualization \+ Matplotlib Basics"/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*developmentPack: matplotlibBasicsDevelopmentPack/);
   assert.match(moduleSource, /id: "module-8-lesson-1"[\s\S]*isPlaceholder: false/);
@@ -2196,4 +2196,32 @@ test("Module 8 begins with Matplotlib foundations and a ten-lesson visualization
   assert.match(blocksSource, /Because °C and % are different units/);
   assert.match(stylesSource, /Module 8 · Lesson 8\.1 — Matplotlib basics/);
   assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-basics-pack/);
+});
+
+test("Module 8.2 teaches line, bar, scatter, and area chart selection", async () => {
+  const [moduleSource, packSource, registrySource, rendererSource, blocksSource, chartSource, stylesSource, moduleSevenSource] = await Promise.all([
+    readFile(new URL("content/module-8.ts", projectRoot), "utf8"),
+    readFile(new URL("content/development-packs/lesson-8-2.ts", projectRoot), "utf8"),
+    readFile(new URL("components/learning/LessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibChartTypesLessonRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibChartTypesLearningBlocks.tsx", projectRoot), "utf8"),
+    readFile(new URL("components/learning/MatplotlibChartRenderer.tsx", projectRoot), "utf8"),
+    readFile(new URL("src/styles/globals.scss", projectRoot), "utf8"),
+    readFile(new URL("content/module-7.ts", projectRoot), "utf8"),
+  ]);
+  assert.match(moduleSource, /id: "module-8-lesson-2"[\s\S]*title: "Line, Bar, Scatter & Area Charts"/);
+  assert.match(moduleSource, /id: "module-8-lesson-2"[\s\S]*developmentPack: matplotlibChartTypesDevelopmentPack/);
+  assert.match(moduleSource, /id: "module-8-lesson-2"[\s\S]*isPlaceholder: false/);
+  assert.match(moduleSevenSource, /id: "module-7-lesson-8"[\s\S]*isPlaceholder: true/);
+  assert.match(packSource, /kind: "matplotlib-core-chart-types"/);
+  for (const concept of ["plt.plot", "plt.bar", "plt.barh", "plt.scatter", "plt.fill_between"]) assert.ok(packSource.includes(concept) || moduleSource.includes(concept), `missing ${concept}`);
+  assert.match(registrySource, /lesson\.developmentPack\?\.kind === "matplotlib-core-chart-types"/);
+  for (const component of ["AgritechChartExplorer", "ChartDecisionActivity", "VisualizationLab", "CoreChartExamples"]) assert.ok(rendererSource.includes(`<${component}`), `missing ${component}`);
+  assert.match(blocksSource, /Four chart forms answer four different questions/);
+  assert.match(blocksSource, /Association does not prove causation/);
+  assert.match(chartSource, /kind === "barh"/);
+  assert.match(chartSource, /kind === "scatter"/);
+  assert.match(chartSource, /kind === "area"/);
+  assert.match(stylesSource, /Module 8 · Lesson 8\.2 — Core Matplotlib chart types/);
+  assert.match(stylesSource, /@media \(max-width: 35rem\)[\s\S]*\.matplotlib-chart-types-pack/);
 });

@@ -78,6 +78,7 @@ import { PandasTransformationLessonRenderer } from "@/components/learning/Pandas
 import { PandasGroupByLessonRenderer } from "@/components/learning/PandasGroupByLessonRenderer";
 import { PandasCombiningLessonRenderer } from "@/components/learning/PandasCombiningLessonRenderer";
 import { MatplotlibBasicsLessonRenderer } from "@/components/learning/MatplotlibBasicsLessonRenderer";
+import { MatplotlibChartTypesLessonRenderer } from "@/components/learning/MatplotlibChartTypesLessonRenderer";
 import { CourseBreadcrumb } from "@/components/course/CourseBreadcrumb";
 import { CourseIcon } from "@/components/course/CourseIcon";
 import { PreviousNextNavigation } from "@/components/course/PreviousNextNavigation";
@@ -305,6 +306,9 @@ export function LessonRenderer({
   }
   if (lesson.developmentPack?.kind === "matplotlib-introduction-basics") {
     return <MatplotlibBasicsLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
+  }
+  if (lesson.developmentPack?.kind === "matplotlib-core-chart-types") {
+    return <MatplotlibChartTypesLessonRenderer lesson={lesson} courseLesson={courseLesson} module={module} previous={previous} next={next} />;
   }
 
   return (
